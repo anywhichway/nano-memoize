@@ -2,7 +2,7 @@
 
 # Introduction
 
-The devs [caiogondim](https://github.com/caiogondim) and [planttheidea](https://github.com/planttheidea) have produced great memoizers. We analyzed their code to see if we could build something faster than [fastmemoize](https://github.com/caiogondim/fastmemoize.js) and smaller than [micromemoize](https://github.com/planttheidea/micromemoize) while adding back some of the functionality of [moize](https://github.com/planttheidea/moize) removed in micro-memoize. We think we have done it.
+The devs [caiogondim](https://github.com/caiogondim) and [planttheidea](https://github.com/planttheidea) have produced great memoizers. We analyzed their code to see if we could build something faster than [fastmemoize](https://github.com/caiogondim/fastmemoize.js) and smaller than [micromemoize](https://github.com/planttheidea/micromemoize) while adding back some of the functionality of [moize](https://github.com/planttheidea/moize) removed in micro-memoize. We think we have done it ... but credit to them ... we just merged the best ideas in both and eliminated excess code.
 
 The minified/gzipped size is 920 bytes for `nano-memoize` vs 959 bytes for `micro-memoize`.
 
@@ -23,7 +23,7 @@ Functions with a single primitive parameter...
 
 | Name          | Ops / sec   | Relative margin of error | Sample size |
 |---------------|-------------|--------------------------|-------------|
-| namo-memoize  | 183,478,889 |   0.55%                  | 90          |
+| nano-memoize  | 183,478,889 |   0.55%                  | 90          |
 | fast-memoize  | 75,218,544  |   2.21%                  | 81          |
 | micro-memoize | 26,565,887  |   1.48%                  | 79          |
 | moize         | 22,047,750  |   0.48%                  | 86          |
@@ -37,7 +37,7 @@ Functions with a single object parameter...
 | Name          | Ops / sec  | Relative margin of error | Sample size |
 |---------------|------------|--------------------------|-------------|
 | fast-memoize  | 78,297,395 |   0.54%                  | 90          |
-| namo-memoize  | 57,453,837 |   2.03%                  | 86          |
+| nano-memoize  | 57,453,837 |   2.03%                  | 86          |
 | micro-memoize | 26,615,102 |   0.40%                  | 91          |
 | moize         | 21,760,403 |   0.53%                  | 84          |
 
