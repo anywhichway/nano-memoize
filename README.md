@@ -119,6 +119,8 @@ The shape of options is:
 
 # Release History (reverse chronological order)
 
+2018-01-27 v0.0.5b  BETA Fixed edge case where multi-arg key may be shorter than current args.
+
 2018-01-27 v0.0.4b  BETA Fixed benchmarks. Removed maxSize. More unit tests. Fixed maxAge.
 
 2018-01-27 v0.0.3b  BETA More unit tests. Documentation. Benchmark code in repository not yet running.
