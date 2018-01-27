@@ -4,7 +4,7 @@
 
 The devs [caiogondim](https://github.com/caiogondim) and [planttheidea](https://github.com/planttheidea) have produced great memoizers. We analyzed their code to see if we could build something faster than [fastmemoize](https://github.com/caiogondim/fastmemoize.js) and smaller than [micromemoize](https://github.com/planttheidea/micromemoize) while adding back some of the functionality of [moize](https://github.com/planttheidea/moize) removed in micro-memoize. We think we have done it ... but credit to them ... we just merged the best ideas in both and eliminated excess code.
 
-The minified/gzipped size is 920 bytes for `nano-memoize` vs 959 bytes for `micro-memoize`.
+The minified/gzipped size is 918 bytes for `nano-memoize` vs 959 bytes for `micro-memoize`.
 
 The speed tests are below.
 
@@ -118,6 +118,8 @@ The shape of options is:
 ```
 
 # Release History (reverse chronological order)
+
+2018-01-27 v0.0.6b  BETA Minor size and speed improvements.
 
 2018-01-27 v0.0.5b  BETA Fixed edge case where multi-arg key may be shorter than current args.
 

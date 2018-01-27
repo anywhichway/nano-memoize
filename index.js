@@ -77,33 +77,33 @@
 	}
 
 	// for single argument functions, just use a JS object key look-up
-	function single (f,cache,change,serializer,arg) {
+	function single (f,s,change,serializer,arg) {
 		const key = (!arg || typeof arg === "number" || typeof arg ==="boolean" || arg.constructor===Number || arg.constructor===Boolean ? arg : serializer(arg));
 		if(change) change(key);
-		return cache[key] || ( cache[key] = f.call(this, arg));
+		return s[key] || ( s[key] = f.call(this, arg));
 	}
 	
 	// for multiple arg functions, loop through a cache of all the args
 	// looking at each arg separately so a test can abort as soon as possible
-	function multiple(f,keys,values,equals,change,max,...args) {
+	function multiple(f,k,v,eq,change,max=0,...args) {
 		const rslt = {};
-		for(let i=0;i<keys.length;i++) { // an array of arrays of args
-			let key = keys[i];
+		for(let i=0;i<k.length;i++) { // an array of arrays of args
+			let key = k[i];
 			if(max) key = key.slice(0,max);
 			if(key.length===args.length || (max && key.length<args.length)) {
 				const max = key.length - 1;
 				for(let j=0;j<=max;j++) {
-					if(!equals(key[j],args[j])) break; // go to next key if args don't match
+					if(!eq(key[j],args[j])) break; // go to next key if args don't match
 					if(j===max) { // the args matched
-						rslt.index = i;
-						rslt.value = values[i]; // get the cached value
+						rslt.i = i;
+						rslt.v = v[i]; // get the cached value
 					}
 				}
 			}
 		}
-		const i = rslt.index>=0 ? rslt.index : values.length;
+		const i = rslt.i>=0 ? rslt.i : v.length;
 		if(change) change(i);
-		return typeof rslt.value === "undefined" ? rslt.value = values[i] = f(...(keys[i] = args)) : rslt.value;
+		return typeof rslt.v === "undefined" ? v[i] = f.call(this,...(k[i] = args)) : rslt.v;
 	}
 		
 	if(typeof(module)!=="undefined") module.exports = nanomemoize;
