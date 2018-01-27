@@ -1,5 +1,29 @@
 'use strict';
 
+/*MIT License
+Core benchmark code copied from micro-memoize
+
+Copyright (c) 2018 Tony Quetano
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+*/
+
 const Benchmark = require('benchmark');
 const Table = require('cli-table2');
 const ora = require('ora');
@@ -13,134 +37,9 @@ const addyOsmani = require('./addy-osmani');
 const memoizerific = require('memoizerific');
 const lruMemoize = require('lru-memoize').default;
 const moize = require('moize');
-const microMemoize = require('../dist/micro-memoize.js').default; //require('../lib').default;
+const microMemoize = require('micro-memoize').default; //require('../lib').default;
 const iMemoized = require('iMemoized');
-
-
-
-/*function micromemo (fn, options={}) {
-	const {equals,maxAge,maxArgs,serializer} = options,
-		memoized = resolver.bind(this,fn,{},serializer,equals,maxAge);
-  return memoized;
-}
-function resolver (fn,singles,serializer=JSON.stringify,equals,maxAge,arg) {
-	if(!equals && arguments.length<=6) {
-	  const cacheKey = typeof arg === 'string' || typeof arg === 'function' || typeof arg === 'object' ? serializer(arg) : arg;
-	  return singles[cacheKey] || (singles[cacheKey]=fn.call(this, arg));
-	}
-	const args = [].slice.call(arguments,5),
-		result = {};
-	equals || (equals = (a,b) => a===b);
-	for(let i=0;i<keys.length;i++) {
-		if(keys[i]===null) { result.index = i; continue; }
-		const key = maxArgs ? keys[i].slice(0,maxArgs) : keys[i];
-		if(key.length===args.length) {
-			const max = key.length - 1;
-			for(let j=0;j<=max;j++) {
-				if(!equals(key[j],args[j])) break;
-				if(j===max) {
-					result.index = i;
-					result.value = values[i];
-				}
-			}
-		}
-	}
-	const i = result.index>=0 ? result.index : values.length;
-	if(maxAge) {
-		if(timeouts[i]) clearTimeout(timeouts[i]);
-		timeouts[i] = setTimeout(() => keys[i]=values[i]=timeouts[i]=null,maxAge)
-	}
-	return typeof(result.value)==="undefined" ? values[i] = fn.call(this,...(keys[i] = args)) : result.value;
-};*/
-
-function micromemo (fn, options={}) {
-	const {serializer=JSON.stringify,equals,maxAge,maxArgs,maxSize,stats} = options,
-		singles = {},
-		keys = [],
-		values = [],
-		changes = [],
-		change = (cache,key,property) => {
-			if(property) key = typeof(key) + "@" + key;
-			changes[key] = {key,cache};
-		},
-		hits = [],
-		hit = (key,cache,property) => {
-			if(property) key = typeof(key) + "@" + key;
-			let record = hits[key];
-			if(!record) record = hits[key] = {count:0,cache};
-			hit.count++;
-			hit.time = Date.now();
-		},
-		timeouts =  [],
-		timeout = (key,cache,property) => {
-			if(property) key = typeof(key) + "@" + key;
-			if(timeouts[key]) clearTimeout(timeouts[key]);
-			timeouts[key] = setTimeout(() => cache[key]=timeouts[key]=null,maxAge);
-		};
-	let memoized;
-	if(fn.length===1 && !equals) {
-		memoized = single.bind(
-			 this,
-			 fn,
-			 singles,
-			 (maxSize || maxAge || stats ? change.bind(this,values): null),
-			 serializer
-			 );
-	} else {
-		memoized = multiple.bind(
-				 this,
-				 fn,
-				 keys,
-				 values,
-				 serializer,
-				 equals ? equals : (a,b) => a===b,
-				 (maxSize || maxAge || stats ? change.bind(this,values): null),
-				 maxArgs
-				 );
-	}
-	memoized.clear = () => {
-		Object.keys(singles).forEach(key => delete singles[key]);
-		keys.splice(0,keys.length);
-		values.splice(0,values.length);
-		changes.splice(0,changes.length);
-		Object.keys(changes).forEach(key => key==="length" || delete changes[key]);
-		timeouts.forEach(timeout => !timeout || clearTimeout(timeout));
-		timeouts.splice(0,timeouts.length);
-		Object.keys(timeouts).forEach(key => key==="length" || delete timeouts[key]);
-	}
-	return memoized;
-}
-
-function single (f,cache,change,serializer,arg) {
-	if(arguments.length<=5) {
-		const key = (!arg || typeof arg === "number" || typeof arg ==="boolean" ? arg : serializer(arg));
-		if(change) change(key,true);
-		return cache[key] || ( cache[key] = f.call(this, arg));
-	}
-}
-	function multiple(f,keys,values,serializer,equals,change,maxArgs,...args) {
-		const result = {};
-		for(let i=0;i<keys.length;i++) {
-			let key = keys[i];
-			if(key===null) { result.index = i; continue; }
-			if(maxArgs) key = key.slice(0,maxArgs);
-			if(key.length===args.length) {
-				const max = key.length - 1;
-				for(let j=0;j<=max;j++) {
-					if(!equals(key[j],args[j])) break;
-					if(j===max) {
-						result.index = i;
-						result.value = values[i];
-					}
-				}
-			}
-		}
-		const i = result.index>=0 ? result.index : values.length;
-		if(change) change(key,true);
-		return typeof result.value === "undefined" ? result.value = values[i] = f(...(keys[i] = args)) : result.value;
-	}
-
-
+const nanomemoize = require('../src/nano-memoize.js');
 
 
 const deepEquals = require('lodash').isEqual;
@@ -245,12 +144,12 @@ const runSingleParameterSuite = () => {
   const mMoize = moize(fibonacci);
   const mMicroMemoize = microMemoize(fibonacci);
   const mIMemoized = iMemoized.memoize(fibonacci);
-  const mMicro = micromemo(fibonacci);
+  const mNano = nanomemoize(fibonacci);
 
 
   return new Promise((resolve) => {
     fibonacciSuite
-     /* .add('addy-osmani', () => {
+      .add('addy-osmani', () => {
         mAddyOsmani(fibonacciNumber);
       })
       .add('lodash', () => {
@@ -272,7 +171,7 @@ const runSingleParameterSuite = () => {
       })
       .add('iMemoized', () => {
       	mIMemoized(fibonacciNumber);
-      })*/
+      })
       .add('micro-memoize', () => {
         mMicroMemoize(fibonacciNumber);
       })
@@ -282,12 +181,86 @@ const runSingleParameterSuite = () => {
       .add('fast-memoize', () => {
         mFastMemoize(fibonacciNumber);
       })
-      .add('micromemo', () => {
-      	mMicro(fibonacciNumber);
+      .add('namomemoize', () => {
+      	mNano(fibonacciNumber);
       })
       .on('start', () => {
         console.log(''); // eslint-disable-line no-console
-        console.log('Starting cycles for functions with a single parameter...'); // eslint-disable-line no-console
+        console.log('Starting cycles for functions with a single primitive parameter...'); // eslint-disable-line no-console
+
+        results = [];
+
+        spinner.start();
+      })
+      .on('cycle', onCycle)
+      .on('complete', () => {
+        onComplete();
+        resolve();
+      })
+      .run({
+        async: true
+      });
+  });
+};
+
+const runSingleParameterObjectSuite = () => {
+  const fibonacciSuite = new Benchmark.Suite('Single parameter');
+  const fibonacciNumber = Number(35);
+
+  const mUnderscore = underscore(fibonacci);
+  const mLodash = lodash(fibonacci);
+  const mRamda = ramda(fibonacci);
+  const mMemoizee = memoizee(fibonacci);
+  const mFastMemoize = fastMemoize(fibonacci);
+  const mAddyOsmani = addyOsmani(fibonacci);
+  const mMemoizerific = memoizerific(Infinity)(fibonacci);
+  const mLruMemoize = lruMemoize(Infinity)(fibonacci);
+  const mMoize = moize(fibonacci);
+  const mMicroMemoize = microMemoize(fibonacci);
+  const mIMemoized = iMemoized.memoize(fibonacci);
+  const mNano = nanomemoize(fibonacci);
+
+
+  return new Promise((resolve) => {
+    fibonacciSuite
+      .add('addy-osmani', () => {
+        mAddyOsmani(fibonacciNumber);
+      })
+      .add('lodash', () => {
+        mLodash(fibonacciNumber);
+      })
+      .add('lru-memoize', () => {
+        mLruMemoize(fibonacciNumber);
+      })
+      .add('memoizee', () => {
+        mMemoizee(fibonacciNumber);
+      })
+      .add('memoizerific', () => {
+        mMemoizerific(fibonacciNumber);
+      }) .add('ramda', () => {
+        mRamda(fibonacciNumber);
+      })
+      .add('underscore', () => {
+        mUnderscore(fibonacciNumber);
+      })
+      .add('iMemoized', () => {
+      	mIMemoized(fibonacciNumber);
+      })
+      .add('micro-memoize', () => {
+        mMicroMemoize(fibonacciNumber);
+      })
+      .add('moize', () => {
+        mMoize(fibonacciNumber);
+      })
+      .add('fast-memoize', () => {
+        mFastMemoize(fibonacciNumber);
+      })
+      .add('namomemoize', () => {
+      	mNano(fibonacciNumber);
+      })
+      .on('start', () => {
+        console.log(''); // eslint-disable-line no-console
+        console.log('Starting cycles for functions with a single object parameter...'); // eslint-disable-line no-console
 
         results = [];
 
@@ -317,11 +290,11 @@ const runMultiplePrimitiveSuite = () => {
   const mMoize = moize(fibonacciMultiplePrimitive);
   const mMicroMemoize = microMemoize(fibonacciMultiplePrimitive);
   const mIMemoized = iMemoized.memoize(fibonacciMultiplePrimitive);
-  const mMicro = micromemo(fibonacciMultiplePrimitive);
+  const mNano = nanomemoize(fibonacciMultiplePrimitive);
 
   return new Promise((resolve) => {
     fibonacciSuite
-      /*.add('addy-osmani', () => {
+      .add('addy-osmani', () => {
         mAddyOsmani(fibonacciNumber, isComplete);
       })
       .add('lru-memoize', () => {
@@ -335,7 +308,7 @@ const runMultiplePrimitiveSuite = () => {
       })
       .add('memoizerific', () => {
         mMemoizerific(fibonacciNumber, isComplete);
-      })*/
+      })
     .add('fast-memoize', () => {
       mFastMemoize(fibonacciNumber, isComplete);
     })
@@ -345,8 +318,8 @@ const runMultiplePrimitiveSuite = () => {
       .add('moize', () => {
         mMoize(fibonacciNumber, isComplete);
       })
-      .add('micromemo', () => {
-      	mMicro(fibonacciNumber, isComplete);
+      .add('nanomemoize', () => {
+      	mNano(fibonacciNumber, isComplete);
       })
       .on('start', () => {
         console.log(''); // eslint-disable-line no-console
@@ -381,11 +354,11 @@ const runMultipleObjectSuite = () => {
   const mLruMemoize = lruMemoize(Infinity)(fibonacciMultipleObject);
   const mMoize = moize(fibonacciMultipleObject);
   const mMicroMemoize = microMemoize(fibonacciMultipleObject);
-  const mMicro = micromemo(fibonacciMultipleObject);
-
+  const mNano = nanomemoize(fibonacciMultipleObject);
+  
   return new Promise((resolve) => {
     fibonacciSuite
-     /* .add('addy-osmani', () => {
+      .add('addy-osmani', () => {
         mAddyOsmani(fibonacciNumber, isComplete);
       })
       .add('lru-memoize', () => {
@@ -396,7 +369,7 @@ const runMultipleObjectSuite = () => {
       })
       .add('memoizerific', () => {
         mMemoizerific(fibonacciNumber, isComplete);
-      })*/
+      })
     .add('fast-memoize', () => {
       mFastMemoize(fibonacciNumber, isComplete);
     })
@@ -406,8 +379,8 @@ const runMultipleObjectSuite = () => {
       .add('moize', () => {
         mMoize(fibonacciNumber, isComplete);
       })
-      .add('micromemo', () => {
-      	mMicro(fibonacciNumber,isComplete);
+      .add('nanomemoize', () => {
+      	mNano(fibonacciNumber,isComplete);
       })
       .on('start', () => {
         console.log(''); // eslint-disable-line no-console
@@ -446,10 +419,10 @@ const runAlternativeOptionsSuite = () => {
     isEqual: hashItEquals
   });
   
-  const mMicroDeep = micromemo(fibonacciMultipleDeepEqual, {
+  const mNanoDeep = nanomemoize(fibonacciMultipleDeepEqual, {
     equals: deepEquals
   });
-  const mMicroFastDeep = micromemo(fibonacciMultipleDeepEqual, {
+  const mNanoFastDeep = nanomemoize(fibonacciMultipleDeepEqual, {
     equals: fastDeepEqual
   });
 
@@ -464,11 +437,11 @@ const runAlternativeOptionsSuite = () => {
       .add('micro-memoize deep equals (hash-it isEqual)', () => {
         mMicroMemoizeHashIt(fibonacciNumber);
       })
-      .add('micromemo deep equals (lodash isEqual)', () => {
-      	mMicroDeep(fibonacciNumber);
+      .add('nanomemoize deep equals (lodash isEqual)', () => {
+      	mNanoDeep(fibonacciNumber);
       })
-      .add('micromemo deep equals (fast-equals deepEqual)', () => {
-        mMicroFastDeep(fibonacciNumber);
+      .add('nanomemoize deep equals (fast-equals deepEqual)', () => {
+        mNanoFastDeep(fibonacciNumber);
       })
       .on('start', () => {
         console.log(''); // eslint-disable-line no-console
@@ -492,6 +465,7 @@ const runAlternativeOptionsSuite = () => {
 // runAlternativeOptionsSuite();
 
 runSingleParameterSuite()
+  .then(runSingleParameterObjectSuite)
   .then(runMultiplePrimitiveSuite)
   .then(runMultipleObjectSuite)
   .then(runAlternativeOptionsSuite);

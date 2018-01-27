@@ -1,11 +1,11 @@
 {
   "name": "nano-memoize",
-  "version": "v0.0.2a",
-  "description": "Faster than fast, smaller than micro ... a nano speed and size memoizer.",
+  "version": "v0.0.4b",
+  "description": "Faster than fast, smaller than micro ... a nano speed and nano size memoizer.",
   "engines": {},
   "license": "MIT",
   "scripts": {
-    "prepare": "cp ./src/nano-memoize.js ./index.js && browserify ./src/nano-memoize.js -o browser/nano-memoize.js && uglifyjs browser/nano-memoize.js -o browser/nano-memoize.min.js && uglifyjs src/nano-memoize.js -o dist/nano-memoize.min.js"
+    "prepare": "cp ./src/nano-memoize.js ./index.js && cp ./src/nano-memoize.js dist/nano-memoize.js && browserify ./src/nano-memoize.js -o browser/nano-memoize.js && uglifyjs browser/nano-memoize.js -o browser/nano-memoize.min.js && uglifyjs src/nano-memoize.js -o dist/nano-memoize.min.js"
   },
   "repository": {
     "type": "git",
@@ -27,6 +27,7 @@
     "benchmark": "^2.1.3",
     "blanket": "^1.2.3",
     "chai": "^3.4.1",
+    "cli-table2": "^0.2.0",
     "codacy-coverage": "^2.0.0",
     "codeclimate-test-reporter": "^0.2.0",
     "istanbul": "^0.4.2",
@@ -42,10 +43,9 @@
     "memoizerific": "^1.11.2",
     "micro-memoize": "^1.0.0",
     "moize": "^4.0.4",
+    "ora": "^1.3.0",
     "ramda": "^0.25.0",
     "underscore": "^1.8.3"
   },
-  "dependencies": {
-    
-  }
+  "dependencies": {}
 }

@@ -2,81 +2,127 @@
 
 # Introduction
 
-The devs [caiogondim](https://github.com/caiogondim) and [planttheidea](https://github.com/planttheidea) have produced consistently fast memoizers. We analyzed their code to see if we could build something faster than [fast-memoize](https://github.com/caiogondim/fast-memoize.js) and smaller than [micro-memoize](https://github.com/planttheidea/micro-memoize) while adding back some of the functionality of [moize](https://github.com/planttheidea/moize) removed in micro-memoize. We think we have done it. The test results below are from running stripped down benchmark code for micro-memoize. The benchmark in this repository does not yet work.
+The devs [caiogondim](https://github.com/caiogondim) and [planttheidea](https://github.com/planttheidea) have produced great memoizers. We analyzed their code to see if we could build something faster than [fastmemoize](https://github.com/caiogondim/fastmemoize.js) and smaller than [micromemoize](https://github.com/planttheidea/micromemoize) while adding back some of the functionality of [moize](https://github.com/planttheidea/moize) removed in micro-memoize. We think we have done it.
 
-We have found that benchmarks can vary dramartically from O/S to O/S or node version to node version. These tests were run on a Windows 10 64bit 2.4gx machine with 8GB RAM and Node v9.4.0.
+The minified/gzipped size is 920 bytes for `nano-memoize` vs 959 bytes for `micro-memoize`.
 
-Functions with a single parameter...
+The speed tests are below.
 
-+----------------------------------------------------------------------+
-¦ Name          ¦ Ops / sec   ¦ Relative margin of error ¦ Sample size ¦
-+---------------+-------------+--------------------------+-------------¦
-¦ nanomemoize   ¦ 171,062,303 ¦ ± 1.14%                  ¦ 87          ¦
-+---------------+-------------+--------------------------+-------------¦
-¦ fast-memoize  ¦ 76,526,039  ¦ ± 1.09%                  ¦ 84          ¦
-+---------------+-------------+--------------------------+-------------¦
-¦ moize         ¦ 21,759,163  ¦ ± 0.81%                  ¦ 86          ¦
-+---------------+-------------+--------------------------+-------------¦
-¦ micro-memoize ¦ 15,174,166  ¦ ± 4.45%                  ¦ 84          ¦
-+----------------------------------------------------------------------+
+`fast-memoize` is only the fastest in one case, single argument functions taking an object. However, in the case of a single primitve argument `nano-memoize` is 240% faster and in all other cases even better than that.
+
+`micro-memoize` is faster than `fast-memoize` except for single argument functions.
+
+`nano-memoize` is always faster than `moize`.
+
+`nano-memoize` and `fast-memoize` are comparable for multiple-argument functions. `fast-memoize` is always the slowest for these.
+
+We have found that benchmarks can vary dramartically from O/S to O/S or node version to node version. These tests were run on a Windows 10 64bit 2.4gx machine with 8GB RAM and Node v9.4.0. 
+
+Functions with a single primitive parameter...
+
+
+| Name          | Ops / sec   | Relative margin of error | Sample size |
+|---------------|-------------|--------------------------|-------------|
+| namo-memoize  | 183,478,889 |   0.55%                  | 90          |
+| fast-memoize  | 75,218,544  |   2.21%                  | 81          |
+| micro-memoize | 26,565,887  |   1.48%                  | 79          |
+| moize         | 22,047,750  |   0.48%                  | 86          |
+
+
+
+Functions with a single object parameter...
+
+
+
+| Name          | Ops / sec  | Relative margin of error | Sample size |
+|---------------|------------|--------------------------|-------------|
+| fast-memoize  | 78,297,395 |   0.54%                  | 90          |
+| namo-memoize  | 57,453,837 |   2.03%                  | 86          |
+| micro-memoize | 26,615,102 |   0.40%                  | 91          |
+| moize         | 21,760,403 |   0.53%                  | 84          |
+
 
 Functions with multiple parameters that contain only primitives...
 
-+---------------------------------------------------------------------+
-¦ Name          ¦ Ops / sec  ¦ Relative margin of error ¦ Sample size ¦
-+---------------+------------+--------------------------+-------------¦
-¦ nanomemoize   ¦ 20,458,245 ¦ ± 1.51%                  ¦ 88          ¦
-+---------------+------------+--------------------------+-------------¦
-¦ moize         ¦ 15,245,250 ¦ ± 2.04%                  ¦ 85          ¦
-+---------------+------------+--------------------------+-------------¦
-¦ micro-memoize ¦ 11,533,581 ¦ ± 1.72%                  ¦ 84          ¦
-+---------------+------------+--------------------------+-------------¦
-¦ fast-memoize  ¦ 800,603    ¦ ± 3.10%                  ¦ 84          ¦
-+---------------------------------------------------------------------+
+| Name          | Ops / sec  | Relative margin of error | Sample size |
+|---------------|------------|--------------------------|-------------|
+| nanomemoize   | 18,280,535 |   1.45%                  | 83          |
+| micro-memoize | 16,394,987 |   0.95%                  | 86          |
+| moize         | 13,921,400 |   0.93%                  | 87          |
+| fast-memoize  | 884,771    |   0.47%                  | 94          |
+
+
 
 Functions with multiple parameters that contain objects...
 
-+---------------------------------------------------------------------+
-¦ Name          ¦ Ops / sec  ¦ Relative margin of error ¦ Sample size ¦
-+---------------+------------+--------------------------+-------------¦
-¦ nanomemoize   ¦ 17,706,239 ¦ ± 0.77%                  ¦ 94          ¦
-+---------------+------------+--------------------------+-------------¦
-¦ moize         ¦ 15,372,543 ¦ ± 0.93%                  ¦ 84          ¦
-+---------------+------------+--------------------------+-------------¦
-¦ micro-memoize ¦ 12,771,209 ¦ ± 1.12%                  ¦ 85          ¦
-+---------------+------------+--------------------------+-------------¦
-¦ fast-memoize  ¦ 650,331    ¦ ± 2.63%                  ¦ 90          ¦
-+---------------------------------------------------------------------+
-
-Alternative cache types...
-
-+---------------------------------------------------------------------------------------------------------+
-¦ Name                                              ¦ Ops / sec  ¦ Relative margin of error ¦ Sample size ¦
-+---------------------------------------------------+------------+--------------------------+-------------¦
-¦ nanomemoize deep equals (lodash isEqual)          ¦ 22,777,278 ¦ ± 0.75%                  ¦ 82          ¦
-+---------------------------------------------------+------------+--------------------------+-------------¦
-¦ nanomemoize deep equals (fast-equals deepEqual)   ¦ 17,583,950 ¦ ± 2.13%                  ¦ 87          ¦
-+---------------------------------------------------+------------+--------------------------+-------------¦
-¦ micro-memoize deep equals (hash-it isEqual)       ¦ 15,185,870 ¦ ± 0.75%                  ¦ 82          ¦
-+---------------------------------------------------+------------+--------------------------+-------------¦
-¦ micro-memoize deep equals (lodash isEqual)        ¦ 14,201,323 ¦ ± 0.63%                  ¦ 90          ¦
-+---------------------------------------------------+------------+--------------------------+-------------¦
-¦ micro-memoize deep equals (fast-equals deepEqual) ¦ 13,087,155 ¦ ± 0.94%                  ¦ 91          ¦
-+---------------------------------------------------------------------------------------------------------+
+| Name          | Ops / sec  | Relative margin of error | Sample size |
+|---------------|------------|--------------------------|-------------|
+| micro-memoize | 16,244,817 |   0.86%                  | 89          |
+| nanomemoize   | 14,362,298 |   1.89%                  | 89          |
+| moize         | 14,123,028 |   0.62%                  | 88          |
+| fast-memoize  | 682,549    |   0.49%                  | 90          |
 
 
-Along the way we discovered some size and speed optimizations that could be made to [fast-memoize](https://github.com/caiogondim/fast-memoize.js) and when fully tested will make a pull request to [caiogondim](https://github.com/caiogondim) for those of you desiring to stick with fast-memoize. For the single argument case our changes more than doubled the speed of fast-memoize and reduced the size by 30 bytes. The fork is [here](https://github.com/anywhichway/fast-memoize.js). We also discovered that fast-memoize is subject to a key generation risk on edge case functions and fixed the flaw. See this [Medium article](https://codeburst.io/a-key-to-keys-when-javascript-keys-dont-match-ab44c81adc87) for details. 
+Deep equals ...
+
+
+
+| Name                                              | Ops / sec  | Relative margin of error | Sample size |
+|---------------------------------------------------|------------|--------------------------|-------------|
+| micro-memoize deep equals (hash-it isEqual)       | 18,894,707 |   0.86%                  | 91          |
+| nanomemoize deep equals (lodash isEqual)          | 18,504,364 |   0.85%                  | 90          |
+| micro-memoize deep equals (fast-equals deepEqual) | 16,302,930 |   0.73%                  | 87          |
+| nanomemoize deep equals (fast-equals deepEqual)   | 15,162,874 |   0.83%                  | 89          |
+                 
+
+We were puzzled about the multiple argument performance on `fast-memoize` given its stated goal of being the "fastest possible". We discovered that the default caching and serialization approach used by fast-memoize only performs well for single argument functions for two reasons:
+
+1) It uses `toJSON` to create a key for an entire argument list. This can be slow.
+
+2) Because a single key is generated for all arguments when perhaps only the first argument differs in a call, a lot of extra work is done. The `moize` and `micro-memoize` approach adopted by `nano-memoize` is far faster for multiple arguments.
+
+Along the way we also discovered that fast-memoize is subject to a key generation risk on edge case functions and fixed the flaw. The fork is [here](https://github.com/anywhichway/fastmemoize.js). We have submitted a pull request. See this [Medium article](https://codeburst.io/akeytokeyswhenjavascriptkeysdontmatchab44c81adc87) for details. 
 
 
 # Usage
 
+nmp install nano-memoize
+
+use the code in the `browser` directory for the browser
+
+Since most devs are running a build pipeline, the code is not transpiled, although it is browserified
+
 
 # API
 
-The API is a subset of the `moize` API. Documentation coming.
+The API is a subset of the `moize` API.
 
-# Release History (rverse chronological order)
+```
+const memoized = micromemoize(sum(a,b) => a + b);
+memoized(1,2); // 3
+memoized(1,2); // pulled from cache
+```
 
-2018-01-24 v0.0.1a - Minor speed enhancements. Benchmark code in repository not yet running.
+`memoized(function,options) returns function`
 
-2018-01-24 v0.0.1a - First public release. Benchmark code in repository not yet running.
+The shape of options is:
+
+```
+{
+  maxArgs: number, // only use the provided maxArgs for cache look-up, useful for ignoring final callback arguments
+  maxAge: number, // number of milliseconds to cache a result
+  serializer: function, // the serializer/key generator to use for single argument functions (multi-argument functions do not use a serializer)
+  equals: function, // the equals function to use for multi-argument functions, e.g. deepEquals for objects (single-argument functions use serializer not equals)
+  vargs: boolean // forces the use of multi-argument paradigm, use if your function has logic based on `arguments` variable, auto set if function has a spread argument
+}
+```
+
+# Release History (reverse chronological order)
+
+2018-01-27 v0.0.4b  BETA Fixed benchmarks. Removed maxSize. More unit tests. Fixed maxAge.
+
+2018-01-27 v0.0.3b  BETA More unit tests. Documentation. Benchmark code in repository not yet running.
+
+2018-01-24 v0.0.2a  ALPHA Minor speed enhancements. Benchmark code in repository not yet running.
+
+2018=01-24 v0.0.1a  ALPHA First public release. Benchmark code in repository not yet running.
