@@ -1,4 +1,4 @@
-# Faster than fast, smaller than micro ... a nano speed and size memoizer.
+# Faster than fast, smaller than micro ... nano-memoizer.
 
 # Introduction
 
@@ -97,7 +97,7 @@ Since most devs are running a build pipeline, the code is not transpiled, althou
 
 The API is a subset of the `moize` API.
 
-```
+```javascript
 const memoized = micromemoize(sum(a,b) => a + b);
 memoized(1,2); // 3
 memoized(1,2); // pulled from cache
@@ -107,13 +107,13 @@ memoized(1,2); // pulled from cache
 
 The shape of options is:
 
-```
+```javascript
 {
   maxArgs: number, // only use the provided maxArgs for cache look-up, useful for ignoring final callback arguments
   maxAge: number, // number of milliseconds to cache a result
   serializer: function, // the serializer/key generator to use for single argument functions (multi-argument functions do not use a serializer)
   equals: function, // the equals function to use for multi-argument functions, e.g. deepEquals for objects (single-argument functions use serializer not equals)
-  vargs: boolean // forces the use of multi-argument paradigm, use if your function has logic based on `arguments` variable, auto set if function has a spread argument
+  vargs: boolean // forces the use of multi-argument paradigm, auto set if function has a spread argument or uses `arguments` in its body.
 }
 ```
 
