@@ -77,7 +77,7 @@ Deep equals ...
 
 We were puzzled about the multiple argument performance on `fast-memoize` given its stated goal of being the "fastest possible". We discovered that the default caching and serialization approach used by fast-memoize only performs well for single argument functions for two reasons:
 
-1) It uses `toJSON` to create a key for an entire argument list. This can be slow.
+1) It uses `JSON.stringify` to create a key for an entire argument list. This can be slow.
 
 2) Because a single key is generated for all arguments when perhaps only the first argument differs in a call, a lot of extra work is done. The `moize` and `micro-memoize` approach adopted by `nano-memoize` is far faster for multiple arguments.
 
