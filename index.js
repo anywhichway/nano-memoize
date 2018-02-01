@@ -7,13 +7,7 @@
 	}
 	function nanomemoize (fn, options={}) {
 		const {
-			serializer = (value) => { 
-				if(value && (typeof value === "string" || typeof value === "object")) {
-					// strings must be stringified because cache[1] should not equal or overwrite cache["1"] for value = 1 and value = "1"
-					return JSON.stringify(value);
-				}
-				return value;
-			},
+			serializer = (value) => JSON.stringify(value),
 			equals,
 			maxAge,
 			maxArgs,
@@ -78,7 +72,8 @@
 
 	// for single argument functions, just use a JS object key look-up
 	function single (f,s,change,serializer,arg) {
-		const key = (!arg || typeof arg === "number" || typeof arg ==="boolean" || arg.constructor===Number || arg.constructor===Boolean ? arg : serializer(arg));
+	  // strings must be stringified because cache[1] should not equal or overwrite cache["1"] for value = 1 and value = "1"
+		const key = (!arg || typeof arg === "number" || typeof arg ==="boolean" ? arg : serializer(arg));
 		if(change) change(key);
 		return s[key] || ( s[key] = f.call(this, arg));
 	}

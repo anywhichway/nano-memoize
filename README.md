@@ -4,7 +4,7 @@
 
 The devs [caiogondim](https://github.com/caiogondim) and [planttheidea](https://github.com/planttheidea) have produced great memoizers. We analyzed their code to see if we could build something faster than [fast-memoize](https://github.com/caiogondim/fastmemoize.js) and smaller than [micro-memoize](https://github.com/planttheidea/micromemoize) while adding back some of the functionality of [moize](https://github.com/planttheidea/moize) removed in micro-memoize. We think we have done it ... but credit to them ... we just merged the best ideas in both and eliminated excess code.
 
-The minified/gzipped size is 918 bytes for `nano-memoize` vs 959 bytes for `micro-memoize`. And, `nano-memoize` has slightly more functionality.
+The minified/gzipped size is 872 bytes for `nano-memoize` vs 959 bytes for `micro-memoize`. And, `nano-memoize` has slightly more functionality.
 
 The speed tests are below.
 
@@ -15,7 +15,7 @@ In all other cases, `fast-memoize` is the slowest of all memoizers tested.
 
 `nano-memoize` is always faster than `moize`.
 
-`nano-memoize` and `fast-memoize` are comparable and within each others margin of error for multiple-argument functions.
+`nano-memoize` and `micro-memoize` are comparable and within each others margin of error for multiple-argument functions.
 
 We have found that benchmarks can vary dramartically from O/S to O/S or node version to node version. These tests were run on a Windows 10 64bit 2.4gx machine with 8GB RAM and Node v9.4.0. 
 
@@ -141,6 +141,8 @@ The shape of options is:
 ```
 
 # Release History (reverse chronological order)
+
+2018-02-01 v0.1.0  Documentation updates. 50 byte decrease.
 
 2018-01-27 v0.0.7b  BETA Documentation updates.
 

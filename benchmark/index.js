@@ -218,7 +218,7 @@ const runSingleParameterObjectSuite = () => {
   const mMoize = moize(fibonacci);
   const mMicroMemoize = microMemoize(fibonacci);
   const mIMemoized = iMemoized.memoize(fibonacci);
-  const mNano = nanomemoize(fibonacci);
+  const mNano = nanomemoize(fibonacci,{relaxed:true});
 
 
   return new Promise((resolve) => {
