@@ -9,7 +9,8 @@ The minified/gzipped size is 872 bytes for `nano-memoize` vs 959 bytes for `micr
 The speed tests are below.
 
 `fast-memoize` is only the fastest in one case, single argument functions taking an object. However, in the case of a single primitve argument `nano-memoize` is 240% faster.
-In all other cases, `fast-memoize` is the slowest of all memoizers tested.
+In all other cases, `fast-memoize` is the slowest of all memoizers tested. We have submitted a [pull request](https://github.com/caiogondim/fast-memoize.js/pull/65) that doubles the speed of 
+fast-memoize for single primitive argument functions, but nano-memoize is still faster. When fast-memoize is updated, these benchmarks will also get updated.
 
 `micro-memoize` is faster than `fast-memoize` except for single argument functions.
 
@@ -104,7 +105,7 @@ We were puzzled about the multiple argument performance on `fast-memoize` given 
 
 2) Because a single key is generated for all arguments when perhaps only the first argument differs in a call, a lot of extra work is done. The `moize` and `micro-memoize` approach adopted by `nano-memoize` is far faster for multiple arguments.
 
-Along the way we also discovered that fast-memoize is subject to a key generation risk on edge case functions and fixed the flaw. The fork is [here](https://github.com/anywhichway/fastmemoize.js). We have submitted a pull request. See this [Medium article](https://codeburst.io/akeytokeyswhenjavascriptkeysdontmatchab44c81adc87) for details. 
+Along the way we also discovered that fast-memoize is subject to a key generation risk on edge case functions and fixed the flaw. The fork is [here](https://github.com/anywhichway/fastmemoize.js). We have submitted a [pull request](https://github.com/caiogondim/fast-memoize.js/pull/65). See this [Medium article](https://codeburst.io/akeytokeyswhenjavascriptkeysdontmatchab44c81adc87) for details. 
 
 
 # Usage
