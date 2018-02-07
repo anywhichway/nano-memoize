@@ -6,7 +6,7 @@ The devs [caiogondim](https://github.com/caiogondim) and [planttheidea](https://
 
 The minified/gzipped size is 872 bytes for `nano-memoize` vs 959 bytes for `micro-memoize`. And, `nano-memoize` has slightly more functionality.
 
-The speed tests are below. `nano-memoize` is the fastest in all cases. For single argument functions is it comparable to, but slightly faster than, `fast-memoize`. For multiple argument functions it is comparable to, but slightly faster than, `micro-memoize`.
+The speed tests are below. `nano-memoize` is the fastest in all cases. For single argument functions is it comparable to, but slightly and probably un-importantly faster than, `fast-memoize`. For multiple argument functions it is comparable to, but slightly and probably un-importantly faster than, `micro-memoize`.
 
 We have found that benchmarks can vary dramatically from O/S to O/S or Node version to Node version. These tests were run on a Windows 10 64bit 2.4ghz machine with 8GB RAM and Node v9.4.0. 
 
@@ -15,7 +15,7 @@ Functions with a single primitive parameter...
 
 | Name          | Ops / sec   | Relative margin of error | Sample size |
 |---------------|-------------|--------------------------|-------------|
-| namo-memoize  | 152,526,010 | ± 2.58%                  | 80          |
+| nano-memoize  | 152,526,010 | ± 2.58%                  | 80          |
 | fast-memoize  | 147,683,192 | ± 2.90%                  | 85          |
 | micro-memoize | 22,682,348  | ± 3.69%                  | 75          |
 | iMemoized     | 22,292,411  | ± 4.47%                  | 72          |
@@ -33,7 +33,7 @@ Functions with a single object parameter...
 
 | Name          | Ops / sec  | Relative margin of error | Sample size |
 |---------------|------------|--------------------------|-------------|
-| namo-memoize  | 53,741,011 | ± 2.06%                  | 85          |
+| nano-memoize  | 53,741,011 | ± 2.06%                  | 85          |
 | fast-memoize  | 51,041,370 | ± 2.40%                  | 82          |
 | micro-memoize | 22,638,078 | ± 3.96%                  | 77          |
 | lodash        | 22,187,376 | ± 1.72%                  | 83          |
@@ -124,4 +124,27 @@ The shape of options is:
   maxAge: number, // number of milliseconds to cache a result
   serializer: function, // the serializer/key generator to use for single argument functions (multi-argument functions do not use a serializer)
   equals: function, // the equals function to use for multi-argument functions, e.g. deepEquals for objects (single-argument functions use serializer not equals)
-  vargs: boolean // forces the use of multi-argument paradigm, auto set if function has a spread a
+  vargs: boolean // forces the use of multi-argument paradigm, auto set if function has a spread argument or uses `arguments` in its body.
+}
+
+# Release History (reverse chronological order)
+
+2018-02-07 v0.0.2 Documentation updates
+
+2018-02-07 v0.1.1 Documentationand benchmark updates
+
+2018-02-01 v0.1.0 Documentation updates. 50 byte decrease.
+
+2018-01-27 v0.0.7b BETA Documentation updates.
+
+2018-01-27 v0.0.6b BETA Minor size and speed improvements.
+
+2018-01-27 v0.0.5b BETA Fixed edge case where multi-arg key may be shorter than current args.
+
+2018-01-27 v0.0.4b BETA Fixed benchmarks. Removed maxSize. More unit tests. Fixed maxAge.
+
+2018-01-27 v0.0.3b BETA More unit tests. Documentation. Benchmark code in repository not yet running.
+
+2018-01-24 v0.0.2a ALPHA Minor speed enhancements. Benchmark code in repository not yet running.
+
+2018=01-24 v0.0.1a ALPHA First public release. Benchmark code in repository not yet running.
