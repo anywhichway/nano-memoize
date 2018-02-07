@@ -9,7 +9,7 @@ The minified/gzipped size is 872 bytes for `nano-memoize` vs 959 bytes for `micr
 The speed tests are below.
 
 `fast-memoize` is only the fastest in one case, single argument functions taking an object. However, in the case of a single primitve argument `nano-memoize` is 240% faster.
-In all other cases, `fast-memoize` is the slowest of all memoizers tested. We have submitted a [pull request](https://github.com/caiogondim/fast-memoize.js/pull/65) that doubles the speed of 
+In all other cases, `fast-memoize` is the slowest of all memoizers tested. We have submitted a [pull request](https://github.com/caiogondim/fast-memoize.js/pull/65) that doubles the speed of
 fast-memoize for single primitive argument functions, but nano-memoize is still faster. When fast-memoize is updated, these benchmarks will also get updated.
 
 `micro-memoize` is faster than `fast-memoize` except for single argument functions.
@@ -18,7 +18,7 @@ fast-memoize for single primitive argument functions, but nano-memoize is still 
 
 `nano-memoize` and `micro-memoize` are comparable and within each others margin of error for multiple-argument functions.
 
-We have found that benchmarks can vary dramartically from O/S to O/S or node version to node version. These tests were run on a Windows 10 64bit 2.4gx machine with 8GB RAM and Node v9.4.0. 
+We have found that benchmarks can vary dramartically from O/S to O/S or node version to node version. These tests were run on a Windows 10 64bit 2.4gx machine with 8GB RAM and Node v9.4.0.
 
 Functions with a single primitive parameter...
 
@@ -97,7 +97,7 @@ Deep equals ...
 | nano-memoize deep equals (fast-equals deepEqual)  | 14,732,731 | ± 3.10%                  | 85          |
 | micro-memoize deep equals (fast-equals deepEqual) | 8,785,408  | ± 11.28%                 | 51          |
 | micro-memoize deep equals (hash-it isEqual)       | 5,744,080  | ± 10.69%                 | 48          |
-                 
+
 
 We were puzzled about the multiple argument performance on `fast-memoize` given its stated goal of being the "fastest possible". We discovered that the default caching and serialization approach used by fast-memoize only performs well for single argument functions for two reasons:
 
@@ -105,12 +105,12 @@ We were puzzled about the multiple argument performance on `fast-memoize` given 
 
 2) Because a single key is generated for all arguments when perhaps only the first argument differs in a call, a lot of extra work is done. The `moize` and `micro-memoize` approach adopted by `nano-memoize` is far faster for multiple arguments.
 
-Along the way we also discovered that fast-memoize is subject to a key generation risk on edge case functions and fixed the flaw. The fork is [here](https://github.com/anywhichway/fastmemoize.js). We have submitted a [pull request](https://github.com/caiogondim/fast-memoize.js/pull/65). See this [Medium article](https://codeburst.io/akeytokeyswhenjavascriptkeysdontmatchab44c81adc87) for details. 
+Along the way we also discovered that fast-memoize is subject to a key generation risk on edge case functions and fixed the flaw. The fork is [here](https://github.com/anywhichway/fastmemoize.js). We have submitted a [pull request](https://github.com/caiogondim/fast-memoize.js/pull/65). See this [Medium article](https://codeburst.io/akeytokeyswhenjavascriptkeysdontmatchab44c81adc87) for details.
 
 
 # Usage
 
-nmp install nano-memoize
+npm install nano-memoize
 
 use the code in the `browser` directory for the browser
 
