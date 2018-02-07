@@ -14,7 +14,7 @@ Functions with a single primitive parameter...
 
 
 | Name          | Ops / sec   | Relative margin of error | Sample size |
-|---------------|------------|--------------------------|-------------|
+|---------------|-------------|--------------------------|-------------|
 | namo-memoize  | 152,526,010 | ± 2.58%                  | 80          |
 | fast-memoize  | 147,683,192 | ± 2.90%                  | 85          |
 | micro-memoize | 22,682,348  | ± 3.69%                  | 75          |
