@@ -6,7 +6,7 @@ The devs [caiogondim](https://github.com/caiogondim) and [planttheidea](https://
 
 The minified/gzipped size is 872 bytes for `nano-memoize` vs 959 bytes for `micro-memoize`. And, `nano-memoize` has slightly more functionality.
 
-The speed tests are below. `nano-memoize` is the fastest in all cases. For single argument functions is it comparable to but slightly faster than `fast-memoize`. For multiple argument functions it is comparable to, but slightly faster than `micro-memoize`.
+The speed tests are below. `nano-memoize` is the fastest in all cases. For single argument functions is it comparable to, but slightly faster than, `fast-memoize`. For multiple argument functions it is comparable to, but slightly faster than, `micro-memoize`.
 
 We have found that benchmarks can vary dramatically from O/S to O/S or Node version to Node version. These tests were run on a Windows 10 64bit 2.4ghz machine with 8GB RAM and Node v9.4.0. 
 
