@@ -6,15 +6,9 @@ The devs [caiogondim](https://github.com/caiogondim) and [planttheidea](https://
 
 The minified/gzipped size is 872 bytes for `nano-memoize` vs 959 bytes for `micro-memoize`. And, `nano-memoize` has slightly more functionality.
 
-The speed tests are below.
-
-`fast-memoize` is only the fastest in one case, single argument functions taking an object. However, in the case of a single primitve argument `nano-memoize` is 240% faster.
-In all other cases, `fast-memoize` is the slowest of all memoizers tested. We have submitted a [pull request](https://github.com/caiogondim/fast-memoize.js/pull/65) that doubles the speed of
-fast-memoize for single primitive argument functions, but nano-memoize is still faster. When fast-memoize is updated, these benchmarks will also get updated.
+The speed tests are below. `nano-memoize` is the fastest in all cases. For single argument functions is it comparable to but slightly faster than `fast-memoize`. For multiple argument functions it is comparable to, but slightly faster than `micro-memoize`.
 
 We have found that benchmarks can vary dramatically from O/S to O/S or Node version to Node version. These tests were run on a Windows 10 64bit 2.4ghz machine with 8GB RAM and Node v9.4.0. 
-
-We have found that benchmarks can vary dramartically from O/S to O/S or node version to node version. These tests were run on a Windows 10 64bit 2.4gx machine with 8GB RAM and Node v9.4.0.
 
 Functions with a single primitive parameter...
 
@@ -98,8 +92,6 @@ We were puzzled about the multiple argument performance on `fast-memoize` given 
 
 2) Because a single key is generated for all arguments when perhaps only the first argument differs in a call, a lot of extra work is done. The `moize` and `micro-memoize` approach adopted by `nano-memoize` is far faster for multiple arguments.
 
-Along the way we also discovered that fast-memoize is subject to a key generation risk on edge case functions and fixed the flaw. The fork is [here](https://github.com/anywhichway/fastmemoize.js). We have submitted a [pull request](https://github.com/caiogondim/fast-memoize.js/pull/65). See this [Medium article](https://codeburst.io/akeytokeyswhenjavascriptkeysdontmatchab44c81adc87) for details.
-
 
 # Usage
 
@@ -130,26 +122,4 @@ The shape of options is:
   maxAge: number, // number of milliseconds to cache a result
   serializer: function, // the serializer/key generator to use for single argument functions (multi-argument functions do not use a serializer)
   equals: function, // the equals function to use for multi-argument functions, e.g. deepEquals for objects (single-argument functions use serializer not equals)
-  vargs: boolean // forces the use of multi-argument paradigm, auto set if function has a spread argument or uses `arguments` in its body.
-}
-```
-
-# Release History (reverse chronological order)
-
-2018-02-07 v0.1.1  Documentation and benchmark test updates for new version of fast-memoize.
-
-2018-02-01 v0.1.0  Documentation updates. 50 byte decrease.
-
-2018-01-27 v0.0.7b  BETA Documentation updates.
-
-2018-01-27 v0.0.6b  BETA Minor size and speed improvements.
-
-2018-01-27 v0.0.5b  BETA Fixed edge case where multi-arg key may be shorter than current args.
-
-2018-01-27 v0.0.4b  BETA Fixed benchmarks. Removed maxSize. More unit tests. Fixed maxAge.
-
-2018-01-27 v0.0.3b  BETA More unit tests. Documentation. Benchmark code in repository not yet running.
-
-2018-01-24 v0.0.2a  ALPHA Minor speed enhancements. Benchmark code in repository not yet running.
-
-2018=01-24 v0.0.1a  ALPHA First public release. Benchmark code in repository not yet running.
+  vargs: boolean // forces the use of multi-argument paradigm, auto set if function has a spread a
