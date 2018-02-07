@@ -4,7 +4,7 @@ var chai,
 if(typeof(window)==="undefined") {
 	chai = require("chai");
 	expect = chai.expect;
-	tlx = require("../src/nano-memoize.js");
+	nanomemoize = require("../src/nano-memoize.js");
 }
 
 function singleArg(arg) {

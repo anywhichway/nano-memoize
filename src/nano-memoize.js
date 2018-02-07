@@ -4,7 +4,7 @@
 		const s = f+"",
 			i = s.indexOf("...");
 		return i>=0 && i<s.indexOf(")" || s.indexOf("arguments")>=0);
-	}
+		};
 	function nanomemoize (fn, options={}) {
 		const {
 			serializer = (value) => JSON.stringify(value),
@@ -36,7 +36,7 @@
 		},1);
 		let f,
 			unary = fn.length===1 && !equals && !vargs;
-	  // pre-bind core arguments, faster than using a closure or passing on stack
+	  // pre-bind core arguments, faster than using a closure or passing on stack or in this case using a partial
 		if(unary) {
 			f = single.bind(
 				 this,
@@ -56,11 +56,11 @@
 					 maxArgs
 					 );
 		}
-		// reset all the caches, must splice arrays or delete keys on objects to retain bind integrity
+		// reset all the caches, must change array length or delete keys on objects to retain bind integrity
 		f.clear = () => {
 			Object.keys(s).forEach(k => delete s[k]);
-			k.splice(0,k.length);
-			v.splice(0,v.length);
+			k.length = 0; //k.splice(0,k.length);
+			v.length = 0; //v.splice(0,v.length);
 			Object.keys(c).forEach(k => delete c[k]);
 			Object.keys(t).forEach(k => { clearTimeout(t[k]); delete t[k]; });
 		}
