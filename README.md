@@ -1,10 +1,11 @@
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/30ce201484754fa5b0a6c6046abb842d)](https://www.codacy.com/app/syblackwell/nano-memoize?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=anywhichway/nano-memoize&amp;utm_campaign=Badge_Grade)
 # Faster than fast, smaller than micro ... nano-memoizer.
 
 # Introduction
 
 The devs [caiogondim](https://github.com/caiogondim) and [planttheidea](https://github.com/planttheidea) have produced great memoizers. We analyzed their code to see if we could build something faster than [fast-memoize](https://github.com/caiogondim/fastmemoize.js) and smaller than [micro-memoize](https://github.com/planttheidea/micromemoize) while adding back some of the functionality of [moize](https://github.com/planttheidea/moize) removed in micro-memoize. We think we have done it ... but credit to them ... we just merged the best ideas in both and eliminated excess code.
 
-The minified/gzipped size is 872 bytes for `nano-memoize` vs 959 bytes for `micro-memoize`. And, `nano-memoize` has slightly more functionality.
+The minified/gzipped size is 887 bytes for `nano-memoize` vs 959 bytes for `micro-memoize`. And, `nano-memoize` has slightly more functionality.
 
 The speed tests are below. `nano-memoize` is the fastest in all cases. For single argument functions is it comparable to, but slightly and probably un-importantly faster than, `fast-memoize`. For multiple argument functions it is comparable to, but slightly and probably un-importantly faster than, `micro-memoize`.
 
@@ -129,7 +130,9 @@ The shape of options is:
 
 # Release History (reverse chronological order)
 
-2018-02-07 v0.0.2 Documentation updates
+2018-04-13 v1.0.0 Code style improvements.
+
+2018-02-07 v0.1.2 Documentation updates
 
 2018-02-07 v0.1.1 Documentationand benchmark updates
 
