@@ -181,7 +181,7 @@ const runSingleParameterSuite = () => {
       .add('fast-memoize', () => {
         mFastMemoize(fibonacciNumber);
       })
-      .add('namo-memoize', () => {
+      .add('nano-memoize', () => {
       	mNano(fibonacciNumber);
       })
       .on('start', () => {
@@ -255,7 +255,7 @@ const runSingleParameterObjectSuite = () => {
       .add('fast-memoize', () => {
         mFastMemoize(fibonacciNumber);
       })
-      .add('namo-memoize', () => {
+      .add('nano-memoize', () => {
       	mNano(fibonacciNumber);
       })
       .on('start', () => {
