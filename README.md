@@ -5,7 +5,7 @@
 
 The devs [caiogondim](https://github.com/caiogondim) and [planttheidea](https://github.com/planttheidea) have produced great memoizers. We analyzed their code to see if we could build something faster than [fast-memoize](https://github.com/caiogondim/fastmemoize.js) and smaller than [micro-memoize](https://github.com/planttheidea/micromemoize) while adding back some of the functionality of [moize](https://github.com/planttheidea/moize) removed in micro-memoize. We think we have done it ... but credit to them ... we just merged the best ideas in both and eliminated excess code.
 
-The minified/gzipped size is 887 bytes for `nano-memoize` vs 959 bytes for `micro-memoize`. And, `nano-memoize` has slightly more functionality.
+The minified/gzipped size is 589 bytes for `nano-memoize` vs 959 bytes for `micro-memoize`. And, `nano-memoize` has slightly more functionality.
 
 The speed tests are below. In most cases `nano-memoize` is the fastest.
  
@@ -25,7 +25,7 @@ Functions with a single primitive parameter...
 +----------------------------------------------------------------------+
 ¦ Name          ¦ Ops / sec   ¦ Relative margin of error ¦ Sample size ¦
 +---------------+-------------+--------------------------+-------------¦
-¦ namo-memoize  ¦ 277,174,954 ¦ ± 0.39%                  ¦ 94          ¦
+¦ nano-memoize  ¦ 277,174,954 ¦ ± 0.39%                  ¦ 94          ¦
 +---------------+-------------+--------------------------+-------------¦
 ¦ fast-memoize  ¦ 243,829,313 ¦ ± 4.97%                  ¦ 81          ¦
 +---------------+-------------+--------------------------+-------------¦
@@ -56,7 +56,7 @@ Functions with a single object parameter...
 +----------------------------------------------------------------------+
 ¦ Name          ¦ Ops / sec   ¦ Relative margin of error ¦ Sample size ¦
 +---------------+-------------+--------------------------+-------------¦
-¦ namo-memoize  ¦ 271,647,146 ¦   0.74%                  ¦ 90          ¦
+¦ nano-memoize  ¦ 271,647,146 ¦   0.74%                  ¦ 90          ¦
 +---------------+-------------+--------------------------+-------------¦
 ¦ micro-memoize ¦ 44,126,430  ¦   4.22%                  ¦ 81          ¦
 +---------------+-------------+--------------------------+-------------¦
@@ -182,12 +182,12 @@ The shape of options is:
   equals: function, 
   // forces the use of multi-argument paradigm, auto set if function has a spread argument or uses `arguments` in its body.
   vargs: boolean 
-  // number of milliseconds between checks to expire memos, defaults to 1, set to 0 if you want to disable
-  expireInterval: number, 
 }
 ```
 
 # Release History (reverse chronological order)
+
+2019-02-16 v1.0.2 Further optimizations to deal with Issue 4. `expireInterval` introduced in v1.0.1 removed since it is no longer needed. Also, 25% reduction in size. Code no longer thrashes when memoizing a large number of functions.
 
 2019-02-16 v1.0.1 Memo expiration optimization. Issue 4 addressed.
 

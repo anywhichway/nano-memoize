@@ -58,12 +58,24 @@ describe("Test",function() {
 		expect(Array.isArray(varArg.values())).to.equal(true);
 		expect(Array.isArray(varArg(arg1,arg2))).to.equal(true);
 	});
-	it("expires content",function(done) {
+	it("expires content single",function(done) {
 		const expiring = nanomemoize((a) => a,{maxAge:5});
 		expect(expiring(1)).to.equal(1);
 		expect(expiring.keyValues()[1]).to.equal(1);
 		setTimeout(() => {
 			expect(expiring.keyValues()[1]).to.equal(undefined);
+			done();
+		},20)
+	});
+	it("expires content multiple",function(done) {
+		const expiring = nanomemoize((a,b) => { return {a,b}; },{maxAge:5}),
+			result = expiring(1,2);
+		expect(result.a).to.equal(1);
+		expect(result.b).to.equal(2);
+		expect(expiring.values()[0].a).to.equal(1);
+		expect(expiring.values()[0].b).to.equal(2);
+		setTimeout(() => {
+			expect(expiring.values()[0]).to.equal(undefined);
 			done();
 		},20)
 	});
