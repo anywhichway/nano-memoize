@@ -190,6 +190,8 @@ The shape of options is:
 
 # Release History (reverse chronological order)
 
+2019-02-16 v1.0.3 Fixed README formatting
+
 2019-02-16 v1.0.2 Further optimizations to deal with Issue 4. `expireInterval` introduced in v1.0.1 removed since it is no longer needed. Also, 25% reduction in size. Code no longer thrashes when memoizing a large number of functions.
 
 2019-02-16 v1.0.1 Memo expiration optimization. Issue 4 addressed.
