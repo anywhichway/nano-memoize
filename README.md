@@ -21,7 +21,7 @@ We have found that benchmarks can vary dramatically from O/S to O/S or Node vers
 
 Functions with a single primitive parameter...
 
-
+```
 +----------------------------------------------------------------------+
 ¦ Name          ¦ Ops / sec   ¦ Relative margin of error ¦ Sample size ¦
 +---------------+-------------+--------------------------+-------------¦
@@ -49,10 +49,11 @@ Functions with a single primitive parameter...
 +---------------+-------------+--------------------------+-------------¦
 ¦ ramda         ¦ 1,095,063   ¦ ± 2.10%                  ¦ 86          ¦
 +----------------------------------------------------------------------+
-
+```
 
 Functions with a single object parameter...
 
+```
 +----------------------------------------------------------------------+
 ¦ Name          ¦ Ops / sec   ¦ Relative margin of error ¦ Sample size ¦
 +---------------+-------------+--------------------------+-------------¦
@@ -72,10 +73,11 @@ Functions with a single object parameter...
 +---------------+-------------+--------------------------+-------------¦
 ¦ memoizee      ¦ 11,533,134  ¦   1.35%                  ¦ 89          ¦
 +---------------+-------------+--------------------------+-------------¦
-
+```
 
 Functions with multiple parameters that contain only primitives...
 
+```
 +---------------------------------------------------------------------+
 ¦ Name          ¦ Ops / sec  ¦ Relative margin of error ¦ Sample size ¦
 +---------------+------------+--------------------------+-------------¦
@@ -97,10 +99,11 @@ Functions with multiple parameters that contain only primitives...
 +---------------+------------+--------------------------+-------------¦
 ¦ fast-memoize  ¦ 885,271    ¦   3.99%                  ¦ 82          ¦
 +---------------------------------------------------------------------+
-
+```
 
 Functions with multiple parameters that contain objects...
 
+```
 +---------------------------------------------------------------------+
 ¦ Name          ¦ Ops / sec  ¦ Relative margin of error ¦ Sample size ¦
 +---------------+------------+--------------------------+-------------¦
@@ -120,11 +123,11 @@ Functions with multiple parameters that contain objects...
 +---------------+------------+--------------------------+-------------¦
 ¦ fast-memoize  ¦ 715,841    ¦   1.05%                  ¦ 86          ¦
 +---------------------------------------------------------------------+
-
+```
 
 Deep equals ...
 
-
+```
 +---------------------------------------------------------------------------------------------------------+
 ¦ Name                                              ¦ Ops / sec  ¦ Relative margin of error ¦ Sample size ¦
 +---------------------------------------------------+------------+--------------------------+-------------¦
@@ -138,7 +141,7 @@ Deep equals ...
 +---------------------------------------------------+------------+--------------------------+-------------¦
 ¦ micro-memoize deep equals (hash-it isEqual)       ¦ 14,376,860 ¦   3.27%                  ¦ 78          ¦
 +---------------------------------------------------------------------------------------------------------+
-
+```
 
 We were puzzled about the multiple argument performance on `fast-memoize` given its stated goal of being the "fastest possible". We discovered that the default caching and serialization approach used by fast-memoize only performs well for single argument functions for two reasons:
 
