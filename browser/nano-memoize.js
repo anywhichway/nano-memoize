@@ -21,8 +21,8 @@
 		function sngl (f,s,chng,serializer,arg) {
 		  // strings must be stringified because cache[1] should not equal or overwrite cache["1"] for value = 1 and value = "1"
 			const key = (!arg || typeof arg === "number" || typeof arg ==="boolean" ? arg : serializer(arg));
-			if(chng) chng(key);
-			return s[key] || (s[key] = f.call(this, arg));
+			// set chng timeout only when new value computed, hits will not push out the tte, but it is arguable they should not
+			return s[key] || (chng(key),s[key] = f.call(this, arg));
 		}
 		// for multiple arg functions, loop through a cache of all the args
 		// looking at each arg separately so a test can abort as soon as possible
@@ -43,8 +43,8 @@
 				}
 			}
 			const i = rslt.i>=0 ? rslt.i : v.length;
-			if(chng) chng(i);
-			return typeof rslt.v === "undefined" ? v[i] = f.call(this,...(k[i] = args)) : rslt.v;
+			// set chng timeout only when new value computed, hits will not push out the tte, but it is arguable they should not
+			return typeof rslt.v === "undefined" ||  rslt.v === undefined ? (chng(i),v[i] = f.call(this,...(k[i] = args))) : rslt.v;
 		}
 		let m,
 			unry = fn.length===1 && !equals && !vargs;
@@ -54,7 +54,7 @@
 				 this,
 				 fn,
 				 s,
-				 maxAge ? (key) => setTimeout(() => { delete s[key];	},maxAge) : null,
+				 maxAge ? (key) => setTimeout(() => { delete s[key];	},maxAge) : ()=>{},
 				 serializer
 				 );
 		} else {
@@ -64,7 +64,7 @@
 					 k,
 					 v,
 					 equals || ((a,b) => a===b), // default to just a regular strict comparison
-					 maxAge ? (key) => setTimeout(() => { delete v[key];	},maxAge) : null,
+					 maxAge ? (key) => setTimeout(() => { delete v[key];	},maxAge) : ()=>{},
 					 maxArgs
 					 );
 		}
