@@ -13,7 +13,7 @@ The speed tests are below. In most cases `nano-memoize` is the fastest.
  
  * For single object argument functions it is typically 2x faster than anything else.
  
- * For multiple primitive argument functions functions`nano-memoize` slightly and probably un-importantly faster than `fast-memoize`. 
+ * For multiple primitive argument functions`nano-memoize` is slightly and probably un-importantly faster than `fast-memoize`. 
 
  * For multiple object argument functions `micro-memoize` is slightly and probably un-importantly faster. 
 
