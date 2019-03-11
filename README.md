@@ -177,7 +177,7 @@ The shape of options is:
 {
   // only use the provided maxArgs for cache look-up, useful for ignoring final callback arguments
   maxArgs: number, 
-  // number of milliseconds to cache a result
+  // number of milliseconds to cache a result, set to `Infinity` to never create timers or expire
   maxAge: number, 
   // the serializer/key generator to use for single argument functions (multi-argument functionsuse equals)
   serializer: function,
@@ -189,6 +189,8 @@ The shape of options is:
 ```
 
 # Release History (reverse chronological order)
+
+2019-03-11 v1.0.5 Now supports setting `maxAge` to Infinity and no timers will be created to expire caches.
 
 2019-02-26 v1.0.4 Further optimized cache expiration. See [Issue 4](https://github.com/anywhichway/nano-memoize/issues/4)
 

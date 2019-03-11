@@ -53,7 +53,7 @@
 				 this,
 				 fn,
 				 s,
-				 maxAge ? (key) => setTimeout(() => { delete s[key];	},maxAge) : ()=>{},
+				 maxAge && maxAge<Infinity ? (key) => setTimeout(() => { delete s[key];	},maxAge) : ()=>{},
 				 serializer
 				 );
 		} else {
@@ -63,7 +63,7 @@
 					 k,
 					 v,
 					 equals || ((a,b) => a===b), // default to just a regular strict comparison
-					 maxAge ? (key) => setTimeout(() => { delete v[key];	},maxAge) : ()=>{},
+					 maxAge && maxAge<Infinity ? (key) => setTimeout(() => { delete v[key];	},maxAge) : ()=>{},
 					 maxArgs
 					 );
 		}
