@@ -164,12 +164,12 @@ Since most devs are running a build pipeline, the code is not transpiled, althou
 The API is a subset of the `moize` API.
 
 ```javascript
-const memoized = micromemoize(sum(a,b) => a + b);
+const memoized = nanonmemoize(sum(a,b) => a + b);
 memoized(1,2); // 3
 memoized(1,2); // pulled from cache
 ```
 
-`memoized(function,options) returns function`
+`nanonmemoize(function,options) returns function`
 
 The shape of options is:
 
@@ -188,7 +188,11 @@ The shape of options is:
 }
 ```
 
+To clear the cache you can call `.clear()` on the function returned my `nanomemoize`.
+
 # Release History (reverse chronological order)
+
+2019-03-20 v1.0.6 Updated documentation.
 
 2019-03-11 v1.0.5 Now supports setting `maxAge` to Infinity and no timers will be created to expire caches.
 
