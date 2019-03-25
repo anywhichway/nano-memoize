@@ -26,7 +26,7 @@ describe("Test",function() {
 	it("single primitive arg cached",function() {
 		const value = 1,
 			result = singleArg(value),
-			keyvalues = singleArg.keyValues();
+			keyvalues = singleArg.keyValues().primitives;
 		expect(result).to.equal(value);
 		expect(keyvalues[value]).to.equal(value);
 	});
@@ -58,12 +58,22 @@ describe("Test",function() {
 		expect(Array.isArray(varArg.values())).to.equal(true);
 		expect(Array.isArray(varArg(arg1,arg2))).to.equal(true);
 	});
-	it("expires content single",function(done) {
+	it("expires content single primitive",function(done) {
 		const expiring = nanomemoize((a) => a,{maxAge:5});
 		expect(expiring(1)).to.equal(1);
-		expect(expiring.keyValues()[1]).to.equal(1);
+		expect(expiring.keyValues().primitives[1]).to.equal(1);
 		setTimeout(() => {
-			expect(expiring.keyValues()[1]).to.equal(undefined);
+			expect(expiring.keyValues().primitives[1]).to.equal(undefined);
+			done();
+		},20)
+	});
+	it("expires content single object",function(done) {
+		const expiring = nanomemoize((a) => a,{maxAge:5}),
+			o = {}
+		expect(expiring(o)).to.equal(o);
+		expect(expiring.keyValues().objects.get(o)).to.equal(o);
+		setTimeout(() => {
+			expect(expiring.keyValues().objects.get(o)).to.equal(undefined);
 			done();
 		},20)
 	});
@@ -82,10 +92,9 @@ describe("Test",function() {
 	it("clear cache",function() {
 		const value = 1;
 		expect(singleArg(value)).to.equal(value);
-		expect(singleArg.keyValues()[value]).to.equal(value);
+		expect(singleArg.keyValues().primitives[value]).to.equal(value);
 		singleArg.clear();
-		expect(singleArg.keyValues()[value]).to.equal(undefined);
+		expect(singleArg.keyValues().primitives[value]).to.equal(undefined);
 		expect(singleArg(value)).to.equal(value);
-		expect(singleArg.keyValues()[value]).to.equal(value);
 	});
 });

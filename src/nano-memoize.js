@@ -6,7 +6,7 @@
 			return i>=0 && i<s.indexOf(")" || s.indexOf("arguments")>=0);
 		},
 		nanomemoize = (fn, {
-			serializer = value => JSON.stringify(value), // used to serialize arguments of single argument functions, multis are not serialized
+			serializer, // used to serialize arguments of single argument functions, multis are not serialized
 			equals, // equality tester, will force use of slower multiarg approach even for single arg functions
 			maxAge, // max cache age is ms, set higher than 0 if you want automatic clearing
 			maxArgs, // max args to use for signature
@@ -15,7 +15,10 @@
 			const s = Object.create(null), // single arg function key/value cache
 				k = [], // multiple arg function arg key cache
 				v = [], // multiple arg function result cache
-				d = (key,m) => setTimeout(() => m ? delete v[key] : delete s[key],maxAge),
+				wm = {m:new WeakMap()},
+				d = (key,c) => setTimeout(() => { 
+						c instanceof WeakMap  ? c.delete(key) : delete c[key] 
+					},maxAge),
 				I = Infinity;
 			let f, // memoized function to return
 				u; // flag indicating a unary arg function is in use
@@ -23,20 +26,26 @@
 				// for single argument functions, just use a JS object key look-up
 				// f = original function
 				// s = result cache
+				// wm = weakmap
 				// c = cache change timeout
 				// p = arg serializer
 				// a = the arguments
-				f =  (function(f,s,c,p,a) { // pre-bind core arguments, faster than using a closure or passing on stack
+				f =  (function(f,s,wm,c,p,a) { // pre-bind core arguments, faster than using a closure or passing on stack
 						  // strings must be serialized because cache[1] should not equal or overwrite cache["1"] for value = 1 and value = "1"
 							const t = typeof a,
-								key = !a || t === "number" || t === "boolean" ? a : p(a);
+								key = t === "number" || t === "boolean" || (!p && t === "object") ? a : t === "string" ? JSON.stringify(t) : p(a);
 							// set chng timeout only when new value computed, hits will not push out the tte, but it is arguable they should not
-							return s[key] || ((!c||c(key)),s[key] = fn.call(this, a));
+							if(!p && t==="object") {
+								let r;
+								return wm.m.get(key) || ((!c||c(key,wm.m)),wm.m.set(key,r = fn.call(this, a)),r);
+							}	
+							return s[key] || ((!c||c(key,s)),s[key] = fn.call(this, a));
 						}).bind(
 							 this,
 							 fn,
 							 s,
-							 maxAge && maxAge<I ? p => d(p) : 0,
+							 wm,
+							 maxAge && maxAge<I ? d : 0,
 							 serializer
 							 );
 						u = 1;
@@ -65,7 +74,7 @@
 								}
 							}
 							// set chng timeout only when new value computed, hits will not push out the tte, but it is arguable they should not
-							if(c) c(i);
+							if(c) c(i,v);
 							return v[i] = fn.apply(this,k[i] = a);
 						}).bind(
 								 this,
@@ -73,19 +82,20 @@
 								 k,
 								 v,
 								 equals,
-								 maxAge && maxAge<I ? p => d(p,1) : 0, 
+								 maxAge && maxAge<I ? d : 0, 
 								 maxArgs
 								 );
 			}
 			// reset all the caches, must change array length or delete keys on objects to retain bind integrity
 			f.clear = _ => {
 				Object.keys(s).forEach(k => delete s[k]);
+				wm.m = new WeakMap();
 				k.length = 0;
 				v.length = 0; 
 			};
 			f.keys = _ => u ? null : k.slice();
 			f.values = _ => u ? null : v.slice();
-			f.keyValues = _ => u ? Object.assign({},s) : null;
+			f.keyValues = _ => u ? {primitives:Object.assign({},s),objects:wm.m} : null;
 			return f;
 		}
 	if(typeof(module)!=="undefined") module.exports = nanomemoize;

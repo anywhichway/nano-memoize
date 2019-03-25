@@ -5,15 +5,17 @@
 
 The devs [caiogondim](https://github.com/caiogondim) and [planttheidea](https://github.com/planttheidea) have produced great memoizers. We analyzed their code to see if we could build something faster than [fast-memoize](https://github.com/caiogondim/fastmemoize.js) and smaller than [micro-memoize](https://github.com/planttheidea/micromemoize) while adding back some of the functionality of [moize](https://github.com/planttheidea/moize) removed in micro-memoize. We think we have done it ... but credit to them ... we just merged the best ideas in both and eliminated excess code.
 
+During development we also discovered that despite its popularity and goal to be the fastest possible memoizer, `fast-memoize` is actually one of the slowest out-of-the-box when it comes to multiple argument functions. It uses `JSON.stringify` as key generator. It also only memoizes out to 3 arguments. This is not to say it should not be used, it also seems to have the cleanest software architecture and it may be theoretically possible to write a high-speed multi-argument plugin. And, MANY people are very happy with it.
+
 Special appreciation to @titoBouzout and @popbee who spent a good bit of time reviewing code for optimization and making recommendations. See [Issue 4](https://github.com/anywhichway/nano-memoize/issues/4) for the conversation.
 
-The minified/brotli size is 550 bytes for `nano-memoize` v1.0.7 vs 2020 bytes for `micro-memoize` v3.0.1. And, `nano-memoize` has slightly more functionality.
+The minified/brotli size is 640 Brotli bytes for `nano-memoize` v1.1.0 vs 2020 bytes for `micro-memoize` v3.0.1. And, `nano-memoize` has slightly more functionality.
 
 The speed tests are below. In most cases `nano-memoize` is the fastest.
  
  * For single primitive argument functions it is comparable to, but slightly and probably un-importantly faster that `fast-memoize`.
  
- * For single object argument  functions`nano-memoize` is slightly and probably un-importantly faster than `fast-memoize`.
+ * For single primitive argument functions it is comparable to, but slightly and probably un-importantly faster that `fast-memoize`.
  
  * For multiple primitive argument functions`nano-memoize` is slightly and probably un-importantly faster than `micro-memoize`. 
 
@@ -57,31 +59,31 @@ Functions with a single primitive parameter...
 Functions with a single object parameter...
 
 ```
-+---------------------------------------------------------------------+
++--------------------------------------------------------------------+
 ¦ Name          ¦ Ops / sec  ¦ Relative margin of error ¦ Sample size ¦
-+---------------------------------------------------------------------+
-¦ nano-memoize  ¦ 17,322,129 ¦ ± 2.63%                  ¦ 65          ¦
-+---------------------------------------------------------------------+
-¦ fast-memoize  ¦ 15,229,978 ¦ ± 5.71%                  ¦ 67          ¦
-+---------------------------------------------------------------------+
-¦ micro-memoize ¦ 13,803,855 ¦ ± 5.97%                  ¦ 64          ¦
-+---------------------------------------------------------------------+
-¦ moize         ¦ 9,616,353  ¦ ± 8.22%                  ¦ 50          ¦
-+---------------------------------------------------------------------+
-¦ iMemoized     ¦ 8,458,379  ¦ ± 4.05%                  ¦ 72          ¦
-+---------------------------------------------------------------------+
-¦ underscore    ¦ 6,287,533  ¦ ± 10.82%                 ¦ 30          ¦
-+---------------------------------------------------------------------+
-¦ lodash        ¦ 5,003,740  ¦ ± 6.47%                  ¦ 57          ¦
-+---------------------------------------------------------------------+
-¦ memoizee      ¦ 4,682,177  ¦ ± 6.57%                  ¦ 62          ¦
-+---------------------------------------------------------------------+
-¦ lru-memoize   ¦ 3,774,578  ¦ ± 5.97%                  ¦ 63          ¦
-+---------------------------------------------------------------------+
-¦ memoizerific  ¦ 1,942,314  ¦ ± 7.10%                  ¦ 64          ¦
-+---------------------------------------------------------------------+
-¦ addy-osmani   ¦ 766,138    ¦ ± 8.26%                  ¦ 56          ¦
-+---------------------------------------------------------------------+
++--------------------------------------------------------------------+
+¦ nano-memoize  ¦ 20,377,511 ¦ ± 2.18%                  ¦ 71          ¦
++--------------------------------------------------------------------+
+¦ fast-memoize  ¦ 15,132,122 ¦ ± 6.55%                  ¦ 60          ¦
++--------------------------------------------------------------------+
+¦ micro-memoize ¦ 15,128,905 ¦ ± 4.30%                  ¦ 62          ¦
++--------------------------------------------------------------------+
+¦ moize         ¦ 11,712,302 ¦ ± 4.93%                  ¦ 61          ¦
++--------------------------------------------------------------------+
+¦ iMemoized     ¦ 10,145,254 ¦ ± 3.17%                  ¦ 62          ¦
++--------------------------------------------------------------------+
+¦ lodash        ¦ 7,161,180  ¦ ± 3.72%                  ¦ 59          ¦
++--------------------------------------------------------------------+
+¦ underscore    ¦ 5,789,882  ¦ ± 2.62%                  ¦ 70          ¦
++--------------------------------------------------------------------+
+¦ lru-memoize   ¦ 3,881,960  ¦ ± 4.34%                  ¦ 61          ¦
++--------------------------------------------------------------------+
+¦ memoizee      ¦ 2,566,037  ¦ ± 1.66%                  ¦ 67          ¦
++--------------------------------------------------------------------+
+¦ memoizerific  ¦ 1,111,770  ¦ ± 1.80%                  ¦ 78          ¦
++--------------------------------------------------------------------+
+¦ addy-osmani   ¦ 1,001,119  ¦ ± 4.98%                  ¦ 61          ¦
++--------------------------------------------------------------------+
 ```
 
 Functions with multiple parameters that contain only primitives...
@@ -200,6 +202,10 @@ The shape of options is:
 To clear the cache you can call `.clear()` on the function returned my `nanomemoize`.
 
 # Release History (reverse chronological order)
+
+2019-03-25 v1.1.1 Pushed incorrect version with v1.1.0. This corrects the version push.
+
+2019-03-25 v1.1.0 Added use of `WeakMap` for high-speed caching of single argument functions when passed objects. The `serializer` option no longer defaults to `(value) => JSON.stringify(value)` so if you want to treat objects that have the same string representation as the same, you will have to provide a `serializer`.
 
 2019-03-24 v1.0.8 Updated/corrected documentation.
 
