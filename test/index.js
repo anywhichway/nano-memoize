@@ -23,6 +23,14 @@ varArg = nanomemoize((...args) => args);
 
 
 describe("Test",function() {
+	it("memoize functions with function arg", function() {
+		const memoized = nanomemoize(fn => o => fn(o)),
+			myFunc = memoized(o => o),
+			result = myFunc(0);
+		expect(typeof(memoized)).equal("function");
+		expect(typeof(myFunc)).equal("function");
+		expect(result).equal(0);
+	});
 	it("single primitive arg cached",function() {
 		const value = 1,
 			result = singleArg(value),

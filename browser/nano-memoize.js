@@ -32,13 +32,13 @@
 				// a = the arguments
 				f =  (function(f,s,wm,c,p,a) { // pre-bind core arguments, faster than using a closure or passing on stack
 						  // strings must be serialized because cache[1] should not equal or overwrite cache["1"] for value = 1 and value = "1"
-							var t = typeof a,
-								key = t === "number" || t === "boolean" || (!p && t === "object") ? a : t === "string" ? JSON.stringify(t) : p(a);
+							var t = typeof a;
 							// set chng timeout only when new value computed, hits will not push out the tte, but it is arguable they should not
-							if(!p && t==="object") {
+							if(!p && (t==="object"  || t==="function")) {
 								var r;
-								return wm.m.get(key) || ((!c||c(key,wm.m)),wm.m.set(key,r = fn.call(this, a)),r);
-							}	
+								return wm.m.get(a) || ((!c||c(a,wm.m)),wm.m.set(a,r = fn.call(this, a)),r);
+							}
+							var key = t === "number" || t === "boolean" || t==="undefined" ? a : t === "string" ? JSON.stringify(t) : p(a);
 							return s[key] || ((!c||c(key,s)),s[key] = fn.call(this, a));
 						}).bind(
 							 this,

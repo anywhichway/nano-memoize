@@ -9,13 +9,13 @@ During development we also discovered that despite its popularity and goal to be
 
 Special appreciation to @titoBouzout and @popbee who spent a good bit of time reviewing code for optimization and making recommendations. See [Issue 4](https://github.com/anywhichway/nano-memoize/issues/4) for the conversation.
 
-The minified/brotli size is 665 bytes for `nano-memoize` v1.1.0 vs 1,356 bytes for `micro-memoize` v3.0.1. And, `nano-memoize` has slightly more functionality.
+The minified/brotli size is 654 bytes for `nano-memoize` v1.1.3 vs 1,356 bytes for `micro-memoize` v3.0.1. And, `nano-memoize` has slightly more functionality.
 
 The speed tests are below.
  
- * For single primitive argument functions `nano-memoize` and `fast-memoize` will trade-off first position across multiple test runs with `nano-memoize` winning slightly more frequently. They are 4x faster than `micro-memoize`.
+ * For single primitive argument functions it is typically 5-10% faster than `fast-memoize` and 3x faster than `micro-memoize`.
  
- * For single object argument functions it is, 10-15% faster than `fast-memoize` and 20-25% faster than `micro-memoize`.
+ * For single object argument functions it is typically 10-15% faster than `fast-memoize` and 15-20% faster than `micro-memoize`.
  
  * For multiple primitive argument functions `nano-memoize` and `micro-memoize` will trade-off first position across multiple test runs with `nano-memoize` winning slightly more frequently. They are 60x faster than `fast-memoize`.
 
@@ -184,6 +184,7 @@ The shape of options is:
   // number of milliseconds to cache a result, set to `Infinity` to never create timers or expire
   maxAge: number, 
   // the serializer/key generator to use for single argument functions (optional, not recommended)
+  // must be able to serialize objects and functions, by default a WeakMap is used internally without serializing
   serializer: function,
   // the equals function to use for multi-argument functions (optional, try to avoid) e.g. deepEquals for objects
   equals: function, 
@@ -195,6 +196,8 @@ The shape of options is:
 To clear the cache you can call `.clear()` on the function returned my `nanomemoize`.
 
 # Release History (reverse chronological order)
+
+2019-04-09 v1.1.3 [Fixed Issue 6](https://github.com/anywhichway/nano-memoize/issues/6). Minor speed and size improvements.
 
 2019-04-02 v1.1.2 Speed improvements for multiple arguments. Now consistently faster than `fast-memoize` and `nano-memoize` across multiple test runs. Benchmarks run in a new test environment. The benchmarks for v1.1.1 although correct from a relative perspective, grossly understated actual performance due to a corrupt testing environment.
 
