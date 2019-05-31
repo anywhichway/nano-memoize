@@ -31,12 +31,19 @@ describe("Test",function() {
 		expect(typeof(myFunc)).equal("function");
 		expect(result).equal(0);
 	});
-	it("single primitive arg cached",function() {
+	it("single primitive number arg cached",function() {
 		const value = 1,
 			result = singleArg(value),
 			keyvalues = singleArg.keyValues().primitives;
 		expect(result).to.equal(value);
 		expect(keyvalues[value]).to.equal(value);
+	});
+	it("single primitive string arg cached",function() {
+		const value = "1",
+			result = singleArg(value),
+			keyvalues = singleArg.keyValues().primitives;
+		expect(result).to.equal(value);
+		expect(keyvalues[JSON.stringify(value)]).to.equal(value);
 	});
 	it("single object arg cached",function() {
 		const value = {p1:1},

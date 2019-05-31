@@ -37,7 +37,7 @@
 								var r;
 								return wm.m.get(a) || ((!c||c(a,wm.m)),wm.m.set(a,r = fn.call(this, a)),r);
 							}
-							var key = t === "number" || t === "boolean" || t==="undefined" ? a : t === "string" ? JSON.stringify(t) : p(a);
+							var key = t === "number" || t === "boolean" || t==="undefined" ? a : t === "string" ? JSON.stringify(a) : p(a);
 							return s[key] || ((!c||c(key,s)),s[key] = fn.call(this, a));
 						}).bind(
 							 this,

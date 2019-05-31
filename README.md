@@ -197,6 +197,8 @@ To clear the cache you can call `.clear()` on the function returned my `nanomemo
 
 # Release History (reverse chronological order)
 
+2019-05-31 v1.3.4 [Fixed Issue 7](https://github.com/anywhichway/nano-memoize/issues/7).
+
 2019-04-09 v1.1.3 [Fixed Issue 6](https://github.com/anywhichway/nano-memoize/issues/6). Minor speed and size improvements.
 
 2019-04-02 v1.1.2 Speed improvements for multiple arguments. Now consistently faster than `fast-memoize` and `nano-memoize` across multiple test runs. Benchmarks run in a new test environment. The benchmarks for v1.1.1 although correct from a relative perspective, grossly understated actual performance due to a corrupt testing environment.
