@@ -9,19 +9,19 @@ During development we also discovered that despite its popularity and goal to be
 
 Special appreciation to @titoBouzout and @popbee who spent a good bit of time reviewing code for optimization and making recommendations. See [Issue 4](https://github.com/anywhichway/nano-memoize/issues/4) for the conversation.
 
-The minified/brotli size is 654 bytes for `nano-memoize` v1.1.3 vs 1,356 bytes for `micro-memoize` v3.0.1. And, `nano-memoize` has slightly more functionality.
+The minified/brotli size is 660 bytes for `nano-memoize` v1.1.5 vs 1,356 bytes for `micro-memoize` v4.08. And, `nano-memoize` has slightly more functionality.
 
-The speed tests are below.
+The speed tests are below. At the time of testing the most recent version of `fast-memoize` 2.5.1 was a year old. The most recent version of `micro-memoize` 4.0.8 was 14 days old.
  
- * For single primitive argument functions it is typically 5-10% faster than `fast-memoize` and 3x faster than `micro-memoize`.
+ * For single primitive argument functions `nano-memoize` runs neck-and-neck with `fast-memoize` and 3-4x faster than `micro-memoize`.
  
- * For single object argument functions it is typically 10-15% faster than `fast-memoize` and 15-20% faster than `micro-memoize`.
+ * For single object argument functions `nano-memoize` is typically 10% faster than `fast-memoize` and 1.75x faster than `micro-memoize`.
  
- * For multiple primitive argument functions `nano-memoize` and `micro-memoize` will trade-off first position across multiple test runs with `nano-memoize` winning slightly more frequently. They are 60x faster than `fast-memoize`.
+ * For multiple primitive argument functions `nano-memoize` is about 20% faster than `micro-memoize`. They are 60x faster than `fast-memoize`.
 
- * For multiple object argument functions `nano-memoize` and `micro-memoize` will trade-off first position across multiple test runs with `nano-memoize` winning slightly more frequently. They are 60x faster than `fast-memoize`.
+ * For multiple object argument functions `nano-memoize` is typically 20% faster than `micro-memoize` and 60x faster than `fast-memoize`.
  
- * When `deepEquals` tests are used, `micro-memoize` rules the day. 
+ * When `deepEquals` tests are used, `nano-memoize` is 33% faster than micro-memoize. `fast-memoize` is by default deep equals and `nano-memoize` is 60x faster.
 
 We have found that benchmarks can vary dramatically from O/S to O/S or Node version to Node version. These tests were run on a Windows 10 Pro 64bit 1.8ghz i7 machine with 16GB RAM and Node v11.6.0. Also, even with multiple samplings, garbage collection can have a substative impact and multiple runs in different orders are really required for apples-to-apples comparisons.
 
@@ -31,27 +31,27 @@ Functions with a single primitive parameter...
 +----------------------------------------------------------------------+
 ¦ Name          ¦ Ops / sec   ¦ Relative margin of error ¦ Sample size ¦
 +----------------------------------------------------------------------+
-¦ nano-memoize  ¦ 408,626,233 ¦ ± 1.86%                  ¦ 81          ¦
+¦ nano-memoize  ¦ 429,266,986 ¦   0.53%                  ¦ 95          ¦
 +----------------------------------------------------------------------+
-¦ fast-memoize  ¦ 368,639,842 ¦ ± 1.79%                  ¦ 81          ¦
+¦ fast-memoize  ¦ 423,833,441 ¦   0.62%                  ¦ 94          ¦
 +----------------------------------------------------------------------+
-¦ micro-memoize ¦ 102,964,021 ¦ ± 1.39%                  ¦ 84          ¦
+¦ moize         ¦ 95,351,935  ¦   1.54%                  ¦ 93          ¦
 +----------------------------------------------------------------------+
-¦ moize         ¦ 93,623,511  ¦ ± 1.70%                  ¦ 83          ¦
+¦ iMemoized     ¦ 82,908,646  ¦   0.76%                  ¦ 89          ¦
 +----------------------------------------------------------------------+
-¦ iMemoized     ¦ 83,667,946  ¦ ± 1.58%                  ¦ 83          ¦
+¦ micro-memoize ¦ 74,658,533  ¦   2.16%                  ¦ 86          ¦
 +----------------------------------------------------------------------+
-¦ lru-memoize   ¦ 71,258,447  ¦ ± 1.90%                  ¦ 82          ¦
+¦ lru-memoize   ¦ 73,747,331  ¦   0.59%                  ¦ 89          ¦
 +----------------------------------------------------------------------+
-¦ lodash        ¦ 46,706,263  ¦ ± 1.87%                  ¦ 82          ¦
+¦ lodash        ¦ 48,098,010  ¦   1.79%                  ¦ 93          ¦
 +----------------------------------------------------------------------+
-¦ memoizee      ¦ 36,960,053  ¦ ± 1.67%                  ¦ 81          ¦
+¦ memoizee      ¦ 39,111,373  ¦   0.53%                  ¦ 95          ¦
 +----------------------------------------------------------------------+
-¦ underscore    ¦ 34,650,172  ¦ ± 1.67%                  ¦ 79          ¦
+¦ underscore    ¦ 34,623,228  ¦   1.22%                  ¦ 95          ¦
 +----------------------------------------------------------------------+
-¦ memoizerific  ¦ 6,854,333   ¦ ± 2.14%                  ¦ 79          ¦
+¦ memoizerific  ¦ 6,905,607   ¦   2.16%                  ¦ 91          ¦
 +----------------------------------------------------------------------+
-¦ addy-osmani   ¦ 6,076,478   ¦ ± 1.80%                  ¦ 80          ¦
+¦ addy-osmani   ¦ 6,319,914   ¦   0.94%                  ¦ 91          ¦
 +----------------------------------------------------------------------+
 ```
 
@@ -61,27 +61,27 @@ Functions with a single object parameter...
 +----------------------------------------------------------------------+
 ¦ Name          ¦ Ops / sec   ¦ Relative margin of error ¦ Sample size ¦
 +----------------------------------------------------------------------+
-¦ nano-memoize  ¦ 120,054,209 ¦ ± 1.77%                  ¦ 86          ¦
+¦ nano-memoize  ¦ 124,264,741 ¦   0.61%                  ¦ 93          ¦
 +----------------------------------------------------------------------+
-¦ micro-memoize ¦ 88,968,257  ¦ ± 1.13%                  ¦ 84          ¦
+¦ fast-memoize  ¦ 111,267,506 ¦   0.74%                  ¦ 93          ¦
 +----------------------------------------------------------------------+
-¦ moize         ¦ 85,218,895  ¦ ± 1.42%                  ¦ 84          ¦
+¦ moize         ¦ 95,260,557  ¦   0.88%                  ¦ 93          ¦
 +----------------------------------------------------------------------+
-¦ fast-memoize  ¦ 73,730,097  ¦ ± 5.40%                  ¦ 71          ¦
+¦ iMemoized     ¦ 73,937,479  ¦   0.67%                  ¦ 93          ¦
 +----------------------------------------------------------------------+
-¦ iMemoized     ¦ 58,513,510  ¦ ± 1.26%                  ¦ 80          ¦
+¦ micro-memoize ¦ 66,863,547  ¦   4.08%                  ¦ 80          ¦
 +----------------------------------------------------------------------+
-¦ lodash        ¦ 46,264,060  ¦ ± 1.88%                  ¦ 80          ¦
+¦ lodash        ¦ 47,881,566  ¦   1.41%                  ¦ 90          ¦
 +----------------------------------------------------------------------+
-¦ lru-memoize   ¦ 30,648,600  ¦ ± 1.61%                  ¦ 81          ¦
+¦ underscore    ¦ 34,777,812  ¦   0.79%                  ¦ 92          ¦
 +----------------------------------------------------------------------+
-¦ underscore    ¦ 28,901,663  ¦ ± 2.98%                  ¦ 75          ¦
+¦ lru-memoize   ¦ 31,919,125  ¦   0.33%                  ¦ 98          ¦
 +----------------------------------------------------------------------+
-¦ memoizee      ¦ 17,213,563  ¦ ± 1.68%                  ¦ 80          ¦
+¦ memoizee      ¦ 18,033,950  ¦   0.55%                  ¦ 89          ¦
 +----------------------------------------------------------------------+
-¦ addy-osmani   ¦ 6,379,759   ¦ ± 1.75%                  ¦ 81          ¦
+¦ memoizerific  ¦ 6,600,328   ¦   1.28%                  ¦ 95          ¦
 +----------------------------------------------------------------------+
-¦ memoizerific  ¦ 5,789,710   ¦ ± 3.67%                  ¦ 74          ¦
+¦ addy-osmani   ¦ 6,346,356   ¦   1.02%                  ¦ 93          ¦
 +----------------------------------------------------------------------+
 ```
 
@@ -91,23 +91,23 @@ Functions with multiple parameters that contain only primitives...
 +---------------------------------------------------------------------+
 ¦ Name          ¦ Ops / sec  ¦ Relative margin of error ¦ Sample size ¦
 +---------------------------------------------------------------------+
-¦ nano-memoize  ¦ 64,477,579 ¦ ± 1.77%                  ¦ 83          ¦
+¦ nano-memoize  ¦ 64,862,221 ¦   0.98%                  ¦ 91          ¦
 +---------------------------------------------------------------------+
-¦ moize         ¦ 56,501,764 ¦ ± 2.20%                  ¦ 79          ¦
+¦ moize         ¦ 62,050,114 ¦   0.46%                  ¦ 95          ¦
 +---------------------------------------------------------------------+
-¦ micro-memoize ¦ 39,469,612 ¦ ± 6.47%                  ¦ 72          ¦
+¦ micro-memoize ¦ 53,790,249 ¦   0.42%                  ¦ 93          ¦
 +---------------------------------------------------------------------+
-¦ lru-memoize   ¦ 19,361,408 ¦ ± 6.19%                  ¦ 70          ¦
+¦ lru-memoize   ¦ 25,083,521 ¦   0.43%                  ¦ 97          ¦
 +---------------------------------------------------------------------+
-¦ memoizee      ¦ 11,381,474 ¦ ± 4.35%                  ¦ 73          ¦
+¦ memoizee      ¦ 16,817,318 ¦   1.67%                  ¦ 94          ¦
 +---------------------------------------------------------------------+
-¦ iMemoized     ¦ 5,733,044  ¦ ± 9.82%                  ¦ 71          ¦
+¦ iMemoized     ¦ 9,893,933  ¦   0.53%                  ¦ 93          ¦
 +---------------------------------------------------------------------+
-¦ addy-osmani   ¦ 3,258,073  ¦ ± 2.34%                  ¦ 86          ¦
+¦ memoizerific  ¦ 5,214,455  ¦   1.49%                  ¦ 89          ¦
 +---------------------------------------------------------------------+
-¦ memoizerific  ¦ 1,965,125  ¦ ± 7.60%                  ¦ 64          ¦
+¦ addy-osmani   ¦ 3,331,201  ¦   0.81%                  ¦ 94          ¦
 +---------------------------------------------------------------------+
-¦ fast-memoize  ¦ 834,173    ¦ ± 7.38%                  ¦ 65          ¦
+¦ fast-memoize  ¦ 1,370,977  ¦   1.01%                  ¦ 90          ¦
 +---------------------------------------------------------------------+
 ```
 
@@ -117,21 +117,21 @@ Functions with multiple parameters that contain objects...
 +---------------------------------------------------------------------+
 ¦ Name          ¦ Ops / sec  ¦ Relative margin of error ¦ Sample size ¦
 +---------------------------------------------------------------------+
-¦ nano-memoize  ¦ 63,382,702 ¦ ± 1.88%                  ¦ 83          ¦
+¦ nano-memoize  ¦ 63,382,702 ¦   1.88%                  ¦ 83          ¦
 +---------------------------------------------------------------------+
-¦ moize         ¦ 61,349,765 ¦ ± 1.78%                  ¦ 82          ¦
+¦ moize         ¦ 61,349,765 ¦   1.78%                  ¦ 82          ¦
 +---------------------------------------------------------------------+
-¦ micro-memoize ¦ 54,322,737 ¦ ± 4.53%                  ¦ 72          ¦
+¦ micro-memoize ¦ 54,322,737 ¦   4.53%                  ¦ 72          ¦
 +---------------------------------------------------------------------+
-¦ lru-memoize   ¦ 23,824,559 ¦ ± 2.34%                  ¦ 81          ¦
+¦ lru-memoize   ¦ 23,824,559 ¦   2.34%                  ¦ 81          ¦
 +---------------------------------------------------------------------+
-¦ memoizee      ¦ 11,161,431 ¦ ± 1.97%                  ¦ 84          ¦
+¦ memoizee      ¦ 11,161,431 ¦   1.97%                  ¦ 84          ¦
 +---------------------------------------------------------------------+
-¦ memoizerific  ¦ 5,416,184  ¦ ± 3.89%                  ¦ 79          ¦
+¦ memoizerific  ¦ 5,416,184  ¦   3.89%                  ¦ 79          ¦
 +---------------------------------------------------------------------+
-¦ addy-osmani   ¦ 1,199,529  ¦ ± 2.78%                  ¦ 84          ¦
+¦ addy-osmani   ¦ 1,199,529  ¦   2.78%                  ¦ 84          ¦
 +---------------------------------------------------------------------+
-¦ fast-memoize  ¦ 1,057,876  ¦ ± 1.75%                  ¦ 83          ¦
+¦ fast-memoize  ¦ 1,057,876  ¦   1.75%                  ¦ 83          ¦
 +---------------------------------------------------------------------+
 ```
 
@@ -141,15 +141,15 @@ Deep equals ...
 +---------------------------------------------------------------------------------------------------------+
 ¦ Name                                              ¦ Ops / sec  ¦ Relative margin of error ¦ Sample size ¦
 +---------------------------------------------------------------------------------------------------------+
-¦ micro-memoize deep equals (lodash isEqual)        ¦ 12,400,181 ¦ ± 19.08%                 ¦ 61          ¦
+¦ nanomemoize deep equals (lodash isEqual)          ¦ 66,440,153 ¦   2.02%                  ¦ 92          ¦
 +---------------------------------------------------------------------------------------------------------+
-¦ micro-memoize deep equals (fast-equals deepEqual) ¦ 12,082,145 ¦ ± 14.66%                 ¦ 47          ¦
+¦ nanomemoize deep equals (fast-equals deepEqual)   ¦ 53,056,118 ¦   2.48%                  ¦ 74          ¦
 +---------------------------------------------------------------------------------------------------------+
-¦ nanomemoize deep equals (lodash isEqual)          ¦ 6,136,579  ¦ ± 82.87%                 ¦ 51          ¦
+¦ micro-memoize deep equals (hash-it isEqual)       ¦ 47,502,261 ¦   1.73%                  ¦ 85          ¦
 +---------------------------------------------------------------------------------------------------------+
-¦ micro-memoize deep equals (hash-it isEqual)       ¦ 4,010,002  ¦ ± 42.97%                 ¦ 44          ¦
+¦ micro-memoize deep equals (lodash isEqual)        ¦ 41,636,743 ¦   2.88%                  ¦ 84          ¦
 +---------------------------------------------------------------------------------------------------------+
-¦ nanomemoize deep equals (fast-equals deepEqual)   ¦ 3,539,280  ¦ ± 43.70%                 ¦ 43          ¦
+¦ micro-memoize deep equals (fast-equals deepEqual) ¦ 39,346,248 ¦   2.18%                  ¦ 85          ¦
 +---------------------------------------------------------------------------------------------------------+
 ```
 
@@ -197,7 +197,9 @@ To clear the cache you can call `.clear()` on the function returned my `nanomemo
 
 # Release History (reverse chronological order)
 
-2019-05-31 v1.3.4 [Fixed Issue 7](https://github.com/anywhichway/nano-memoize/issues/7).
+2019-06-28 v1.1.5 Improved documentation. Updated version of `micro-memoize` used for benchmark testing. No code changes.
+
+2019-05-31 v1.1.4 [Fixed Issue 7](https://github.com/anywhichway/nano-memoize/issues/7).
 
 2019-04-09 v1.1.3 [Fixed Issue 6](https://github.com/anywhichway/nano-memoize/issues/6). Minor speed and size improvements.
 
