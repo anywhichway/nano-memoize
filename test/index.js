@@ -12,20 +12,24 @@ function singleArg(arg) {
 }
 
 function multipleArg(arg1,arg2) {
-	return {arg1,arg2};
+	return {arg1:arg1,arg2:arg2};
 }
 
 singleArg = nanomemoize(singleArg);
 
 multiplArg = nanomemoize(multipleArg);
 
-varArg = nanomemoize((...args) => args);
+varArg = nanomemoize(function() { return [].slice.call(arguments); });
 
 
 describe("Test",function() {
 	it("memoize functions with function arg", function() {
-		const memoized = nanomemoize(fn => o => fn(o)),
-			myFunc = memoized(o => o),
+		const memoized = nanomemoize(function (fn) {
+			  return function (o) {
+				    return fn(o);
+				  };
+				}),
+			myFunc = memoized(function(o) { return o; }),
 			result = myFunc(0);
 		expect(typeof(memoized)).equal("function");
 		expect(typeof(myFunc)).equal("function");
@@ -74,32 +78,32 @@ describe("Test",function() {
 		expect(Array.isArray(varArg(arg1,arg2))).to.equal(true);
 	});
 	it("expires content single primitive",function(done) {
-		const expiring = nanomemoize((a) => a,{maxAge:5});
+		const expiring = nanomemoize(function(a) { return a; },{maxAge:5});
 		expect(expiring(1)).to.equal(1);
 		expect(expiring.keyValues().primitives[1]).to.equal(1);
-		setTimeout(() => {
+		setTimeout(function()  {
 			expect(expiring.keyValues().primitives[1]).to.equal(undefined);
 			done();
 		},20)
 	});
 	it("expires content single object",function(done) {
-		const expiring = nanomemoize((a) => a,{maxAge:5}),
+		const expiring = nanomemoize(function(a) { return a; },{maxAge:5}),
 			o = {}
 		expect(expiring(o)).to.equal(o);
 		expect(expiring.keyValues().objects.get(o)).to.equal(o);
-		setTimeout(() => {
+		setTimeout(function() {
 			expect(expiring.keyValues().objects.get(o)).to.equal(undefined);
 			done();
 		},20)
 	});
 	it("expires content multiple",function(done) {
-		const expiring = nanomemoize((a,b) => { return {a,b}; },{maxAge:5}),
+		const expiring = nanomemoize(function(a,b) { return {a:a,b:b}; },{maxAge:5}),
 			result = expiring(1,2);
 		expect(result.a).to.equal(1);
 		expect(result.b).to.equal(2);
 		expect(expiring.values()[0].a).to.equal(1);
 		expect(expiring.values()[0].b).to.equal(2);
-		setTimeout(() => {
+		setTimeout(function() {
 			expect(expiring.values()[0]).to.equal(undefined);
 			done();
 		},20)
