@@ -427,6 +427,9 @@ const runAlternativeOptionsSuite = () => {
   const mNanoFastDeep = nanomemoize(fibonacciMultipleDeepEqual, {
     equals: fastDeepEqual
   });
+  const mNanoHashIt = nanomemoize(fibonacciMultipleDeepEqual, {
+    equals: hashItEquals
+  });
 
   return new Promise((resolve) => {
     fibonacciSuite
@@ -435,6 +438,9 @@ const runAlternativeOptionsSuite = () => {
 	    })
 	    .add('nanomemoize deep equals (fast-equals deepEqual)', () => {
 	      mNanoFastDeep(fibonacciNumber);
+	    })
+	    .add('nanomemoize deep equals (hash-it isEqual)', () => {
+	      mNanoHashIt(fibonacciNumber);
 	    })
       .add('micro-memoize deep equals (lodash isEqual)', () => {
         mMicroMemoizeDeep(fibonacciNumber);
