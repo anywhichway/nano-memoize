@@ -179,12 +179,12 @@ The code is hand-crafted to run across all browsers all the way back to IE 11. N
 The API is a subset of the `moize` API.
 
 ```javascript
-const memoized = nanonmemoize(sum(a,b) => a + b);
+const memoized = nanomemoize(sum(a,b) => a + b);
 memoized(1,2); // 3
 memoized(1,2); // pulled from cache
 ```
 
-`nanonmemoize(function,options) returns function`
+`nanomemoize(function,options) returns function`
 
 The shape of options is:
 
@@ -207,6 +207,8 @@ The shape of options is:
 To clear the cache you can call `.clear()` on the function returned my `nanomemoize`.
 
 # Release History (reverse chronological order)
+
+2019-11-29 v1.1.8 Corrected typos in documentation.
 
 2019-09-25 v1.1.7 Manually created an IE 11 compatible version by removing arrow functions and replacing Object.assign
 with a custom function. Minor size increase from 660 to 780 Brotli bytes. Also eliminated complex `bind` approach in
