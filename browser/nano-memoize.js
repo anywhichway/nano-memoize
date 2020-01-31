@@ -12,14 +12,14 @@
 			o = Object(o);
 			for(var i=1;i<a.length;i++) {
 				if(a[i] && typeof(a[i])==="object") {
-					Object.keys(a[i]).forEach((k) => {
+					for(var k in a[i]) {
 						o[k] = a[i][k];
-					});
+					}
 				}
 			}
 			return o;
 		}
-	}
+	};
 	var vrgs = function f() {
 			var s = f+"",
 				i = s.indexOf("...");
@@ -96,8 +96,8 @@
 			f.keyValues = function() { return u ? {primitives:assign({},s),objects:wm} : null; };
 			return f;
 		};
-	if(typeof(module)!=="undefined") module.exports = nanomemoize;
-	if(typeof(window)!=="undefined") window.nanomemoize = nanomemoize;
+	if(typeof(module)!=="undefined") { module.exports = nanomemoize; }
+	if(typeof(window)!=="undefined") { window.nanomemoize = nanomemoize; }
 }).call(this);
 
 
