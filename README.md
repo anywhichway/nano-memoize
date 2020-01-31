@@ -208,6 +208,8 @@ To clear the cache you can call `.clear()` on the function returned my `nanomemo
 
 # Release History (reverse chronological order)
 
+2020-01-30 v1.1.9 Code style improvements.
+
 2019-11-29 v1.1.8 Corrected typos in documentation.
 
 2019-09-25 v1.1.7 Manually created an IE 11 compatible version by removing arrow functions and replacing Object.assign
