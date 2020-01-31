@@ -50,5 +50,7 @@
     "uglify-es": "^3.3.9",
     "underscore": "^1.9.1"
   },
-  "dependencies": {}
+  "dependencies": {
+    "growl": "^1.10.5"
+  }
 }
