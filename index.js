@@ -17,8 +17,8 @@
 				}
 			}
 			return o;
-		}
-	};
+		};
+	}
 	var vrgs = function f() {
 			var s = f+"",
 				i = s.indexOf("...");
@@ -41,7 +41,7 @@
 				wm = new WeakMap(),
 				d = function(key,c,k) { return setTimeout(function() {
 						if(k) { // dealing with multi-arg function, c and k are Arrays
-							c.splice(key,1);
+							c.splice (key,1);
 							k.splice(key,1);
 							return;
 						} // dealing with single arg function, c is a WekMap or Object
