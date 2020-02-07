@@ -208,6 +208,8 @@ To clear the cache you can call `.clear()` on the function returned my `nanomemo
 
 # Release History (reverse chronological order)
 
+2020-02-30 v1.1.10 Moved growl to dev dependency.
+
 2020-01-30 v1.1.9 Code style improvements.
 
 2019-11-29 v1.1.8 Corrected typos in documentation.

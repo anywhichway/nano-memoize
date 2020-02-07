@@ -1,6 +1,6 @@
 {
   "name": "nano-memoize",
-  "version": "v1.1.9",
+  "version": "v1.1.10",
   "description": "Faster than fast, smaller than micro ... a nano speed and nano size memoizer.",
   "engines": {},
   "sideEffects": false,
@@ -48,9 +48,10 @@
     "ora": "^1.4.0",
     "ramda": "^0.26.1",
     "uglify-es": "^3.3.9",
-    "underscore": "^1.9.1"
+    "underscore": "^1.9.1",
+    "growl": "^1.10.5"
   },
   "dependencies": {
-    "growl": "^1.10.5"
+    
   }
 }
