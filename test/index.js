@@ -54,6 +54,12 @@ describe("Test",function() {
 			result = singleArg(value);
 		expect(result).to.equal(value);
 	});
+	it("single null arg cached", function() {
+		const value = null,
+			result = singleArg(value);
+		expect(result).to.equal(value);
+		expect(singleArg(value)).to.equal(value);
+	});
 	it("multiple arg primitive cached",function() {
 		const result = multipleArg(1,2);
 		expect(result.arg1).to.equal(1);
@@ -65,6 +71,20 @@ describe("Test",function() {
 		result = multipleArg(arg1,arg2);
 		expect(result.arg1.arg).to.equal(1);
 		expect(result.arg2.arg).to.equal(2);
+	});
+	it("multiple arg mixed primitive/object cached",function() {
+		const arg1 = 1,
+			arg2 = {arg:2},
+		result = multipleArg(arg1, arg2);
+		expect(result.arg1).to.equal(arg1);
+		expect(result.arg2).to.equal(arg2);
+	});
+	it("multiple arg null cached",function() {
+		const arg1 = null,
+			arg2 = null,
+		result = multipleArg(arg1,arg2);
+		expect(result.arg1).to.equal(arg1);
+		expect(result.arg2).to.equal(arg2);
 	});
 	it("multiple arg works with single",function() {
 		const arg1 = {arg:1};

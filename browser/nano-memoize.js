@@ -60,11 +60,11 @@
 						// strings must be serialized because cache[1] should not equal or overwrite cache["1"] for value = 1 and value = "1"
 						var t = typeof a;
 						// set chng timeout only when new value computed, hits will not push out the tte, but it is arguable they should not
-						if(!srlz && (t==="object"  || t==="function")) {
+						if(!srlz && ((t==="object" && a)  || t==="function")) {
 							var r;
 							return wm.get(a) || ((!c||c(a,wm)),wm.set(a,r = fn.call(this, a)),r);
 						}
-						var key = t === "number" || t === "boolean" || t==="undefined" ? a : t === "string" ? JSON.stringify(a) : srlz(a);
+						var key = t === "number" || t === "boolean" || a == null ? a : t === "string" ? JSON.stringify(a) : srlz(a);
 						return s[key] || ((!c||c(key,s)),s[key] = fn.call(this, a));
 					}).bind(this);
 					u = 1;
