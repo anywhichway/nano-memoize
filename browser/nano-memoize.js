@@ -20,10 +20,10 @@
 			return o;
 		};
 	}
-	var vrgs = function f() {
+	var vrgs = function(f) {
 			var s = f+"",
 				i = s.indexOf("...");
-			return i>=0 && i<s.indexOf(")" || s.indexOf("arguments")>=0);
+			return i>=0 && (i<s.indexOf(")") || s.indexOf("arguments")>=0);
 		},
 		nanomemoize = function(fn,o) {
 			/*o = {

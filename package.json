@@ -1,6 +1,6 @@
 {
   "name": "nano-memoize",
-  "version": "v1.1.10",
+  "version": "v1.1.11",
   "description": "Faster than fast, smaller than micro ... a nano speed and nano size memoizer.",
   "engines": {},
   "sideEffects": false,
