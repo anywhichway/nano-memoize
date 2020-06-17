@@ -91,6 +91,11 @@ describe("Test",function() {
 		result = multipleArg(arg1);
 		expect(result.arg1.arg).to.equal(1);
 	});
+	it("multiple varg mixed length",function() {
+		const res1 = varArg("multi1", "multi2");
+		const res2 = varArg("multi1");
+		expect(res1).to.not.equal(res2);
+	});
 	it("auto-detect vArg",function() {
 		const arg1 = 1, arg2 = 2;
 		expect(varArg.keyValues()).to.equal(null);

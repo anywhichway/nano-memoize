@@ -74,6 +74,7 @@
 				var l = maxargs||arguments.length,
 					i;
 				for(i=k.length-1;i>=0;i--) { // an array of arrays of args, each array represents a call signature
+					if (!maxargs && k[i].length !== l) continue; // cache miss if called with a different number of args
 					for(var j=l-1;j>=0 && eq(k[i][j],arguments[j]);j--) {	// compare each arg			
 						if(j===0) { return v[i]; } // the args matched
 					}
