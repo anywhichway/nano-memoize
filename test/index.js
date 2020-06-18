@@ -21,6 +21,7 @@ multiplArg = nanomemoize(multipleArg);
 
 varArg = nanomemoize(function() { return [].slice.call(arguments); });
 
+callTimeout = nanomemoize(function(a,b,cb) { var result = a + b; cb(result); return result; },{maxArgs:2,callTimeout:0});
 
 describe("Test",function() {
 	it("memoize functions with function arg", function() {
@@ -95,6 +96,15 @@ describe("Test",function() {
 		const res1 = varArg("multi1", "multi2");
 		const res2 = varArg("multi1");
 		expect(res1).to.not.equal(res2);
+	});
+	it("callTimeout",function(done) {
+		let result = 0;
+		const res1 = callTimeout(1,2,(value) => result = value + 1);
+		expect(res1).to.equal(3);
+		setTimeout(() => {
+			expect(result).to.equal(4);
+			done();
+		},100)
 	});
 	it("auto-detect vArg",function() {
 		const arg1 = 1, arg2 = 2;

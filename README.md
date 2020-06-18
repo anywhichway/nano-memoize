@@ -18,7 +18,7 @@ multi-argument plugin. And, MANY people are very happy with it.
 Special appreciation to @titoBouzout and @popbee who spent a good bit of time reviewing code for optimization and making recommendations. 
 See [Issue 4](https://github.com/anywhichway/nano-memoize/issues/4) for the conversation.
 
-The minified/brotli size is 780 bytes for `nano-memoize` v1.1.5 vs 1,356 bytes for `micro-memoize` v4.08. And, `nano-memoize` has 
+The minified/brotli size is 789 bytes for `nano-memoize` v1.1.5 vs 1,356 bytes for `micro-memoize` v4.08. And, `nano-memoize` has 
 slightly more functionality.
 
 The speed tests are below. At the time of testing the most recent version of `fast-memoize` 2.5.1 was a year old. The most recent 
@@ -191,7 +191,11 @@ The shape of options is:
 ```javascript
 {
   // only use the provided maxArgs for cache look-up, useful for ignoring final callback arguments
-  maxArgs: number, 
+  maxArgs: number,
+  // go ahead and call memoized multi-args functions after a number of milliseconds via a timeout after the 
+  // cached result has been returned, perhaps to ensure that callbacks are invoked, does not cache the timemout result
+  // e.g. nanomemoize(function(a,b,cb) { var result = a + b; cb(result); return result; },{maxArgs:2,callTimeout:0});
+  callTimeout: number,
   // number of milliseconds to cache a result, set to `Infinity` or `-1` to never create timers or expire
   maxAge: number, 
   // the serializer/key generator to use for single argument functions (optional, not recommended)
@@ -207,6 +211,9 @@ The shape of options is:
 To clear the cache you can call `.clear()` on the function returned my `nanomemoize`.
 
 # Release History (reverse chronological order)
+
+2020-06-18 v1.2.0 Enhanced multi-arg handling so that arg lengths must match precisely (thanks @amazingmarvin), unless `maxArgs` is passed as an option.
+Also added `callTimeout` to go ahead and call underlying function to ensure callbacks are invoked if necessary.
 
 2020-05-26 v1.1.11 [Fixed Issue 17]Fixed https://github.com/anywhichway/nano-memoize/issues/17. It is not known when this bug made its way into the code.
 
