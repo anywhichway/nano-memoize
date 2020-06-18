@@ -18,7 +18,7 @@ multi-argument plugin. And, MANY people are very happy with it.
 Special appreciation to @titoBouzout and @popbee who spent a good bit of time reviewing code for optimization and making recommendations. 
 See [Issue 4](https://github.com/anywhichway/nano-memoize/issues/4) for the conversation.
 
-The minified/brotli size is 789 bytes for `nano-memoize` v1.1.5 vs 1,356 bytes for `micro-memoize` v4.08. And, `nano-memoize` has 
+The minified/brotli size is 789 bytes for `nano-memoize` v1.2.0 vs 1,356 bytes for `micro-memoize` v4.08. And, `nano-memoize` has 
 slightly more functionality.
 
 The speed tests are below. At the time of testing the most recent version of `fast-memoize` 2.5.1 was a year old. The most recent 
