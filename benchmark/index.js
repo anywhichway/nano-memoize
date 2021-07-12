@@ -1,5 +1,3 @@
-'use strict';
-
 /*MIT License
 Core benchmark code copied from micro-memoize
 
@@ -24,27 +22,33 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-const Benchmark = require('benchmark');
-const Table = require('cli-table2');
-const ora = require('ora');
+import Benchmark from 'benchmark';
+import Table from 'cli-table2';
+import ora from 'ora';
+import underscore from 'underscore';
+import lodash from 'lodash';
+import ramda from 'ramda';
+import fastMemoize from 'fast-memoize';
+import memoizerific from 'memoizerific';
+import lru from 'lru-memoize';
+import moize from 'moize';
+import microMemoize from 'micro-memoize';
+import iMemoized from 'iMemoized';
+import fastEquals from 'fast-equals';
+import hashIt from 'hash-it';
+import memoizee from 'memoizee';
+import addyOsmani from './addy-osmani.js';
+import nanomemoize from '../src/index.js';
 
-const underscore = require('underscore').memoize;
-const lodash = require('lodash').memoize;
-const ramda = require('ramda').memoize;
-const memoizee = require('memoizee');
-const fastMemoize = require('fast-memoize');
-const addyOsmani = require('./addy-osmani');
-const memoizerific = require('memoizerific');
-const lruMemoize = require('lru-memoize').default;
-const moize = require('moize').default;
-const microMemoize = require('micro-memoize'); 
-const iMemoized = require('iMemoized');
-const nanomemoize = require('../src/nano-memoize.js');
+const underscoreMemoize = underscore.memoize;
+const lodashMemoize = lodash.memoize;
+const lruMemoize = lru.default;
+const moizeMemoize = moize.default;
+const ramdaMemoize = ramda.memoize;
 
-
-const deepEquals = require('lodash').isEqual;
-const fastDeepEqual = require('fast-equals').deepEqual;
-const hashItEquals = require('hash-it').isEqual;
+const deepEquals = lodash.isEqual;
+const fastDeepEqual = fastEquals.deepEqual;
+const hashItEquals = hashIt.isEqual;
 
 const showResults = (benchmarkResults) => {
   const table = new Table({
@@ -133,15 +137,15 @@ const runSingleParameterSuite = () => {
   const fibonacciSuite = new Benchmark.Suite('Single parameter');
   const fibonacciNumber = 35;
 
-  const mUnderscore = underscore(fibonacci);
-  const mLodash = lodash(fibonacci);
+  const mUnderscore = underscoreMemoize(fibonacci);
+  const mLodash = lodashMemoize(fibonacci);
  // const mRamda = ramda(fibonacci);
   const mMemoizee = memoizee(fibonacci);
   const mFastMemoize = fastMemoize(fibonacci);
   const mAddyOsmani = addyOsmani(fibonacci);
   const mMemoizerific = memoizerific(Infinity)(fibonacci);
   const mLruMemoize = lruMemoize(Infinity)(fibonacci);
-  const mMoize = moize(fibonacci);
+  const mMoize = moizeMemoize(fibonacci);
   const mMicroMemoize = microMemoize(fibonacci);
   const mIMemoized = iMemoized.memoize(fibonacci);
   const mNano = nanomemoize(fibonacci);
@@ -208,15 +212,15 @@ const runSingleParameterObjectSuite = () => {
   const fibonacciSuite = new Benchmark.Suite('Single parameter');
   const fibonacciNumber = Number(35);
 
-  const mUnderscore = underscore(fibonacci);
-  const mLodash = lodash(fibonacci);
+  const mUnderscore = underscoreMemoize(fibonacci);
+  const mLodash = lodashMemoize(fibonacci);
  // const mRamda = ramda(fibonacci);
   const mMemoizee = memoizee(fibonacci);
   const mFastMemoize = fastMemoize(fibonacci);
   const mAddyOsmani = addyOsmani(fibonacci);
   const mMemoizerific = memoizerific(Infinity)(fibonacci);
   const mLruMemoize = lruMemoize(Infinity)(fibonacci);
-  const mMoize = moize(fibonacci);
+  const mMoize = moizeMemoize(fibonacci);
   const mMicroMemoize = microMemoize(fibonacci);
   const mIMemoized = iMemoized.memoize(fibonacci);
   const mNano = nanomemoize(fibonacci,{relaxed:true});
@@ -289,7 +293,7 @@ const runMultiplePrimitiveSuite = () => {
   const mAddyOsmani = addyOsmani(fibonacciMultiplePrimitive);
   const mMemoizerific = memoizerific(Infinity)(fibonacciMultiplePrimitive);
   const mLruMemoize = lruMemoize(Infinity)(fibonacciMultiplePrimitive);
-  const mMoize = moize(fibonacciMultiplePrimitive);
+  const mMoize = moizeMemoize(fibonacciMultiplePrimitive);
   const mMicroMemoize = microMemoize(fibonacciMultiplePrimitive);
   const mIMemoized = iMemoized.memoize(fibonacciMultiplePrimitive);
   const mNano = nanomemoize(fibonacciMultiplePrimitive);
@@ -354,7 +358,7 @@ const runMultipleObjectSuite = () => {
   const mAddyOsmani = addyOsmani(fibonacciMultipleObject);
   const mMemoizerific = memoizerific(Infinity)(fibonacciMultipleObject);
   const mLruMemoize = lruMemoize(Infinity)(fibonacciMultipleObject);
-  const mMoize = moize(fibonacciMultipleObject);
+  const mMoize = moizeMemoize(fibonacciMultipleObject);
   const mMicroMemoize = microMemoize(fibonacciMultipleObject);
   const mNano = nanomemoize(fibonacciMultipleObject);
   

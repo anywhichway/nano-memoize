@@ -6,7 +6,7 @@
  * perf tests: http://bit.ly/q3zpG3
  * Released under an MIT license.
  */
-module.exports = function memoize( fn ) {
+export default function memoize( fn ) {
   return function () {
     var args = Array.prototype.slice.call(arguments),
       hash = "",
