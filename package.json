@@ -3,6 +3,7 @@
   "version": "v1.2.1",
   "description": "Faster than fast, smaller than micro ... a nano speed and nano size memoizer.",
   "main": "index.js",
+  "types": "index.d.ts",
   "engines": {},
   "sideEffects": false,
   "license": "MIT",
