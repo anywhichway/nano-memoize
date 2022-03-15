@@ -212,6 +212,8 @@ To clear the cache you can call `.clear()` on the function returned my `nanomemo
 
 # Release History (reverse chronological order)
 
+2022-03-15 v1.2.2 Bumped minor version for TS typings and some package dependency updates.
+
 2020-11-02 v1.2.1 Added main: "index.js" reference in package.json.
 
 2020-06-18 v1.2.0 Enhanced multi-arg handling so that arg lengths must match precisely (thanks @amazingmarvin), unless `maxArgs` is passed as an option.
