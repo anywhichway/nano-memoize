@@ -9,8 +9,7 @@
   "license": "MIT",
   "scripts": {
     "test": "mocha ./test/index.js",
-    //"prepare": "cp ./src/nano-memoize.js ./index.js && cp ./src/nano-memoize.js dist/nano-memoize.js && npx bread-compressor dist && browserify ./src/nano-memoize.js -o browser/nano-memoize.js && uglifyjs browser/nano-memoize.js -o browser/nano-memoize.min.js && uglifyjs src/nano-memoize.js -o dist/nano-memoize.min.js"
-  },
+   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/anywhichway/nano-memoize.git"
