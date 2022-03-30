@@ -169,8 +169,6 @@ Deep equals ...
 
 `npm install nano-memoize`
 
-Use the code in the [`browser`](browser/) directory for the browser
-
 The code is hand-crafted to run across all browsers all the way back to IE 11. No transpiling is necessary.
 
 
@@ -211,6 +209,8 @@ The shape of options is:
 To clear the cache you can call `.clear()` on the function returned my `nanomemoize`.
 
 # Release History (reverse chronological order)
+
+2022-03-30 v1.3.0 Dropped support for `dist` and `browser` directories.
 
 2022-03-15 v1.2.2 Bumped minor version for TS typings and some package dependency updates.
 

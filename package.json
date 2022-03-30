@@ -1,6 +1,6 @@
 {
   "name": "nano-memoize",
-  "version": "v1.2.2",
+  "version": "v1.3.0",
   "description": "Faster than fast, smaller than micro ... a nano speed and nano size memoizer.",
   "main": "index.js",
   "types": "index.d.ts",
@@ -9,7 +9,7 @@
   "license": "MIT",
   "scripts": {
     "test": "mocha ./test/index.js",
-    "prepare": "cp ./src/nano-memoize.js ./index.js && cp ./src/nano-memoize.js dist/nano-memoize.js && npx bread-compressor dist && browserify ./src/nano-memoize.js -o browser/nano-memoize.js && uglifyjs browser/nano-memoize.js -o browser/nano-memoize.min.js && uglifyjs src/nano-memoize.js -o dist/nano-memoize.min.js"
+    //"prepare": "cp ./src/nano-memoize.js ./index.js && cp ./src/nano-memoize.js dist/nano-memoize.js && npx bread-compressor dist && browserify ./src/nano-memoize.js -o browser/nano-memoize.js && uglifyjs browser/nano-memoize.js -o browser/nano-memoize.min.js && uglifyjs src/nano-memoize.js -o dist/nano-memoize.min.js"
   },
   "repository": {
     "type": "git",
