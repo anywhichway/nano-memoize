@@ -38,6 +38,7 @@
 			s = Object.create(null), // single arg function key/value cache
 			k = [], // multiple arg function arg key cache
 			v = [], // multiple arg function result cache
+			z, // index of zero arg result in v
 			wm = new WeakMap(),
 			d = function(key,c,k) { return setTimeout(function() {
 					if(k) { // dealing with multi-arg function, c and k are Arrays
@@ -71,7 +72,9 @@
 			// for multiple arg functions, loop through a cache of all the args
 			// looking at each arg separately so a test can abort as soon as possible
 			f = (function() {
-				var l = maxargs||arguments.length,
+				var al = arguments.length;
+				if (!al && z != null) return v[z];
+				var l = maxargs||al,
 					i;
 				for(i=k.length-1;i>=0;i--) { // an array of arrays of args, each array represents a call signature
 					if (!maxargs && k[i].length !== l) continue; // cache miss if called with a different number of args
@@ -80,6 +83,7 @@
 					}
 				}
 				i = k.length - (i + 1);
+				if (!al && z == null) z = i;
 				// set change timeout only when new value computed, hits will not push out the tte, but it is arguable they should not
 				return (!c||c(i,v,k)),v[i] = fn.apply(this,k[i] = arguments);
 			}).bind(this);
@@ -89,7 +93,8 @@
 			wm = new WeakMap();
 			s = Object.create(null);
 			k = [];
-			v = []; 
+			v = [];
+			z = undefined;
 		};
 		f.keys = function() { return u ? null : k.slice(); };
 		f.values = function() { return u ? null : v.slice(); };
