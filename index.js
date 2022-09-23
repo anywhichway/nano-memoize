@@ -38,6 +38,7 @@
 			s = Object.create(null), // single arg function key/value cache
 			k = [], // multiple arg function arg key cache
 			v = [], // multiple arg function result cache
+			z, // index of zero arg result in v
 			wm = new WeakMap(),
 			d = function(key,c,k) { return setTimeout(function() {
 					if(k) { // dealing with multi-arg function, c and k are Arrays
@@ -73,6 +74,7 @@
 			f = (function() {
 				var l = maxargs||arguments.length,
 					i;
+				if (!l && z != null) return v[z];
 				for(i=k.length-1;i>=0;i--) { // an array of arrays of args, each array represents a call signature
 					if (!maxargs && k[i].length !== l) continue; // cache miss if called with a different number of args
 					for(var j=l-1;j>=0 && eq(k[i][j],arguments[j]);j--) {	// compare each arg			
@@ -80,6 +82,7 @@
 					}
 				}
 				i = k.length - (i + 1);
+				if (!l && z == null) z = i;
 				// set change timeout only when new value computed, hits will not push out the tte, but it is arguable they should not
 				return (!c||c(i,v,k)),v[i] = fn.apply(this,k[i] = arguments);
 			}).bind(this);

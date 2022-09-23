@@ -61,6 +61,11 @@ describe("Test",function() {
 		expect(result).to.equal(value);
 		expect(singleArg(value)).to.equal(value);
 	});
+	it("single undefined arg cached", function () {
+		const res1 = singleArg();
+		const res2 = singleArg(undefined);
+		expect(res1).to.equal(res2);
+	});
 	it("multiple arg primitive cached",function() {
 		const result = multipleArg(1,2);
 		expect(result.arg1).to.equal(1);
@@ -95,6 +100,13 @@ describe("Test",function() {
 	it("multiple varg mixed length",function() {
 		const res1 = varArg("multi1", "multi2");
 		const res2 = varArg("multi1");
+		expect(res1).to.not.equal(res2);
+	});
+	it("zero varg cached", function() {
+		const res1 = varArg();
+		const res2 = varArg("multi3");
+		const res3 = varArg();
+		expect(res1).to.equal(res3);
 		expect(res1).to.not.equal(res2);
 	});
 	it("callTimeout",function(done) {
