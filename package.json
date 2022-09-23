@@ -46,7 +46,7 @@
     "memoizee": "^0.4.14",
     "memoizerific": "^1.11.3",
     "micro-memoize": "^4.0.8",
-    "mocha": "^2.5.3",
+    "mocha": "^10.0.0",
     "moize": "^5.4.4",
     "ora": "^1.4.0",
     "ramda": "^0.26.1",
