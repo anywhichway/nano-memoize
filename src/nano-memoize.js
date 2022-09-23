@@ -92,7 +92,8 @@
 			wm = new WeakMap();
 			s = Object.create(null);
 			k = [];
-			v = []; 
+			v = [];
+			z = undefined;
 		};
 		f.keys = function() { return u ? null : k.slice(); };
 		f.values = function() { return u ? null : v.slice(); };
