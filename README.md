@@ -210,6 +210,8 @@ To clear the cache you can call `.clear()` on the function returned my `nanomemo
 
 # Release History (reverse chronological order)
 
+2022-10-20 v1.3.1 Bumping version for https://github.com/anywhichway/nano-memoize/pull/41
+
 2022-03-30 v1.3.0 Dropped support for `dist` and `browser` directories.
 
 2022-03-15 v1.2.2 Bumped minor version for TS typings and some package dependency updates.
