@@ -34,7 +34,7 @@
     "chai": "^3.4.1",
     "cli-table2": "^0.2.0",
     "codacy-coverage": "^2.0.0",
-    "codeclimate-test-reporter": "^0.2.0",
+    "codeclimate-test-reporter": "^0.5.1",
     "fast-equals": "^1.6.3",
     "fast-memoize": "^2.5.1",
     "growl": "^1.10.5",
