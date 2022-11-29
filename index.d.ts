@@ -1,5 +1,6 @@
 declare module "nano-memoize" {
-	interface nanomemoize {
+	interface nanomemoize
+	{
 		clear(): void;
 	}
 	export default function memoized<T extends (...args: any[]) => any>(
@@ -9,12 +10,6 @@ declare module "nano-memoize" {
 			 * Only use the provided maxArgs for cache look-up, useful for ignoring final callback arguments
 			 */
 			maxArgs?: number;
-			/*
-			 * Go ahead and call memoized multi-args functions after a number of milliseconds via a timeout after the 
-			 * cached result has been returned, perhaps to ensure that callbacks are invoked, does not cache the timemout result
-			 * e.g. `nanomemoize(function(a,b,cb) { var result = a + b; cb(result); return result; },{maxArgs:2,callTimeout:0});`
-			 */
-			callTimeout?: number;
 			/**
 			 * Number of milliseconds to cache a result, set to `Infinity` to never create timers or expire
 			 */
