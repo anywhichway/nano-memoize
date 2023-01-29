@@ -24,6 +24,12 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
+const vm = require("node:vm");
+const v8 = require("v8");
+
+v8.setFlagsFromString('--expose_gc');
+const gc = vm.runInNewContext('gc');
+
 const Benchmark = require('benchmark');
 const Table = require('cli-table2');
 const ora = require('ora');
@@ -36,10 +42,10 @@ const fastMemoize = require('fast-memoize');
 const addyOsmani = require('./addy-osmani');
 const memoizerific = require('memoizerific');
 const lruMemoize = require('lru-memoize').default;
-const moize = require('moize').default;
 const microMemoize = require('micro-memoize'); 
 const iMemoized = require('iMemoized');
-const nanomemoize = require('../src/nano-memoize.js');
+const nanomemoize = require('../index.js');
+const moize = require('moize');
 
 
 const deepEquals = require('lodash').isEqual;
@@ -78,6 +84,7 @@ let results = [];
 const onCycle = (event) => {
   results.push(event);
   ora(event.target.name).succeed();
+  gc();
 };
 
 const onComplete = () => {
@@ -102,6 +109,27 @@ const fibonacciMultiplePrimitive = (number, isComplete) => {
 
   return (
     fibonacciMultiplePrimitive(firstValue, firstValue < 2) + fibonacciMultiplePrimitive(secondValue, secondValue < 2)
+  );
+};
+
+const fibonacciSingleArray = (array) => {
+  return array[0] < 2
+      ? array[0]
+      : fibonacciSingleArray([array[0] - 1]) +
+      fibonacciSingleArray([array[0] - 2]);
+};
+
+const fibonacciMultipleArray = (array, check) => {
+  if (check[0]) {
+    return array[0];
+  }
+
+  const firstValue = array[0] - 1;
+  const secondValue = array[0] - 2;
+
+  return (
+      fibonacciMultipleArray([firstValue], [firstValue < 2]) +
+      fibonacciMultipleArray([secondValue], [secondValue < 2])
   );
 };
 

@@ -1,14 +1,19 @@
 {
   "name": "nano-memoize",
-  "version": "v2.0.0",
+  "version": "v3.0.0",
   "description": "Faster than fast, smaller than micro ... a nano speed and nano size memoizer.",
-  "main": "index.js",
-  "types": "index.d.ts",
+  "type:": "module",
+  "source": "src/index.js",
+  "main": "dist/nano-memoize.js",
+  "module": "../index.js",
   "engines": {},
   "sideEffects": false,
   "license": "MIT",
   "scripts": {
-    "test": "mocha ./test/index.js"
+    "test": "mocha ./test/index.js",
+    "prepublish": "npm run build",
+    "watch": "parcel watch",
+    "build": "parcel build"
   },
   "repository": {
     "type": "git",
@@ -47,11 +52,11 @@
     "memoizerific": "^1.11.3",
     "micro-memoize": "^4.0.8",
     "mocha": "^10.0.0",
-    "moize": "^5.4.4",
+    "moize": "^6.1.5",
     "ora": "^1.4.0",
+    "parcel": "^2.8.3",
     "ramda": "^0.26.1",
     "uglify-es": "^3.3.9",
     "underscore": "^1.9.1"
-  },
-  "dependencies": {}
+  }
 }

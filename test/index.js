@@ -1,11 +1,15 @@
 var chai,
 	expect,
-	nanomemoize;
+	nanomemoize,
+	lodash;
 if(typeof(window)==="undefined") {
 	chai = require("chai");
 	expect = chai.expect;
-	nanomemoize = require("../src/nano-memoize.js");
+	lodash = require("lodash");
+	nanomemoize = require("../dist/nano-memoize.js").default;
 }
+
+const deepEquals = require('lodash').isEqual;
 
 function singleArg(arg) {
 	return arg;
@@ -36,19 +40,31 @@ describe("Test",function() {
 		expect(typeof(myFunc)).equal("function");
 		expect(result).equal(0);
 	});
+
 	it("single primitive number arg cached",function() {
 		const value = 1,
 			result = singleArg(value),
-			keyvalues = singleArg.keyValues().primitives;
+			keys = singleArg.keys(),
+			values = singleArg.values();
 		expect(result).to.equal(value);
-		expect(keyvalues[value]).to.equal(value);
+		expect(keys[0]).to.equal(value);
+		expect(values[0]).to.equal(result);
+	});
+	it("clear cache",function() {
+		const value = 1;
+		singleArg.clear();
+		expect(singleArg.values()[0]).to.equal(undefined);
+		expect(singleArg(value)).to.equal(value);
+		expect(singleArg.values()[0]).to.equal(value);
 	});
 	it("single primitive string arg cached",function() {
+		singleArg.clear();
 		const value = "1",
 			result = singleArg(value),
-			keyvalues = singleArg.keyValues().primitives;
-		expect(result).to.equal(value);
-		expect(keyvalues[JSON.stringify(value)]).to.equal(value);
+			keys = singleArg.keys(),
+			values = singleArg.values();
+		expect(keys[0]).to.equal(value);
+		expect(values[0]).to.equal(value);
 	});
 	it("single object arg cached",function() {
 		const value = {p1:1},
@@ -120,16 +136,15 @@ describe("Test",function() {
 	});
 	it("auto-detect vArg",function() {
 		const arg1 = 1, arg2 = 2;
-		expect(varArg.keyValues()).to.equal(null);
 		expect(Array.isArray(varArg.values())).to.equal(true);
 		expect(Array.isArray(varArg(arg1,arg2))).to.equal(true);
 	});
 	it("expires content single primitive",function(done) {
 		const expiring = nanomemoize(function(a) { return a; },{maxAge:5});
 		expect(expiring(1)).to.equal(1);
-		expect(expiring.keyValues().primitives[1]).to.equal(1);
+		expect(expiring.values()[0]).to.equal(1);
 		setTimeout(function()  {
-			expect(expiring.keyValues().primitives[1]).to.equal(undefined);
+			expect(expiring.values()[0]).to.equal(undefined);
 			done();
 		},20)
 	});
@@ -137,9 +152,9 @@ describe("Test",function() {
 		const expiring = nanomemoize(function(a) { return a; },{maxAge:5}),
 			o = {}
 		expect(expiring(o)).to.equal(o);
-		expect(expiring.keyValues().objects.get(o)).to.equal(o);
+		expect(expiring.values()[0]).to.equal(o);
 		setTimeout(function() {
-			expect(expiring.keyValues().objects.get(o)).to.equal(undefined);
+			expect(expiring.values()[0]).to.equal(undefined);
 			done();
 		},20)
 	});
@@ -155,12 +170,13 @@ describe("Test",function() {
 			done();
 		},20)
 	});
-	it("clear cache",function() {
-		const value = 1;
-		expect(singleArg(value)).to.equal(value);
-		expect(singleArg.keyValues().primitives[value]).to.equal(value);
-		singleArg.clear();
-		expect(singleArg.keyValues().primitives[value]).to.equal(undefined);
-		expect(singleArg(value)).to.equal(value);
-	});
+	it("optional equal",function() {
+		const optionalEqual = nanomemoize(function(a,b) { return [a,b]; },{equal:deepEquals}),
+			[a1,a2] = optionalEqual({a:1}, {a:1}),
+			values = optionalEqual.values();
+		expect(deepEquals(a1,a2)).to.equal(true);
+		expect(values[0].length).to.equal(2);
+		expect(deepEquals(values[0][0],a1)).to.equal(true);
+		expect(deepEquals(values[0][1],a2)).to.equal(true);
+	})
 });

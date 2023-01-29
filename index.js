@@ -39,14 +39,14 @@
 			k = [], // multiple arg function arg key cache
 			v = [], // multiple arg function result cache
 			z, // index of zero arg result in v
-			wm = new WeakMap(),
+			cache = new Map(),
 			d = function(key,c,k) { return setTimeout(function() {
 					if(k) { // dealing with multi-arg function, c and k are Arrays
 						c.splice (key,1);
 						k.splice(key,1);
 						return;
 					} // dealing with single arg function, c is a WekMap or Object
-					c instanceof WeakMap  ? c.delete(key) : delete c[key]; 
+					c instanceof Map  ? c.delete(key) : delete c[key];
 				},o.maxAge); },
 			c = o.maxAge>0 && o.maxAge<Infinity ? d : 0, // cache change timeout,
 			eq = o.equals ? o.equals : function(a,b) { return a===b; },
@@ -55,50 +55,43 @@
 			f, // memoized function to return
 			u; // flag indicating a unary arg function is in use for clear operation
 			if(fn.length===1 && !o.equals && !vargs) {
-				// for single argument functions, just use a JS object key look-up
-				f =  (function(a) {
-					// strings must be serialized because cache[1] should not equal or overwrite cache["1"] for value = 1 and value = "1"
-					var t = typeof a;
-					// set chng timeout only when new value computed, hits will not push out the tte, but it is arguable they should not
-					if(!srlz && ((t==="object" && a)  || t==="function")) {
+				// for single argument functions, just use a Map lookup
+				f =  function(a) {
+						if(srlz) a = srlz(a);
 						var r;
-						return wm.get(a) || ((!c||c(a,wm)),wm.set(a,r = fn.call(this, a)),r);
-					}
-					var key = t === "number" || t === "boolean" || a == null ? a : t === "string" ? JSON.stringify(a) : srlz(a);
-					return s[key] || ((!c||c(key,s)),s[key] = fn.call(this, a));
-				}).bind(this);
+						return cache.get(a) || ((!c||c(a,cache)),cache.set(a,r = fn.call(this, a)),r);
+				};
 				u = 1;
 			} else {
 			// for multiple arg functions, loop through a cache of all the args
 			// looking at each arg separately so a test can abort as soon as possible
-			f = (function() {
-				var al = arguments.length;
-				if (!al && z != null) return v[z];
-				var l = maxargs||al,
-					i;
-				for(i=k.length-1;i>=0;i--) { // an array of arrays of args, each array represents a call signature
-					if (!maxargs && k[i].length !== l) continue; // cache miss if called with a different number of args
-					for(var j=l-1;j>=0 && eq(k[i][j],arguments[j]);j--) {	// compare each arg			
-						if(j===0) { return v[i]; } // the args matched
+			f = function() {
+				if(arguments.length || o.equals) {
+					var l = maxargs||arguments.length, kl = k.length, i=kl;
+					while(--i>=0) { // an array of arrays of args, each array represents a call signature
+						if (!maxargs && k[i].length !== l) continue; // cache miss if called with a different number of args
+						var j=l-1;
+						while(j-->=0 && (o.equals ? o.equals(k[i][j],arguments[j]) : k[i][j]===arguments[i])) {	// compare each arg	working back from length or args || maxargs
+							if(j===0) { return v[i]; } // the args matched
+						}
 					}
-				}
-				i = k.length - (i + 1);
-				if (!al && z == null) z = i;
-				// set change timeout only when new value computed, hits will not push out the tte, but it is arguable they should not
-				return (!c||c(i,v,k)),v[i] = fn.apply(this,k[i] = arguments);
-			}).bind(this);
+					i = kl - (i + 1);
+					// set change timeout only when new value computed, hits will not push out the tte, but it is arguable they should not
+					return (!c||c(i,v,k)),v[i] = fn.apply(this,k[i] = arguments);
+				} // set change timeout only when new value computed, hits will not push out the tte, but it is arguable they should not
+				return z===undefined ? ((!c||c(0,v,k)),z = fn.apply(this,arguments)) : z;
+			};
 		}
 		// reset all the caches
 		f.clear = function() {
-			wm = new WeakMap();
+			cache = new Map();
 			s = Object.create(null);
 			k = [];
 			v = [];
 			z = undefined;
 		};
-		f.keys = function() { return u ? null : k.slice(); };
-		f.values = function() { return u ? null : v.slice(); };
-		f.keyValues = function() { return u ? {primitives:assign({},s),objects:wm} : null; };
+		f.keys = function() { return u ? [...cache.keys()] : k.slice(); };
+		f.values = function() { return u ? [...cache.values()] : v.slice(); };
 		return f;
 	}
 	if(typeof(module)!=="undefined") { module.exports = nanomemoize; }
