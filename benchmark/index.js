@@ -487,6 +487,9 @@ const runAlternativeOptionsSuite = () => {
 
         spinner.start();
       })
+      .on('abort',(...args) => {
+          console.log('abort',args);
+      })
       .on('cycle', onCycle)
       .on('complete', () => {
         onComplete();

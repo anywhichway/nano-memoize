@@ -172,6 +172,8 @@ The returned function will also have these methods:
 
 # Release History (reverse chronological order)
 
+2022-01-29 v3.0.1 Fixed build issue where root index.js was not getting updated.
+
 2022-01-28 v3.0.0 Slight size optimization. 25% speed improvement. Moved to module format. There is a known issue with providing `fast-equals` or `lodash.isEqual` as an optional comparison function. Unit tests pass, but the functions fail under load. The `hash-it` object equivalence function does work. A formerly undocumented method `.keyValues()` has been deprecated since it is no longer relevant with the new optimizations.
 
 2022-12-08 v2.0.0 Removed callTimeout from TypeScript typings since it was not implemented and there are no plans to implement. Bumped version to 2.0.0 since this may break some users.
