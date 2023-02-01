@@ -94,8 +94,9 @@ function nanomemoize(fn,o) {
 				while(--i>=0) { // an array of arrays of args, each array represents a call signature
 					if (!maxargs && k[i].length !== l) continue; // cache miss if called with a different number of args
 					var j=l-1;
-					while(j-->=0 && (o.equals ? o.equals(k[i][j],arguments[j]) : k[i][j]===arguments[i])) {	// compare each arg	working back from length or args || maxargs
+					while(j>=0 && ((o.equals && o.equals(k[i][j],arguments[j])) || k[i][j]===arguments[j])) {	// compare each arg	working back from length or args || maxargs
 						if(j===0) { return v[i]; } // the args matched
+						j--;
 					}
 				}
 				i = kl - (i + 1);

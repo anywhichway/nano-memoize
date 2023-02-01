@@ -13,11 +13,10 @@ The speed tests are below.
  
 * For single object argument functions `nano-memoize` is typically 15% faster than its closest competitor `fast-memoize`.
  
-* For multiple primitive argument functions `nano-memoize` is typically 56% faster than  its closest competitor `moize`.
+* For multiple primitive argument functions `nano-memoize` is typically 5% faster than  its closest competitor `moize`.
 
-* For multiple object argument functions `nano-memoize` is typically 5% faster than faster than its closest competitor `moize`.
- 
-* When `deepEquals` tests are used, `nano-memoize` is typically 5-10% faster than micro-memoize.
+* For multiple object argument functions `micro-memoize` is typically first and `nano-memoize` second. However, each are within each other's margin of error.
+
 
 The planetheidea/moize library (which claims to be the fastest) does not include nano-memoize for comparison and the repository is not accepting comments or a pull request for some technical reason. The repository has been forked and its own benchmarking has been updated and run to confirm the results below.
 
@@ -53,71 +52,71 @@ Starting cycles for functions with a single object parameter...
 ┌───────────────┬─────────────┬──────────────────────────┬─────────────┐
 │ Name          │ Ops / sec   │ Relative margin of error │ Sample size │
 ├───────────────┼─────────────┼──────────────────────────┼─────────────┤
-│ nano-memoize  │ 144,165,784 │ ± 1.97%                  │ 84          │
+│ nano-memoize  │ 149,402,848 │ ± 1.20%                  │ 90          │
 ├───────────────┼─────────────┼──────────────────────────┼─────────────┤
-│ fast-memoize  │ 122,718,470 │ ± 1.63%                  │ 86          │
+│ fast-memoize  │ 121,117,510 │ ± 2.41%                  │ 86          │
 ├───────────────┼─────────────┼──────────────────────────┼─────────────┤
-│ iMemoized     │ 100,930,919 │ ± 1.49%                  │ 85          │
+│ iMemoized     │ 98,480,257  │ ± 3.36%                  │ 85          │
 ├───────────────┼─────────────┼──────────────────────────┼─────────────┤
-│ moize         │ 95,450,776  │ ± 1.85%                  │ 84          │
+│ micro-memoize │ 97,781,728  │ ± 1.36%                  │ 87          │
 ├───────────────┼─────────────┼──────────────────────────┼─────────────┤
-│ micro-memoize │ 93,751,013  │ ± 1.66%                  │ 85          │
+│ moize         │ 94,370,945  │ ± 4.58%                  │ 84          │
 ├───────────────┼─────────────┼──────────────────────────┼─────────────┤
-│ lodash        │ 38,568,294  │ ± 2.87%                  │ 83          │
+│ lodash        │ 41,298,824  │ ± 2.60%                  │ 84          │
 ├───────────────┼─────────────┼──────────────────────────┼─────────────┤
-│ lru-memoize   │ 37,967,319  │ ± 1.63%                  │ 81          │
+│ lru-memoize   │ 39,315,541  │ ± 1.55%                  │ 86          │
 ├───────────────┼─────────────┼──────────────────────────┼─────────────┤
-│ underscore    │ 34,559,912  │ ± 1.78%                  │ 86          │
+│ underscore    │ 33,803,044  │ ± 1.66%                  │ 87          │
 ├───────────────┼─────────────┼──────────────────────────┼─────────────┤
-│ memoizee      │ 26,782,013  │ ± 1.30%                  │ 87          │
+│ memoizee      │ 27,298,946  │ ± 2.40%                  │ 86          │
 ├───────────────┼─────────────┼──────────────────────────┼─────────────┤
-│ addy-osmani   │ 13,079,424  │ ± 3.60%                  │ 75          │
+│ addy-osmani   │ 16,003,489  │ ± 1.72%                  │ 87          │
 ├───────────────┼─────────────┼──────────────────────────┼─────────────┤
-│ memoizerific  │ 12,580,254  │ ± 1.39%                  │ 87          │
+│ memoizerific  │ 12,502,443  │ ± 1.33%                  │ 86          │
 └───────────────┴─────────────┴──────────────────────────┴─────────────┘
 
 Starting cycles for functions with multiple parameters that contain only primitives...
 ┌───────────────┬────────────┬──────────────────────────┬─────────────┐
 │ Name          │ Ops / sec  │ Relative margin of error │ Sample size │
 ├───────────────┼────────────┼──────────────────────────┼─────────────┤
-│ nano-memoize  │ 86,993,027 │ ± 1.48%                  │ 88          │
+│ nano-memoize  │ 60,955,221 │ ± 1.22%                  │ 88          │
 ├───────────────┼────────────┼──────────────────────────┼─────────────┤
-│ moize         │ 49,205,886 │ ± 1.69%                  │ 83          │
+│ moize         │ 53,951,415 │ ± 1.65%                  │ 87          │
 ├───────────────┼────────────┼──────────────────────────┼─────────────┤
-│ micro-memoize │ 45,253,759 │ ± 4.09%                  │ 79          │
+│ micro-memoize │ 49,832,161 │ ± 3.02%                  │ 83          │
 ├───────────────┼────────────┼──────────────────────────┼─────────────┤
-│ lru-memoize   │ 29,224,659 │ ± 1.82%                  │ 85          │
+│ lru-memoize   │ 31,131,459 │ ± 1.75%                  │ 88          │
 ├───────────────┼────────────┼──────────────────────────┼─────────────┤
-│ memoizee      │ 17,142,573 │ ± 1.78%                  │ 81          │
+│ memoizee      │ 18,206,413 │ ± 1.41%                  │ 84          │
 ├───────────────┼────────────┼──────────────────────────┼─────────────┤
-│ iMemoized     │ 11,665,279 │ ± 3.13%                  │ 87          │
+│ iMemoized     │ 12,533,169 │ ± 1.34%                  │ 88          │
 ├───────────────┼────────────┼──────────────────────────┼─────────────┤
-│ memoizerific  │ 7,001,983  │ ± 3.62%                  │ 83          │
+│ memoizerific  │ 7,850,796  │ ± 1.36%                  │ 85          │
 ├───────────────┼────────────┼──────────────────────────┼─────────────┤
-│ addy-osmani   │ 4,129,598  │ ± 1.46%                  │ 87          │
+│ addy-osmani   │ 4,186,545  │ ± 1.64%                  │ 86          │
 ├───────────────┼────────────┼──────────────────────────┼─────────────┤
-│ fast-memoize  │ 997,323    │ ± 3.34%                  │ 79          │
+│ fast-memoize  │ 1,066,349  │ ± 1.71%                  │ 88          │
 └───────────────┴────────────┴──────────────────────────┴─────────────┘
 
 Starting cycles for functions with multiple parameters that contain objects...
 ┌───────────────┬────────────┬──────────────────────────┬─────────────┐
 │ Name          │ Ops / sec  │ Relative margin of error │ Sample size │
 ├───────────────┼────────────┼──────────────────────────┼─────────────┤
-│ nano-memoize  │ 52,799,044 │ ± 4.24%                  │ 76          │
+│ micro-memoize │ 52,314,935 │ ± 2.58%                  │ 86          │
 ├───────────────┼────────────┼──────────────────────────┼─────────────┤
-│ moize         │ 49,973,673 │ ± 2.35%                  │ 84          │
+│ nano-memoize  │ 49,070,846 │ ± 1.45%                  │ 86          │
 ├───────────────┼────────────┼──────────────────────────┼─────────────┤
-│ micro-memoize │ 44,294,224 │ ± 3.18%                  │ 75          │
+│ lru-memoize   │ 27,581,699 │ ± 4.63%                  │ 77          │
 ├───────────────┼────────────┼──────────────────────────┼─────────────┤
-│ lru-memoize   │ 29,373,487 │ ± 3.30%                  │ 82          │
+│ moize         │ 16,383,560 │ ± 2.38%                  │ 67          │
 ├───────────────┼────────────┼──────────────────────────┼─────────────┤
-│ memoizee      │ 16,355,420 │ ± 3.16%                  │ 83          │
+│ memoizee      │ 15,915,550 │ ± 4.57%                  │ 79          │
 ├───────────────┼────────────┼──────────────────────────┼─────────────┤
-│ memoizerific  │ 7,556,503  │ ± 4.16%                  │ 79          │
+│ memoizerific  │ 7,701,634  │ ± 4.69%                  │ 76          │
 ├───────────────┼────────────┼──────────────────────────┼─────────────┤
-│ addy-osmani   │ 938,180    │ ± 19.16%                 │ 65          │
+│ addy-osmani   │ 1,251,647  │ ± 1.81%                  │ 84          │
 ├───────────────┼────────────┼──────────────────────────┼─────────────┤
-│ fast-memoize  │ 671,400    │ ± 3.54%                  │ 81          │
+│ fast-memoize  │ 728,772    │ ± 3.53%                  │ 83          │
 └───────────────┴────────────┴──────────────────────────┴─────────────┘
 
 # Usage
@@ -171,6 +170,8 @@ The returned function will also have these methods:
 
 
 # Release History (reverse chronological order)
+
+2022-01-01 v3.0.2 Fixed https://github.com/anywhichway/nano-memoize/issues/52 with custom equals functions not consistently working. Slight performance degradation, but still generally the fastest.
 
 2022-01-29 v3.0.1 Fixed build issue where root index.js was not getting updated.
 

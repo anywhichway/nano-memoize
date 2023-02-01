@@ -11,6 +11,8 @@ if(typeof(window)==="undefined") {
 
 const deepEquals = require('lodash').isEqual;
 
+const fastDeepEqual = require('fast-deep-equal/es6');
+
 function singleArg(arg) {
 	return arg;
 }
@@ -24,8 +26,6 @@ singleArg = nanomemoize(singleArg);
 multiplArg = nanomemoize(multipleArg);
 
 varArg = nanomemoize(function() { return [].slice.call(arguments); });
-
-callTimeout = nanomemoize(function(a,b,cb) { var result = a + b; cb(result); return result; },{maxArgs:2,callTimeout:0});
 
 describe("Test",function() {
 	it("memoize functions with function arg", function() {
@@ -126,6 +126,7 @@ describe("Test",function() {
 		expect(res1).to.not.equal(res2);
 	});
 	it("callTimeout",function(done) {
+		const callTimeout = nanomemoize(function(a,b,cb) { var result = a + b; cb(result); return result; },{maxArgs:2,callTimeout:10});
 		let result = 0;
 		const res1 = callTimeout(1,2,(value) => result = value + 1);
 		expect(res1).to.equal(3);
@@ -170,13 +171,22 @@ describe("Test",function() {
 			done();
 		},20)
 	});
-	it("optional equal",function() {
-		const optionalEqual = nanomemoize(function(a,b) { return [a,b]; },{equal:deepEquals}),
+	it("optional equal - deepEquals",function() {
+		const optionalEqual = nanomemoize(function(a,b) { return [a,b]; },{equals:deepEquals}),
 			[a1,a2] = optionalEqual({a:1}, {a:1}),
 			values = optionalEqual.values();
 		expect(deepEquals(a1,a2)).to.equal(true);
 		expect(values[0].length).to.equal(2);
 		expect(deepEquals(values[0][0],a1)).to.equal(true);
 		expect(deepEquals(values[0][1],a2)).to.equal(true);
+	})
+	it("optional equal - fastDeepEquals",function() {
+		const optionalEqual = nanomemoize(function(a,b) { return [a,b]; },{equals:fastDeepEqual}),
+			[a1,a2] = optionalEqual({a:1}, {a:1}),
+			values = optionalEqual.values();
+		expect(fastDeepEqual(a1,a2)).to.equal(true);
+		expect(values[0].length).to.equal(2);
+		expect(fastDeepEqual(values[0][0],a1)).to.equal(true);
+		expect(fastDeepEqual(values[0][1],a2)).to.equal(true);
 	})
 });

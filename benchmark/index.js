@@ -44,12 +44,13 @@ const memoizerific = require('memoizerific');
 const lruMemoize = require('lru-memoize').default;
 const microMemoize = require('micro-memoize'); 
 const iMemoized = require('iMemoized');
-const nanomemoize = require('../index.js');
+const nanomemoize = require('../dist/nano-memoize.js').default;
 const moize = require('moize');
 
 
 const deepEquals = require('lodash').isEqual;
-const fastDeepEqual = require('fast-equals').deepEqual;
+const fastEquals = require('fast-equals').deepEqual;
+const fastDeepEqual = require('fast-deep-equal/ES6');
 const hashItEquals = require('hash-it').isEqual;
 
 const showResults = (benchmarkResults) => {
@@ -442,7 +443,7 @@ const runAlternativeOptionsSuite = () => {
   });
 
   const mMicroMemoizeFastDeep = microMemoize(fibonacciMultipleDeepEqual, {
-    isEqual: fastDeepEqual
+    isEqual: fastEquals
   });
 
   const mMicroMemoizeHashIt = microMemoize(fibonacciMultipleDeepEqual, {
@@ -452,7 +453,10 @@ const runAlternativeOptionsSuite = () => {
   const mNanoDeep = nanomemoize(fibonacciMultipleDeepEqual, {
     equals: deepEquals
   });
-  const mNanoFastDeep = nanomemoize(fibonacciMultipleDeepEqual, {
+  const mNanoFastEquals = nanomemoize(fibonacciMultipleDeepEqual, {
+    equals: fastEquals
+  });
+  const mNanoFastDeepEquals = nanomemoize(fibonacciMultipleDeepEqual, {
     equals: fastDeepEqual
   });
   const mNanoHashIt = nanomemoize(fibonacciMultipleDeepEqual, {
@@ -461,24 +465,27 @@ const runAlternativeOptionsSuite = () => {
 
   return new Promise((resolve) => {
     fibonacciSuite
+        .add('micro-memoize deep equals (lodash isEqual)', () => {
+          mMicroMemoizeDeep(fibonacciNumber);
+        })
+        .add('micro-memoize deep equals (fast-equals deepEqual)', () => {
+          mMicroMemoizeFastDeep(fibonacciNumber);
+        })
+        .add('micro-memoize deep equals (hash-it isEqual)', () => {
+          mMicroMemoizeHashIt(fibonacciNumber);
+        })
 	    .add('nanomemoize deep equals (lodash isEqual)', () => {
 	    	mNanoDeep(fibonacciNumber);
 	    })
-	    .add('nanomemoize deep equals (fast-equals deepEqual)', () => {
-	      mNanoFastDeep(fibonacciNumber);
+	    .add('nanomemoize fast equals (fast-equals deepEqual)', () => {
+	      mNanoFastEquals(fibonacciNumber);
 	    })
+        .add('nanomemoize fast deep equals (fast-deep-equal/ES6)', () => {
+          mNanoFastDeepEquals(fibonacciNumber);
+        })
 	    .add('nanomemoize deep equals (hash-it isEqual)', () => {
 	      mNanoHashIt(fibonacciNumber);
 	    })
-      .add('micro-memoize deep equals (lodash isEqual)', () => {
-        mMicroMemoizeDeep(fibonacciNumber);
-      })
-      .add('micro-memoize deep equals (fast-equals deepEqual)', () => {
-        mMicroMemoizeFastDeep(fibonacciNumber);
-      })
-      .add('micro-memoize deep equals (hash-it isEqual)', () => {
-        mMicroMemoizeHashIt(fibonacciNumber);
-      })
       .on('start', () => {
         console.log(''); // eslint-disable-line no-console
         console.log('Starting cycles for alternative cache types...'); // eslint-disable-line no-console

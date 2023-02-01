@@ -82,9 +82,10 @@ function $4fa36e821943b400$export$22f15dd4e5be7e52(fn, o) {
             while(--i >= 0){
                 if (!maxargs && k[i].length !== l) continue; // cache miss if called with a different number of args
                 var j = l - 1;
-                while(j-- >= 0 && (o.equals ? o.equals(k[i][j], arguments[j]) : k[i][j] === arguments[i])){
+                while(j >= 0 && (o.equals && o.equals(k[i][j], arguments[j]) || k[i][j] === arguments[j])){
                     if (j === 0) return v[i];
                      // the args matched
+                    j--;
                 }
             }
             i = kl - (i + 1);
