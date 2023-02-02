@@ -465,6 +465,18 @@ const runAlternativeOptionsSuite = () => {
 
   return new Promise((resolve) => {
     fibonacciSuite
+        .add('nanomemoize deep equals (lodash isEqual)', () => {
+          mNanoDeep(fibonacciNumber);
+        })
+        .add('nanomemoize fast equals (fast-equals deepEqual/ES6)', () => {
+          mNanoFastEquals(fibonacciNumber);
+        })
+        .add('nanomemoize fast deep equals (fast-deep-equal/ES6)', () => {
+          mNanoFastDeepEquals(fibonacciNumber);
+        })
+        .add('nanomemoize deep equals (hash-it isEqual)', () => {
+          mNanoHashIt(fibonacciNumber);
+        })
         .add('micro-memoize deep equals (lodash isEqual)', () => {
           mMicroMemoizeDeep(fibonacciNumber);
         })
@@ -474,18 +486,6 @@ const runAlternativeOptionsSuite = () => {
         .add('micro-memoize deep equals (hash-it isEqual)', () => {
           mMicroMemoizeHashIt(fibonacciNumber);
         })
-	    .add('nanomemoize deep equals (lodash isEqual)', () => {
-	    	mNanoDeep(fibonacciNumber);
-	    })
-	    .add('nanomemoize fast equals (fast-equals deepEqual)', () => {
-	      mNanoFastEquals(fibonacciNumber);
-	    })
-        .add('nanomemoize fast deep equals (fast-deep-equal/ES6)', () => {
-          mNanoFastDeepEquals(fibonacciNumber);
-        })
-	    .add('nanomemoize deep equals (hash-it isEqual)', () => {
-	      mNanoHashIt(fibonacciNumber);
-	    })
       .on('start', () => {
         console.log(''); // eslint-disable-line no-console
         console.log('Starting cycles for alternative cache types...'); // eslint-disable-line no-console

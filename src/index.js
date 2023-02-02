@@ -89,26 +89,26 @@ function nanomemoize(fn,o) {
 		// for multiple arg functions, loop through a cache of all the args
 		// looking at each arg separately so a test can abort as soon as possible
 		f = function() {
-			if(arguments.length || o.equals) {
-				var l = maxargs||arguments.length, kl = k.length, i=kl;
-				while(--i>=0) { // an array of arrays of args, each array represents a call signature
-					if (!maxargs && k[i].length !== l) continue; // cache miss if called with a different number of args
-					var j=l-1;
-					while(j>=0 && ((o.equals && o.equals(k[i][j],arguments[j])) || k[i][j]===arguments[j])) {	// compare each arg	working back from length or args || maxargs
-						if(j===0) { return v[i]; } // the args matched
-						j--;
+			var l = maxargs||arguments.length, kl = k.length, i =-1;
+			while(++i<kl) { // k is an array of arrays of args, each array represents a call signature
+				var args = k[i];
+				if (maxargs!=null || args.length === l) {
+					var j = 0;
+					while (j < l && eq(arguments[j], args[j])) {	// compare each arg
+						j++;
 					}
+					if (j === l) {
+						return v[i];
+					} // the args matched;
 				}
-				i = kl - (i + 1);
-				// set change timeout only when new value computed, hits will not push out the tte, but it is arguable they should not
-				return (!c||c(i,v,k)),v[i] = fn.apply(this,k[i] = arguments);
-			} // set change timeout only when new value computed, hits will not push out the tte, but it is arguable they should not
-			return z===undefined ? ((!c||c(0,v,k)),z = fn.apply(this,arguments)) : z;
-		};
+			}
+			// set change timeout only when new value computed, hits will not push out the tte, but it is arguable they should not
+			return (!c||c(i,v,k)),v[i] = fn.apply(this,k[i] = arguments);
+		}
 	}
 	// reset all the caches
 	f.clear = function() {
-		cache = new Map();
+		cache.clear();
 		s = Object.create(null);
 		k = [];
 		v = [];

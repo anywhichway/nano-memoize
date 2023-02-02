@@ -3,22 +3,23 @@
 
 # Introduction
 
-Version 3.x.x of nano-memoize was modified to use newer versions of JavaScript built-in classes and take advantage of current v8 loop optimizations. As a result, the minified/brotli size at 733 bytes is slightly smaller and it is generally more than 25% faster that v2.x.x and v1.x.x. 
+Version 3.x.x of nano-memoize was modified to use newer versions of JavaScript built-in classes and take advantage of current v8 loop optimizations. As a result, the minified/brotli size at 728 bytes is slightly smaller and it is slightly faster that v2.x.x and v1.x.x. 
 
 Our tests show it is the nano-memoize fastest openly available JavaScript memoizer for single and multiple argument functions accepting primitives and objects. However, I have found that benchmarks can vary dramatically from O/S to O/S or Node version to Node version, so I could be wrong. These tests were run on a Windows 10 Pro 64bit 2.8ghz i7 machine with 16GB RAM and Node v18.13.0. Garbage collection was forced between each sample run to minimize its impact on results.
 
 The speed tests are below.
  
-* For single primitive argument functions `nano-memoize` is typically 1% faster than `fast-memoize` and `micro-emoize` faster. However, all three are within the margin of error of the other.
+* For single primitive argument functions `nano-memoize` is typically 2% faster than `fast-memoize` and `micro-emoize`. However, all three are within the margin of error of the other.
  
 * For single object argument functions `nano-memoize` is typically 15% faster than its closest competitor `fast-memoize`.
  
-* For multiple primitive argument functions `nano-memoize` is typically 5% faster than  its closest competitor `moize`.
+* For multiple primitive argument functions `nano-memoize`, `moize` and `micro-memoize` are always the three fastest and within each others margin of error.
 
-* For multiple object argument functions `micro-memoize` is typically first and `nano-memoize` second. However, each are within each other's margin of error.
+* For multiple object argument functions `nano-memoize`, `moize` and `micro-memoize` are always the three fastest and within each others margin of error.
 
+* For custom equality functions 'nano-memoize` and `micro-memoize vary in speed depending on the equality function used. See the table below.
 
-The planetheidea/moize library (which claims to be the fastest) does not include nano-memoize for comparison and the repository is not accepting comments or a pull request for some technical reason. The repository has been forked and its own benchmarking has been updated and run to confirm the results below.
+The planetheidea/moize library (which claims to be the fastest on average) does not include `nano-memoize` for comparison and the repository is not accepting comments or a pull request for some technical reason. The repository has been forked and its own benchmarking has been updated and run to confirm the results below.
 
 
 Starting cycles for functions with a single primitive parameter...
@@ -79,24 +80,25 @@ Starting cycles for functions with multiple parameters that contain only primiti
 ┌───────────────┬────────────┬──────────────────────────┬─────────────┐
 │ Name          │ Ops / sec  │ Relative margin of error │ Sample size │
 ├───────────────┼────────────┼──────────────────────────┼─────────────┤
-│ nano-memoize  │ 60,955,221 │ ± 1.22%                  │ 88          │
+│ nano-memoize  │ 52,311,452 │ ± 2.17%                  │ 84          │
 ├───────────────┼────────────┼──────────────────────────┼─────────────┤
-│ moize         │ 53,951,415 │ ± 1.65%                  │ 87          │
+│ moize         │ 31,101,105 │ ± 19.97%                 │ 54          │
 ├───────────────┼────────────┼──────────────────────────┼─────────────┤
-│ micro-memoize │ 49,832,161 │ ± 3.02%                  │ 83          │
+│ micro-memoize │ 28,405,348 │ ± 17.84%                 │ 50          │
 ├───────────────┼────────────┼──────────────────────────┼─────────────┤
-│ lru-memoize   │ 31,131,459 │ ± 1.75%                  │ 88          │
+│ lru-memoize   │ 28,399,841 │ ± 2.86%                  │ 82          │
 ├───────────────┼────────────┼──────────────────────────┼─────────────┤
-│ memoizee      │ 18,206,413 │ ± 1.41%                  │ 84          │
+│ memoizee      │ 16,189,445 │ ± 3.63%                  │ 81          │
 ├───────────────┼────────────┼──────────────────────────┼─────────────┤
-│ iMemoized     │ 12,533,169 │ ± 1.34%                  │ 88          │
+│ iMemoized     │ 11,294,320 │ ± 3.18%                  │ 80          │
 ├───────────────┼────────────┼──────────────────────────┼─────────────┤
-│ memoizerific  │ 7,850,796  │ ± 1.36%                  │ 85          │
+│ memoizerific  │ 6,676,755  │ ± 3.79%                  │ 76          │
 ├───────────────┼────────────┼──────────────────────────┼─────────────┤
-│ addy-osmani   │ 4,186,545  │ ± 1.64%                  │ 86          │
+│ addy-osmani   │ 3,986,098  │ ± 3.61%                  │ 85          │
 ├───────────────┼────────────┼──────────────────────────┼─────────────┤
-│ fast-memoize  │ 1,066,349  │ ± 1.71%                  │ 88          │
+│ fast-memoize  │ 953,862    │ ± 4.24%                  │ 77          │
 └───────────────┴────────────┴──────────────────────────┴─────────────┘
+
 
 Starting cycles for functions with multiple parameters that contain objects...
 ┌───────────────┬────────────┬──────────────────────────┬─────────────┐
@@ -104,11 +106,11 @@ Starting cycles for functions with multiple parameters that contain objects...
 ├───────────────┼────────────┼──────────────────────────┼─────────────┤
 │ micro-memoize │ 52,314,935 │ ± 2.58%                  │ 86          │
 ├───────────────┼────────────┼──────────────────────────┼─────────────┤
+│ moize         │ 51,275,262 │ ± 2.11%                  │ 82          │
+├───────────────┼────────────┼──────────────────────────┼─────────────┤
 │ nano-memoize  │ 49,070,846 │ ± 1.45%                  │ 86          │
 ├───────────────┼────────────┼──────────────────────────┼─────────────┤
 │ lru-memoize   │ 27,581,699 │ ± 4.63%                  │ 77          │
-├───────────────┼────────────┼──────────────────────────┼─────────────┤
-│ moize         │ 16,383,560 │ ± 2.38%                  │ 67          │
 ├───────────────┼────────────┼──────────────────────────┼─────────────┤
 │ memoizee      │ 15,915,550 │ ± 4.57%                  │ 79          │
 ├───────────────┼────────────┼──────────────────────────┼─────────────┤
@@ -118,6 +120,26 @@ Starting cycles for functions with multiple parameters that contain objects...
 ├───────────────┼────────────┼──────────────────────────┼─────────────┤
 │ fast-memoize  │ 728,772    │ ± 3.53%                  │ 83          │
 └───────────────┴────────────┴──────────────────────────┴─────────────┘
+
+Starting cycles for alternative cache types...
+┌─────────────────────────────────────────────────────┬─────────────┬──────────────────────────┬─────────────┐
+│ Name                                                │ Ops / sec   │ Relative margin of error │ Sample size │
+├─────────────────────────────────────────────────────┼─────────────┼──────────────────────────┼─────────────┤
+│ nanomemoize deep equals (hash-it isEqual)           │ 112,560,448 │ ± 1.35%                  │ 85          │
+├─────────────────────────────────────────────────────┼─────────────┼──────────────────────────┼─────────────┤
+│ micro-memoize deep equals (lodash isEqual)          │ 83,402,392  │ ± 2.88%                  │ 80          │
+├─────────────────────────────────────────────────────┼─────────────┼──────────────────────────┼─────────────┤
+│ micro-memoize deep equals (hash-it isEqual)         │ 70,493,317  │ ± 2.46%                  │ 83          │
+├─────────────────────────────────────────────────────┼─────────────┼──────────────────────────┼─────────────┤
+│ nanomemoize deep equals (lodash isEqual)            │ 63,040,211  │ ± 1.61%                  │ 84          │
+├─────────────────────────────────────────────────────┼─────────────┼──────────────────────────┼─────────────┤
+│ nanomemoize fast equals (fast-equals deepEqual/ES6) │ 61,878,364  │ ± 1.73%                  │ 84          │
+├─────────────────────────────────────────────────────┼─────────────┼──────────────────────────┼─────────────┤
+│ micro-memoize deep equals (fast-equals deepEqual)   │ 56,841,180  │ ± 3.10%                  │ 80          │
+├─────────────────────────────────────────────────────┼─────────────┼──────────────────────────┼─────────────┤
+│ nanomemoize fast deep equals (fast-deep-equal/ES6)  │ 41,010,681  │ ± 2.44%                  │ 82          │
+└─────────────────────────────────────────────────────┴─────────────┴──────────────────────────┴─────────────┘
+
 
 # Usage
 
@@ -144,9 +166,9 @@ The shape of options is:
 {
   // only use the provided maxArgs for cache look-up, useful for ignoring final callback arguments
   maxArgs: number,
-  // go ahead and call memoized multi-args functions after a number of milliseconds via a timeout after the 
+  // call last argument of memoized multi-args functions after a number of milliseconds via a timeout after the 
   // cached result has been returned, perhaps to ensure that callbacks are invoked, does not cache the timemout result
-  // e.g. nanomemoize(function(a,b,cb) { var result = a + b; cb(result); return result; },{maxArgs:2,callTimeout:0});
+  // e.g. nanomemoize(function(a,b,callback) { var result = a + b; callback(result); return result; },{maxArgs:2,callTimeout:0});
   callTimeout: number,
   // number of milliseconds to cache a result, set to `Infinity` or `-1` to never create timers or expire
   maxAge: number, 
@@ -171,7 +193,9 @@ The returned function will also have these methods:
 
 # Release History (reverse chronological order)
 
-2022-01-01 v3.0.2 Fixed https://github.com/anywhichway/nano-memoize/issues/52 with custom equals functions not consistently working. Slight performance degradation, but still generally the fastest.
+2022-02-02 v3.0.3 Added unit test for `maxAge`. Adjusted varArg unit tests for more accuracy. Slight optimizations to multi argument memoized functions. Slight improvement to cache clearing that may reduce GC. Updated license file for copyright period. Updated docs on `callTimeout` for clarity.
+
+2022-02-01 v3.0.2 Fixed https://github.com/anywhichway/nano-memoize/issues/52 with custom equals functions not consistently working. `fast-equals` or `lodash.isEqual` now work. Slight performance degradation, but still generally the fastest.
 
 2022-01-29 v3.0.1 Fixed build issue where root index.js was not getting updated.
 

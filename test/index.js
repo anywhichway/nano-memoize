@@ -116,14 +116,16 @@ describe("Test",function() {
 	it("multiple varg mixed length",function() {
 		const res1 = varArg("multi1", "multi2");
 		const res2 = varArg("multi1");
-		expect(res1).to.not.equal(res2);
+		expect(res1.length).to.equal(2);
+		expect(res2.length).to.equal(1);
 	});
 	it("zero varg cached", function() {
 		const res1 = varArg();
 		const res2 = varArg("multi3");
 		const res3 = varArg();
-		expect(res1).to.equal(res3);
-		expect(res1).to.not.equal(res2);
+		expect(res1.length).to.equal(0);
+		expect(res2.length).to.equal(1);
+		expect(res3.length).to.equal(0);
 	});
 	it("callTimeout",function(done) {
 		const callTimeout = nanomemoize(function(a,b,cb) { var result = a + b; cb(result); return result; },{maxArgs:2,callTimeout:10});
@@ -134,6 +136,38 @@ describe("Test",function() {
 			expect(result).to.equal(4);
 			done();
 		},100)
+	});
+	it("maxAge - flush cache",function(done) {
+			const memoized = nanomemoize((a,b) => a + b,{maxAge: 100})
+			let keys = memoized.keys(),
+				values = memoized.values();
+			expect(keys.length).to.equal(0);
+			expect(values.length).to.equal(0);
+			const response = memoized(1,2);
+			expect(response).to.equal(3);
+			keys = memoized.keys();
+			values = memoized.values();
+			expect(keys.length).to.equal(1);
+			expect(keys[0][0]).to.equal(1);
+			expect(keys[0][1]).to.equal(2);
+			expect(values.length).to.equal(1);
+			expect(values[0]).to.equal(3);
+			setTimeout(() => {
+				let keys = memoized.keys(),
+					values = memoized.values();
+				expect(keys.length).to.equal(0); // cache cleared
+				expect(values.length).to.equal(0); // cache cleared
+				const response = memoized(1,3);
+				expect(response).to.equal(4);
+				keys = memoized.keys();
+				values = memoized.values();
+				expect(keys.length).to.equal(1); // new cache value
+				expect(keys[0][0]).to.equal(1);
+				expect(keys[0][1]).to.equal(3);
+				expect(values.length).to.equal(1);
+				expect(values[0]).to.equal(4);
+				done();
+			},1000)
 	});
 	it("auto-detect vArg",function() {
 		const arg1 = 1, arg2 = 2;
