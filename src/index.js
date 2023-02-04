@@ -22,26 +22,6 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 SOFTWARE.
 */
 
-
-	var assign = Object.assign;
-if(typeof(assign)!=="function") {
-	assign = function() {
-		var a = arguments,
-			o = arguments[0];
-		if (o === null || o === undefined) {
-			throw new TypeError("Cannot convert undefined or null to object");
-		}
-		o = Object(o);
-		for(var i=1;i<a.length;i++) {
-			if(a[i] && typeof(a[i])==="object") {
-				for(var k in a[i]) {
-					o[k] = a[i][k];
-				}
-			}
-		}
-		return o;
-	};
-}
 function vrgs(f) {
 		var s = f+"",
 			i = s.indexOf("...");
@@ -58,31 +38,31 @@ function nanomemoize(fn,o) {
 	*/
 	o || (o={});
 	var vargs = o.vargs || vrgs(fn),
-		s = Object.create(null), // single arg function key/value cache
 		k = [], // multiple arg function arg key cache
 		v = [], // multiple arg function result cache
-		z, // index of zero arg result in v
-		cache = new Map(),
-		d = function(key,c,k) { return setTimeout(function() {
-				if(k) { // dealing with multi-arg function, c and k are Arrays
-					c.splice (key,1);
-					k.splice(key,1);
-					return;
-				} // dealing with single arg function, c is a WekMap or Object
-				c instanceof Map  ? c.delete(key) : delete c[key];
-			},o.maxAge); },
+		cache = new Map(), // single arg function key/value cache
+		u, // flag indicating a unary arg function is in use for clear operation
+		d = function(key) { return setTimeout(function() {
+			if(u) {
+				cache.delete(key);
+				return;
+			}
+			// dealing with multi-arg function, c and k are Arrays
+			k.splice (key,1);
+			v.splice(key,1);
+			},o.maxAge);
+		},
 		c = o.maxAge>0 && o.maxAge<Infinity ? d : 0, // cache change timeout,
-		eq = o.equals ? o.equals : function(a,b) { return a===b; },
+		eq = o.equals ? o.equals : 0,
 		maxargs = o.maxArgs,
 		srlz = o.serializer,
-		f, // memoized function to return
-		u; // flag indicating a unary arg function is in use for clear operation
+		f; // memoized function to return
 		if(fn.length===1 && !o.equals && !vargs) {
 			// for single argument functions, just use a Map lookup
 			f =  function(a) {
 					if(srlz) a = srlz(a);
 					var r;
-					return cache.get(a) || ((!c||c(a,cache)),cache.set(a,r = fn.call(this, a)),r);
+					return cache.get(a) || ((!c||c(a)),cache.set(a,r = fn.call(this, a)),r);
 			};
 			u = 1;
 		} else {
@@ -93,31 +73,24 @@ function nanomemoize(fn,o) {
 			while(++i<kl) { // k is an array of arrays of args, each array represents a call signature
 				var args = k[i];
 				if (maxargs!=null || args.length === l) {
-					var j = 0;
-					while (j < l && eq(arguments[j], args[j])) {	// compare each arg
-						j++;
-					}
-					if (j === l) {
-						return v[i];
-					} // the args matched;
+					var j = -1;
+					while (++j < l && (eq ? eq(arguments[j], args[j]) : arguments[j]===args[j])) {	}// compare each arg
+					if (j === l) return v[i] //the args matched;
 				}
 			}
 			// set change timeout only when new value computed, hits will not push out the tte, but it is arguable they should not
-			return (!c||c(i,v,k)),v[i] = fn.apply(this,k[i] = arguments);
+			return (!c||c(i)),v[i] = fn.apply(this,k[i] = arguments);
 		}
 	}
 	// reset all the caches
 	f.clear = function() {
 		cache.clear();
-		s = Object.create(null);
 		k = [];
 		v = [];
-		z = undefined;
 	};
 	f.keys = function() { return u ? [...cache.keys()] : k.slice(); };
 	f.values = function() { return u ? [...cache.values()] : v.slice(); };
 	return f;
 }
-
 export {nanomemoize,nanomemoize as default}
 

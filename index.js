@@ -20,17 +20,7 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 	OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-*/ var $cf838c15c8b009ba$var$assign = Object.assign;
-if (typeof $cf838c15c8b009ba$var$assign !== "function") $cf838c15c8b009ba$var$assign = function() {
-    var a = arguments, o = arguments[0];
-    if (o === null || o === undefined) throw new TypeError("Cannot convert undefined or null to object");
-    o = Object(o);
-    for(var i = 1; i < a.length; i++){
-        if (a[i] && typeof a[i] === "object") for(var k in a[i])o[k] = a[i][k];
-    }
-    return o;
-};
-function $cf838c15c8b009ba$var$vrgs(f) {
+*/ function $cf838c15c8b009ba$var$vrgs(f) {
     var s = f + "", i = s.indexOf("...");
     return i >= 0 && (i < s.indexOf(")") || s.indexOf("arguments") >= 0);
 }
@@ -43,24 +33,23 @@ function $cf838c15c8b009ba$export$22f15dd4e5be7e52(fn, o) {
 		vargs = vrgs(fn) // set to true if function may have variable or beyond-signature arguments, default is best attempt at infering
 	  } = {}
 	*/ o || (o = {});
-    var vargs = o.vargs || $cf838c15c8b009ba$var$vrgs(fn), s = Object.create(null), k = [], v = [], z, cache = new Map(), d = function(key, c, k) {
+    var vargs = o.vargs || $cf838c15c8b009ba$var$vrgs(fn), k = [], v = [], cache = new Map(), u, d = function(key) {
         return setTimeout(function() {
-            if (k) {
-                c.splice(key, 1);
-                k.splice(key, 1);
+            if (u) {
+                cache.delete(key);
                 return;
-            } // dealing with single arg function, c is a WekMap or Object
-            c instanceof Map ? c.delete(key) : delete c[key];
+            }
+            // dealing with multi-arg function, c and k are Arrays
+            k.splice(key, 1);
+            v.splice(key, 1);
         }, o.maxAge);
-    }, c = o.maxAge > 0 && o.maxAge < Infinity ? d : 0, eq = o.equals ? o.equals : function(a, b) {
-        return a === b;
-    }, maxargs = o.maxArgs, srlz = o.serializer, f, u; // flag indicating a unary arg function is in use for clear operation
+    }, c = o.maxAge > 0 && o.maxAge < Infinity ? d : 0, eq = o.equals ? o.equals : 0, maxargs = o.maxArgs, srlz = o.serializer, f; // memoized function to return
     if (fn.length === 1 && !o.equals && !vargs) {
         // for single argument functions, just use a Map lookup
         f = function(a) {
             if (srlz) a = srlz(a);
             var r;
-            return cache.get(a) || (!c || c(a, cache), cache.set(a, r = fn.call(this, a)), r);
+            return cache.get(a) || (!c || c(a), cache.set(a, r = fn.call(this, a)), r);
         };
         u = 1;
     } else // for multiple arg functions, loop through a cache of all the args
@@ -70,22 +59,20 @@ function $cf838c15c8b009ba$export$22f15dd4e5be7e52(fn, o) {
         while(++i < kl){
             var args = k[i];
             if (maxargs != null || args.length === l) {
-                var j = 0;
-                while(j < l && eq(arguments[j], args[j]))j++;
-                if (j === l) return v[i];
-                 // the args matched;
+                var j = -1;
+                while(++j < l && (eq ? eq(arguments[j], args[j]) : arguments[j] === args[j])); // compare each arg
+                if (j === l) return v[i] //the args matched;
+                ;
             }
         }
         // set change timeout only when new value computed, hits will not push out the tte, but it is arguable they should not
-        return !c || c(i, v, k), v[i] = fn.apply(this, k[i] = arguments);
+        return !c || c(i), v[i] = fn.apply(this, k[i] = arguments);
     };
     // reset all the caches
     f.clear = function() {
         cache.clear();
-        s = Object.create(null);
         k = [];
         v = [];
-        z = undefined;
     };
     f.keys = function() {
         return u ? [
