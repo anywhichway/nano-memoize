@@ -1,8 +1,6 @@
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/30ce201484754fa5b0a6c6046abb842d)](https://www.codacy.com/app/syblackwell/nano-memoize?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=anywhichway/nano-memoize&amp;utm_campaign=Badge_Grade)
 # Faster than fast, smaller than micro ... nano-memoize.
 
-[![Maintainability](https://api.codeclimate.com/v1/badges/76cb5396753d151cfdd8/maintainability)](https://codeclimate.com/github/anywhichway/nano-memoize/maintainability)
-
 # Introduction
 
 Version 3.x.x of nano-memoize was modified to use newer versions of JavaScript built-in classes and take advantage of current v8 loop optimizations. As a result, the minified/brotli size of 3.0.4 at 487 bytes is 30% smaller and is slightly faster that v2.x.x and v1.x.x. 
@@ -200,6 +198,8 @@ The returned function will also have these methods:
 
 
 # Release History (reverse chronological order)
+
+2022-02-15 v3.0.6 Documentation updates.
 
 2022-02-15 v3.0.5 Documentation updates.
 
