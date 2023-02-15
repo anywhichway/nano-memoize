@@ -1,5 +1,7 @@
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/30ce201484754fa5b0a6c6046abb842d)](https://www.codacy.com/app/syblackwell/nano-memoize?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=anywhichway/nano-memoize&amp;utm_campaign=Badge_Grade)
-# Faster than fast, smaller than micro ... nano-memoizer.
+# Faster than fast, smaller than micro ... nano-memoize.
+
+[![Maintainability](https://api.codeclimate.com/v1/badges/76cb5396753d151cfdd8/maintainability)](https://codeclimate.com/github/anywhichway/nano-memoize/maintainability)
 
 # Introduction
 
@@ -140,6 +142,12 @@ Starting cycles for alternative cache types...
 │ nanomemoize fast deep equals (fast-deep-equal/ES6)  │ 41,010,681  │ ± 2.44%                  │ 82          │
 └─────────────────────────────────────────────────────┴─────────────┴──────────────────────────┴─────────────┘
 
+If you want similar performance for intersection, union or Cartesian product also see:
+
+- https://github.com/anywhichway/intersector
+- https://github.com/anywhichway/unionizor
+- https://github.com/anywhichway/cxproduct
+
 
 # Usage
 
@@ -192,6 +200,8 @@ The returned function will also have these methods:
 
 
 # Release History (reverse chronological order)
+
+2022-02-15 v3.0.5 Documentation updates.
 
 2022-02-04 v3.0.4 A code walkthrough revealed an opportunity to remove unused code from v2.x.x.
 
