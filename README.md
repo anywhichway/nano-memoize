@@ -23,6 +23,7 @@ The `planetheidea/moize` library (which claims to be the fastest on average) doe
 
 
 Starting cycles for functions with a single primitive parameter...
+```
 ┌───────────────┬─────────────┬──────────────────────────┬─────────────┐
 │ Name          │ Ops / sec   │ Relative margin of error │ Sample size │
 ├───────────────┼─────────────┼──────────────────────────┼─────────────┤
@@ -139,7 +140,7 @@ Starting cycles for alternative cache types...
 ├─────────────────────────────────────────────────────┼─────────────┼──────────────────────────┼─────────────┤
 │ nanomemoize fast deep equals (fast-deep-equal/ES6)  │ 41,010,681  │ ± 2.44%                  │ 82          │
 └─────────────────────────────────────────────────────┴─────────────┴──────────────────────────┴─────────────┘
-
+```
 If you want similar performance for intersection, union or Cartesian product also see:
 
 - https://github.com/anywhichway/intersector
