@@ -147,6 +147,9 @@ If you want similar performance for intersection, union or Cartesian product als
 - https://github.com/anywhichway/unionizor
 - https://github.com/anywhichway/cxproduct
 
+  For a complete high performance solution to Cartesian product and set operations for Arrays and Sets with a standardized API, plus the addition of the standard map/reduce/find operations to Set see:
+
+- https://github.com/anywhichway/array-set-ops
 
 # Usage
 
@@ -199,6 +202,10 @@ The returned function will also have these methods:
 
 
 # Release History (reverse chronological order)
+
+2022-02-22 v3.0.8 Documentation updates.
+
+2022-02-15 v3.0.7 Documentation updates.
 
 2022-02-15 v3.0.6 Documentation updates.
 
