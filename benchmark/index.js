@@ -51,7 +51,6 @@ const moize = require('moize');
 const deepEquals = require('lodash').isEqual;
 const fastEquals = require('fast-equals').deepEqual;
 const fastDeepEqual = require('fast-deep-equal/ES6');
-const hashItEquals = require('hash-it').isEqual;
 
 const showResults = (benchmarkResults) => {
   const table = new Table({
@@ -134,7 +133,7 @@ const fibonacciMultipleArray = (array, check) => {
   );
 };
 
-const fibonacciMultipleObject = (number, check) => {
+const fibonacciMultipleMixed = (number, check) => {
   if (check.isComplete) {
     return number;
   }
@@ -143,23 +142,41 @@ const fibonacciMultipleObject = (number, check) => {
   const secondValue = number - 2;
 
   return (
-    fibonacciMultipleObject(firstValue, {
+    fibonacciMultipleMixed(firstValue, {
       isComplete: firstValue < 2
     }) +
-    fibonacciMultipleObject(secondValue, {
+    fibonacciMultipleMixed(secondValue, {
       isComplete: secondValue < 2
     })
   );
 };
 
-const fibonacciMultipleDeepEqual = ({number}) => {
+const fibonacciSingleObject = ({number}) => {
   return number < 2
     ? number
-    : fibonacciMultipleDeepEqual({number: number - 1}) + fibonacciMultipleDeepEqual({number: number - 2});
+    : fibonacciSingleObject({number: number - 1}) + fibonacciSingleObject({number: number - 2});
+};
+
+const fibonacciMultipleObject = ({number}, check) => {
+  if (check.isComplete) {
+    return number;
+  }
+
+  const firstValue = number - 1;
+  const secondValue = number - 2;
+
+  return (
+      fibonacciMultipleObject({number:firstValue}, {
+        isComplete: firstValue < 2
+      }) +
+      fibonacciMultipleObject({number:secondValue}, {
+        isComplete: secondValue < 2
+      })
+  );
 };
 
 const runSingleParameterSuite = () => {
-  const fibonacciSuite = new Benchmark.Suite('Single parameter');
+  const fibonacciSuite = new Benchmark.Suite('Single primitive parameter');
   const fibonacciNumber = 35;
 
   const mUnderscore = underscore(fibonacci);
@@ -234,21 +251,21 @@ const runSingleParameterSuite = () => {
 };
 
 const runSingleParameterObjectSuite = () => {
-  const fibonacciSuite = new Benchmark.Suite('Single parameter');
-  const fibonacciNumber = Number(35);
+  const fibonacciSuite = new Benchmark.Suite('Single object parameter');
+  const fibonacciNumber = {number:35};
 
-  const mUnderscore = underscore(fibonacci);
-  const mLodash = lodash(fibonacci);
- // const mRamda = ramda(fibonacci);
-  const mMemoizee = memoizee(fibonacci);
-  const mFastMemoize = fastMemoize(fibonacci);
-  const mAddyOsmani = addyOsmani(fibonacci);
-  const mMemoizerific = memoizerific(Infinity)(fibonacci);
-  const mLruMemoize = lruMemoize(Infinity)(fibonacci);
-  const mMoize = moize(fibonacci);
-  const mMicroMemoize = microMemoize(fibonacci);
-  const mIMemoized = iMemoized.memoize(fibonacci);
-  const mNano = nanomemoize(fibonacci,{relaxed:true});
+  const mUnderscore = underscore(fibonacciSingleObject);
+  const mLodash = lodash(fibonacciSingleObject);
+ // const mRamda = ramda(fibonacciSingleObject);
+  const mMemoizee = memoizee(fibonacciSingleObject);
+  const mFastMemoize = fastMemoize(fibonacciSingleObject);
+  const mAddyOsmani = addyOsmani(fibonacciSingleObject);
+  const mMemoizerific = memoizerific(Infinity)(fibonacciSingleObject);
+  const mLruMemoize = lruMemoize(Infinity)(fibonacciSingleObject);
+  const mMoize = moize(fibonacciSingleObject);
+  const mMicroMemoize = microMemoize(fibonacciSingleObject);
+  const mIMemoized = iMemoized.memoize(fibonacciSingleObject);
+  const mNano = nanomemoize(fibonacciSingleObject);
 
 
   return new Promise((resolve) => {
@@ -372,12 +389,13 @@ const runMultiplePrimitiveSuite = () => {
 };
 
 const runMultipleObjectSuite = () => {
-  const fibonacciSuite = new Benchmark.Suite('Multiple parameters (Object)');
-  const fibonacciNumber = 35;
-  const isComplete = {
-    isComplete: false
-  };
+  const fibonacciSuite = new Benchmark.Suite('Multiple object parameter');
+  const fibonacciNumber = {number:35};
+  const check = {};
 
+  const mUnderscore = underscore(fibonacciMultipleObject);
+  const mLodash = lodash(fibonacciMultipleObject);
+  // const mRamda = ramda(fibonacciMultipleObject);
   const mMemoizee = memoizee(fibonacciMultipleObject);
   const mFastMemoize = fastMemoize(fibonacciMultipleObject);
   const mAddyOsmani = addyOsmani(fibonacciMultipleObject);
@@ -385,7 +403,82 @@ const runMultipleObjectSuite = () => {
   const mLruMemoize = lruMemoize(Infinity)(fibonacciMultipleObject);
   const mMoize = moize(fibonacciMultipleObject);
   const mMicroMemoize = microMemoize(fibonacciMultipleObject);
+  const mIMemoized = iMemoized.memoize(fibonacciMultipleObject);
   const mNano = nanomemoize(fibonacciMultipleObject);
+
+
+  return new Promise((resolve) => {
+    fibonacciSuite
+        .add('nano-memoize', () => {
+          mNano(fibonacciNumber,check);
+        })
+        .add('addy-osmani', () => {
+          mAddyOsmani(fibonacciNumber,check);
+        })
+        .add('lodash', () => {
+          mLodash(fibonacciNumber,check);
+        })
+        .add('lru-memoize', () => {
+          mLruMemoize(fibonacciNumber,check);
+        })
+        .add('memoizee', () => {
+          mMemoizee(fibonacciNumber,check);
+        })
+        .add('memoizerific', () => {
+          mMemoizerific(fibonacciNumber,check);
+        })
+        /*.add('ramda', () => {
+          mRamda(fibonacciNumber);
+        })*/
+        .add('underscore', () => {
+          mUnderscore(fibonacciNumber,check);
+        })
+        .add('iMemoized', () => {
+          mIMemoized(fibonacciNumber,check);
+        })
+        .add('micro-memoize', () => {
+          mMicroMemoize(fibonacciNumber,check);
+        })
+        .add('moize', () => {
+          mMoize(fibonacciNumber,check);
+        })
+        .add('fast-memoize', () => {
+          mFastMemoize(fibonacciNumber,check);
+        })
+        .on('start', () => {
+          console.log(''); // eslint-disable-line no-console
+          console.log('Starting cycles for functions with multiple object parameters...'); // eslint-disable-line no-console
+
+          results = [];
+
+          spinner.start();
+        })
+        .on('cycle', onCycle)
+        .on('complete', () => {
+          onComplete();
+          resolve();
+        })
+        .run({
+          async: true
+        });
+  });
+};
+
+const runMultipleMixedSuite = () => {
+  const fibonacciSuite = new Benchmark.Suite('Multiple mixed parameters');
+  const fibonacciNumber = 35;
+  const isComplete = {
+    isComplete: false
+  };
+
+  const mMemoizee = memoizee(fibonacciMultipleMixed);
+  const mFastMemoize = fastMemoize(fibonacciMultipleMixed);
+  const mAddyOsmani = addyOsmani(fibonacciMultipleMixed);
+  const mMemoizerific = memoizerific(Infinity)(fibonacciMultipleMixed);
+  const mLruMemoize = lruMemoize(Infinity)(fibonacciMultipleMixed);
+  const mMoize = moize(fibonacciMultipleMixed);
+  const mMicroMemoize = microMemoize(fibonacciMultipleMixed);
+  const mNano = nanomemoize(fibonacciMultipleMixed);
   
   return new Promise((resolve) => {
     fibonacciSuite
@@ -415,7 +508,7 @@ const runMultipleObjectSuite = () => {
       })
       .on('start', () => {
         console.log(''); // eslint-disable-line no-console
-        console.log('Starting cycles for functions with multiple parameters that contain objects...'); // eslint-disable-line no-console
+        console.log('Starting cycles for functions with multiple mixed parameters ...'); // eslint-disable-line no-console
 
         results = [];
 
@@ -433,59 +526,85 @@ const runMultipleObjectSuite = () => {
 };
 
 const runAlternativeOptionsSuite = () => {
-  const fibonacciSuite = new Benchmark.Suite('Multiple parameters (Object)');
+  const fibonacciSuite = new Benchmark.Suite('Alternative single object');
   const fibonacciNumber = {
     number: 35
   };
 
-  const mMicroMemoizeDeep = microMemoize(fibonacciMultipleDeepEqual, {
+  const mMicroMemoizeDeepEquals = microMemoize(fibonacciSingleObject, {
     isEqual: deepEquals
   });
 
-  const mMicroMemoizeFastDeep = microMemoize(fibonacciMultipleDeepEqual, {
+  const mMicroMemoizeFastEquals = microMemoize(fibonacciSingleObject, {
     isEqual: fastEquals
   });
 
-  const mMicroMemoizeHashIt = microMemoize(fibonacciMultipleDeepEqual, {
-    isEqual: hashItEquals
+  const mMicroMemoizeFastDeepEquals = microMemoize(fibonacciSingleObject, {
+    isEqual: fastDeepEqual
   });
+
+
+  const mMoizeDeep = moize(fibonacciSingleObject, {
+    isDeepEqual: true
+  });
+
+  const mMoizeDeepEquals = moize(fibonacciSingleObject, {
+    matchesArg: deepEquals
+  });
+
+  const mMoizeFastEquals = moize(fibonacciSingleObject, {
+    matchesArg: fastEquals
+  });
+
+  const mMoizeFastDeepEquals = moize(fibonacciSingleObject, {
+    matchesArg: fastDeepEqual
+  });
+
   
-  const mNanoDeep = nanomemoize(fibonacciMultipleDeepEqual, {
+  const mNanoDeepEquals = nanomemoize(fibonacciSingleObject, {
     equals: deepEquals
   });
-  const mNanoFastEquals = nanomemoize(fibonacciMultipleDeepEqual, {
+  const mNanoFastEquals = nanomemoize(fibonacciSingleObject, {
     equals: fastEquals
   });
-  const mNanoFastDeepEquals = nanomemoize(fibonacciMultipleDeepEqual, {
+  const mNanoFastDeepEquals = nanomemoize(fibonacciSingleObject, {
     equals: fastDeepEqual
   });
-  const mNanoHashIt = nanomemoize(fibonacciMultipleDeepEqual, {
-    equals: hashItEquals
-  });
+
 
   return new Promise((resolve) => {
     fibonacciSuite
         .add('nanomemoize deep equals (lodash isEqual)', () => {
-          mNanoDeep(fibonacciNumber);
+          mNanoDeepEquals(fibonacciNumber);
         })
-        .add('nanomemoize fast equals (fast-equals deepEqual/ES6)', () => {
+        .add('nanomemoize fast equals (fast-equals deep)', () => {
           mNanoFastEquals(fibonacciNumber);
         })
-        .add('nanomemoize fast deep equals (fast-deep-equal/ES6)', () => {
+        .add('nanomemoize fast equals (fast-deep-equals)', () => {
           mNanoFastDeepEquals(fibonacciNumber);
         })
-        .add('nanomemoize deep equals (hash-it isEqual)', () => {
-          mNanoHashIt(fibonacciNumber);
-        })
         .add('micro-memoize deep equals (lodash isEqual)', () => {
-          mMicroMemoizeDeep(fibonacciNumber);
+          mMicroMemoizeDeepEquals(fibonacciNumber);
         })
-        .add('micro-memoize deep equals (fast-equals deepEqual)', () => {
-          mMicroMemoizeFastDeep(fibonacciNumber);
+        .add('micro-memoize deep equals (fast-equals)', () => {
+          mMicroMemoizeFastEquals(fibonacciNumber);
         })
-        .add('micro-memoize deep equals (hash-it isEqual)', () => {
-          mMicroMemoizeHashIt(fibonacciNumber);
+        .add('micro-memoize deep equals (fast-deep-equal)', () => {
+          mMicroMemoizeFastDeepEquals(fibonacciNumber);
         })
+        .add('moize deep (internal)', () => {
+          mMoizeDeep(fibonacciNumber);
+        })
+        .add('moize deep equals (lodash isEqual)', () => {
+          mMoizeDeepEquals(fibonacciNumber);
+        })
+        .add('moize deep equals (fast-equals)', () => {
+          mMoizeFastEquals(fibonacciNumber);
+        })
+        .add('moize deep equals (fast-deep-equal)', () => {
+          mMoizeFastEquals(fibonacciNumber);
+        })
+
       .on('start', () => {
         console.log(''); // eslint-disable-line no-console
         console.log('Starting cycles for alternative cache types...'); // eslint-disable-line no-console
@@ -516,4 +635,5 @@ runSingleParameterSuite()
   .then(runSingleParameterObjectSuite)
   .then(runMultiplePrimitiveSuite)
   .then(runMultipleObjectSuite)
+  .then(runMultipleMixedSuite)
   .then(runAlternativeOptionsSuite);

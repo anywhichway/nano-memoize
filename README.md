@@ -3,7 +3,7 @@
 
 # Introduction
 
-Version 3.x.x of nano-memoize was modified to use newer versions of JavaScript built-in classes and take advantage of current v8 loop optimizations. As a result, the minified/brotli size of 3.0.4 at 487 bytes is 30% smaller and is slightly faster that v2.x.x and v1.x.x. 
+Version 3.x.x of nano-memoize was modified to use newer versions of JavaScript built-in classes and take advantage of current v8 optimizations. The classes existed all the way back to IE11; however, they were not optimized and conventional object map outperformed Map. Loop optimizations also seem to have shifted and one loop was reversed. As a result, the minified/brotli size of 3.0.4 at 487 bytes is 30% smaller and is slightly faster that v2.x.x and v1.x.x. 
 
 Tests show 'nano-memoize' is overall the smallest and fastest openly available JavaScript memoizer for single and multiple argument functions accepting primitives and objects. However, I have found that benchmarks can vary dramatically from O/S to O/S or Node version to Node version, so I could be wrong. These tests were run on a Windows 10 Pro 64bit 2.8ghz i7 machine with 16GB RAM and Node v18.13.0. Garbage collection was forced between each sample run to minimize its impact on results.
 
@@ -18,6 +18,8 @@ The speed tests are below.
 * For multiple object argument functions `micro-memoize` is always at least 5% faster than its closest competitors `moize` and `nano-memoize` which alternate in second place typically within each other's margin of error.
 
 * For custom equality functions 'nano-memoize` and `micro-memoize vary in speed depending on the equality function used. `nano-memoize` is always first by at least 15% using `hash-it` and `micro-memoize` is always second using `hash-it` or `lodash`. See the table below.
+
+* For a real world simulation where only 20% of the function calls are memoized and they take mized argument types, `nanomemoize` remains the fastest.
 
 The `planetheidea/moize` library (which claims to be the fastest on average) does not include `nano-memoize` for comparison and the repository is not accepting comments or a pull request for some technical reason. The repository has been forked and its own benchmarking has been updated and run to confirm the results below.
 
@@ -122,23 +124,46 @@ Starting cycles for functions with multiple parameters that contain objects...
 └───────────────┴────────────┴──────────────────────────┴─────────────┘
 
 Starting cycles for alternative cache types...
-┌─────────────────────────────────────────────────────┬─────────────┬──────────────────────────┬─────────────┐
-│ Name                                                │ Ops / sec   │ Relative margin of error │ Sample size │
-├─────────────────────────────────────────────────────┼─────────────┼──────────────────────────┼─────────────┤
-│ nanomemoize deep equals (hash-it isEqual)           │ 112,560,448 │ ± 1.35%                  │ 85          │
-├─────────────────────────────────────────────────────┼─────────────┼──────────────────────────┼─────────────┤
-│ micro-memoize deep equals (lodash isEqual)          │ 83,402,392  │ ± 2.88%                  │ 80          │
-├─────────────────────────────────────────────────────┼─────────────┼──────────────────────────┼─────────────┤
-│ micro-memoize deep equals (hash-it isEqual)         │ 70,493,317  │ ± 2.46%                  │ 83          │
-├─────────────────────────────────────────────────────┼─────────────┼──────────────────────────┼─────────────┤
-│ nanomemoize deep equals (lodash isEqual)            │ 63,040,211  │ ± 1.61%                  │ 84          │
-├─────────────────────────────────────────────────────┼─────────────┼──────────────────────────┼─────────────┤
-│ nanomemoize fast equals (fast-equals deepEqual/ES6) │ 61,878,364  │ ± 1.73%                  │ 84          │
-├─────────────────────────────────────────────────────┼─────────────┼──────────────────────────┼─────────────┤
-│ micro-memoize deep equals (fast-equals deepEqual)   │ 56,841,180  │ ± 3.10%                  │ 80          │
-├─────────────────────────────────────────────────────┼─────────────┼──────────────────────────┼─────────────┤
-│ nanomemoize fast deep equals (fast-deep-equal/ES6)  │ 41,010,681  │ ± 2.44%                  │ 82          │
-└─────────────────────────────────────────────────────┴─────────────┴──────────────────────────┴─────────────┘
+┌─────────────────────────────────────────────┬─────────────┬──────────────────────────┬─────────────┐
+│ Name                                        │ Ops / sec   │ Relative margin of error │ Sample size │
+├─────────────────────────────────────────────┼─────────────┼──────────────────────────┼─────────────┤
+│ nanomemoize deep equals (hash-it isEqual)   │ 107,990,728 │ ± 2.59%                  │ 83          │
+├─────────────────────────────────────────────┼─────────────┼──────────────────────────┼─────────────┤
+│ nanomemoize deep equals (lodash isEqual)    │ 96,543,576  │ ± 2.20%                  │ 84          │
+├─────────────────────────────────────────────┼─────────────┼──────────────────────────┼─────────────┤
+│ moize deep equals (lodash isEqual)          │ 88,305,997  │ ± 2.55%                  │ 82          │
+├─────────────────────────────────────────────┼─────────────┼──────────────────────────┼─────────────┤
+│ micro-memoize deep equals (fast-equals)     │ 86,511,616  │ ± 1.67%                  │ 85          │
+├─────────────────────────────────────────────┼─────────────┼──────────────────────────┼─────────────┤
+│ moize deep equals (fast-deep-equal)         │ 85,948,355  │ ± 1.55%                  │ 79          │
+├─────────────────────────────────────────────┼─────────────┼──────────────────────────┼─────────────┤
+│ micro-memoize deep equals (lodash isEqual)  │ 85,231,542  │ ± 1.83%                  │ 84          │
+├─────────────────────────────────────────────┼─────────────┼──────────────────────────┼─────────────┤
+│ moize deep equals (fast-equals)             │ 84,844,833  │ ± 1.77%                  │ 85          │
+├─────────────────────────────────────────────┼─────────────┼──────────────────────────┼─────────────┤
+│ moize deep equals (hash-it isEqual)         │ 76,605,158  │ ± 1.82%                  │ 83          │
+├─────────────────────────────────────────────┼─────────────┼──────────────────────────┼─────────────┤
+│ micro-memoize deep equals (hash-it isEqual) │ 73,619,713  │ ± 2.26%                  │ 82          │
+├─────────────────────────────────────────────┼─────────────┼──────────────────────────┼─────────────┤
+│ nanomemoize fast equals (fast-equals deep)  │ 64,710,177  │ ± 1.59%                  │ 79          │
+├─────────────────────────────────────────────┼─────────────┼──────────────────────────┼─────────────┤
+│ micro-memoize deep equals (fast-deep-equal) │ 62,658,012  │ ± 2.95%                  │ 78          │
+├─────────────────────────────────────────────┼─────────────┼──────────────────────────┼─────────────┤
+│ nanomemoize fast equals (fast-deep-equals)  │ 42,443,623  │ ± 1.91%                  │ 82          │
+└─────────────────────────────────────────────┴─────────────┴──────────────────────────┴─────────────┘
+
+Starting real world simulation...
+┌───────────────────────┬───────────┬──────────────────────────┬─────────────┐
+│ Name                  │ Ops / sec │ Relative margin of error │ Sample size │
+├───────────────────────┼───────────┼──────────────────────────┼─────────────┤
+│ nanomemoizedFunction  │ 3,456,663 │ ± 1.10%                  │ 92          │
+├───────────────────────┼───────────┼──────────────────────────┼─────────────┤
+│ fastmoizedFunction    │ 3,453,148 │ ± 1.69%                  │ 92          │
+├───────────────────────┼───────────┼──────────────────────────┼─────────────┤
+│ microMemoizedFunction │ 1,833,970 │ ± 0.80%                  │ 95          │
+├───────────────────────┼───────────┼──────────────────────────┼─────────────┤
+│ moizeMemoizedFunction │ 1,810,871 │ ± 0.49%                  │ 93          │
+└───────────────────────┴───────────┴──────────────────────────┴─────────────┘
 
 
 # Usage
@@ -193,15 +218,19 @@ The returned function will also have these methods:
 
 # Release History (reverse chronological order)
 
-2022-02-04 v3.0.4 A code walkthrough revealed an opportunity to remove unused code from v2.x.x.
+2023-04-07 v3.0.6 Added real world simulation test. Removed .parcel-cache from build.
 
-2022-02-02 v3.0.3 Added unit test for `maxAge`. Adjusted varArg unit tests for more accuracy. Slight optimizations to multi argument memoized functions. Slight improvement to cache clearing that may reduce GC. Updated license file for copyright period. Updated docs on `callTimeout` for clarity.
+2023-02-05 v3.0.5 Adjusted benchmarks to add moize to alternate deep comparison types. Added/modified performance tests to distinguish between multiple mixed args and multiple args that are all objects. The `hash-it` package has been dropped for alternate deep comparison because the function `isEqual` is no longer documented.
 
-2022-02-01 v3.0.2 Fixed https://github.com/anywhichway/nano-memoize/issues/52 with custom equals functions not consistently working. `fast-equals` or `lodash.isEqual` now work. Slight performance degradation, but still generally the fastest.
+2023-02-04 v3.0.4 A code walkthrough revealed an opportunity to remove unused code from v2.x.x.
 
-2022-01-29 v3.0.1 Fixed build issue where root index.js was not getting updated.
+2023-02-02 v3.0.3 Added unit test for `maxAge`. Adjusted varArg unit tests for more accuracy. Slight optimizations to multi argument memoized functions. Slight improvement to cache clearing that may reduce GC. Updated license file for copyright period. Updated docs on `callTimeout` for clarity.
 
-2022-01-28 v3.0.0 Slight size optimization. 25% speed improvement. Moved to module format. There is a known issue with providing `fast-equals` or `lodash.isEqual` as an optional comparison function. Unit tests pass, but the functions fail under load. The `hash-it` object equivalence function does work. A formerly undocumented method `.keyValues()` has been deprecated since it is no longer relevant with the new optimizations.
+2023-02-01 v3.0.2 Fixed https://github.com/anywhichway/nano-memoize/issues/52 with custom equals functions not consistently working. `fast-equals` or `lodash.isEqual` now work. Slight performance degradation, but still generally the fastest.
+
+2023-01-29 v3.0.1 Fixed build issue where root index.js was not getting updated.
+
+2023-01-28 v3.0.0 Slight size optimization. 25% speed improvement. Moved to module format. There is a known issue with providing `fast-equals` or `lodash.isEqual` as an optional comparison function. Unit tests pass, but the functions fail under load. The `hash-it` object equivalence function does work. A formerly undocumented method `.keyValues()` has been deprecated since it is no longer relevant with the new optimizations.
 
 2022-12-08 v2.0.0 Removed callTimeout from TypeScript typings since it was not implemented and there are no plans to implement. Bumped version to 2.0.0 since this may break some users.
 
