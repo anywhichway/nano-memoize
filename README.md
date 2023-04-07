@@ -25,145 +25,95 @@ The `planetheidea/moize` library (which claims to be the fastest on average) doe
 
 
 Starting cycles for functions with a single primitive parameter...
-┌───────────────┬─────────────┬──────────────────────────┬─────────────┐
-│ Name          │ Ops / sec   │ Relative margin of error │ Sample size │
-├───────────────┼─────────────┼──────────────────────────┼─────────────┤
-│ nano-memoize  │ 150,014,960 │ ± 1.26%                  │ 88          │
-├───────────────┼─────────────┼──────────────────────────┼─────────────┤
-│ fast-memoize  │ 148,920,057 │ ± 1.37%                  │ 88          │
-├───────────────┼─────────────┼──────────────────────────┼─────────────┤
-│ micro-memoize │ 148,405,982 │ ± 1.46%                  │ 90          │
-├───────────────┼─────────────┼──────────────────────────┼─────────────┤
-│ iMemoized     │ 117,844,380 │ ± 1.65%                  │ 88          │
-├───────────────┼─────────────┼──────────────────────────┼─────────────┤
-│ moize         │ 96,796,008  │ ± 1.80%                  │ 85          │
-├───────────────┼─────────────┼──────────────────────────┼─────────────┤
-│ underscore    │ 54,815,804  │ ± 1.28%                  │ 87          │
-├───────────────┼─────────────┼──────────────────────────┼─────────────┤
-│ lodash        │ 54,617,110  │ ± 1.30%                  │ 87          │
-├───────────────┼─────────────┼──────────────────────────┼─────────────┤
-│ lru-memoize   │ 41,426,130  │ ± 1.16%                  │ 87          │
-├───────────────┼─────────────┼──────────────────────────┼─────────────┤
-│ memoizee      │ 31,747,590  │ ± 1.52%                  │ 85          │
-├───────────────┼─────────────┼──────────────────────────┼─────────────┤
-│ addy-osmani   │ 14,848,551  │ ± 1.76%                  │ 82          │
-├───────────────┼─────────────┼──────────────────────────┼─────────────┤
-│ memoizerific  │ 12,835,863  │ ± 1.84%                  │ 85          │
-└───────────────┴─────────────┴──────────────────────────┴─────────────┘
+
+|  Name          |  Ops / sec   |  Relative margin of error |  Sample size |
+| ------- |------- |------------- |------- |
+|  nano-memoize  |  150,014,960 |  ± 1.26%                  |  88          |
+|  fast-memoize  |  148,920,057 |  ± 1.37%                  |  88          |
+|  micro-memoize |  148,405,982 |  ± 1.46%                  |  90          |
+|  iMemoized     |  117,844,380 |  ± 1.65%                  |  88          |
+|  moize         |  96,796,008  |  ± 1.80%                  |  85          |
+|  underscore    |  54,815,804  |  ± 1.28%                  |  87          |
+|  lodash        |  54,617,110  |  ± 1.30%                  |  87          |
+|  lru-memoize   |  41,426,130  |  ± 1.16%                  |  87          |
+|  memoizee      |  31,747,590  |  ± 1.52%                  |  85          |
+|  addy-osmani   |  14,848,551  |  ± 1.76%                  |  82          |
+|  memoizerific  |  12,835,863  |  ± 1.84%                  |  85          | 
+
 
 Starting cycles for functions with a single object parameter...
-┌───────────────┬─────────────┬──────────────────────────┬─────────────┐
-│ Name          │ Ops / sec   │ Relative margin of error │ Sample size │
-├───────────────┼─────────────┼──────────────────────────┼─────────────┤
-│ nano-memoize  │ 149,402,848 │ ± 1.20%                  │ 90          │
-├───────────────┼─────────────┼──────────────────────────┼─────────────┤
-│ fast-memoize  │ 121,117,510 │ ± 2.41%                  │ 86          │
-├───────────────┼─────────────┼──────────────────────────┼─────────────┤
-│ iMemoized     │ 98,480,257  │ ± 3.36%                  │ 85          │
-├───────────────┼─────────────┼──────────────────────────┼─────────────┤
-│ micro-memoize │ 97,781,728  │ ± 1.36%                  │ 87          │
-├───────────────┼─────────────┼──────────────────────────┼─────────────┤
-│ moize         │ 94,370,945  │ ± 4.58%                  │ 84          │
-├───────────────┼─────────────┼──────────────────────────┼─────────────┤
-│ lodash        │ 41,298,824  │ ± 2.60%                  │ 84          │
-├───────────────┼─────────────┼──────────────────────────┼─────────────┤
-│ lru-memoize   │ 39,315,541  │ ± 1.55%                  │ 86          │
-├───────────────┼─────────────┼──────────────────────────┼─────────────┤
-│ underscore    │ 33,803,044  │ ± 1.66%                  │ 87          │
-├───────────────┼─────────────┼──────────────────────────┼─────────────┤
-│ memoizee      │ 27,298,946  │ ± 2.40%                  │ 86          │
-├───────────────┼─────────────┼──────────────────────────┼─────────────┤
-│ addy-osmani   │ 16,003,489  │ ± 1.72%                  │ 87          │
-├───────────────┼─────────────┼──────────────────────────┼─────────────┤
-│ memoizerific  │ 12,502,443  │ ± 1.33%                  │ 86          │
-└───────────────┴─────────────┴──────────────────────────┴─────────────┘
+
+|  Name          |  Ops / sec   |  Relative margin of error |  Sample size | 
+| ------- |------- |------------- |------- |
+|  nano-memoize  |  149,402,848 |  ± 1.20%                  |  90          |
+|  fast-memoize  |  121,117,510 |  ± 2.41%                  |  86          |
+|  iMemoized     |  98,480,257  |  ± 3.36%                  |  85          |
+|  micro-memoize |  97,781,728  |  ± 1.36%                  |  87          |
+|  moize         |  94,370,945  |  ± 4.58%                  |  84          |
+|  lodash        |  41,298,824  |  ± 2.60%                  |  84          |
+|  lru-memoize   |  39,315,541  |  ± 1.55%                  |  86          |
+|  underscore    |  33,803,044  |  ± 1.66%                  |  87          |
+|  memoizee      |  27,298,946  |  ± 2.40%                  |  86          |
+|  addy-osmani   |  16,003,489  |  ± 1.72%                  |  87          |
+|  memoizerific  |  12,502,443  |  ± 1.33%                  |  86          | 
+
 
 Starting cycles for functions with multiple parameters that contain only primitives...
-┌───────────────┬────────────┬──────────────────────────┬─────────────┐
-│ Name          │ Ops / sec  │ Relative margin of error │ Sample size │
-├───────────────┼────────────┼──────────────────────────┼─────────────┤
-│ nano-memoize  │ 57,333,928 │ ± 1.83%                  │ 85          │
-├───────────────┼────────────┼──────────────────────────┼─────────────┤
-│ micro-memoize │ 51,539,993 │ ± 2.07%                  │ 83          │
-├───────────────┼────────────┼──────────────────────────┼─────────────┤
-│ moize         │ 49,918,411 │ ± 3.30%                  │ 81          │
-├───────────────┼────────────┼──────────────────────────┼─────────────┤
-│ lru-memoize   │ 29,594,676 │ ± 2.83%                  │ 79          │
-├───────────────┼────────────┼──────────────────────────┼─────────────┤
-│ memoizee      │ 17,895,742 │ ± 2.08%                  │ 87          │
-├───────────────┼────────────┼──────────────────────────┼─────────────┤
-│ iMemoized     │ 12,263,731 │ ± 1.99%                  │ 85          │
-├───────────────┼────────────┼──────────────────────────┼─────────────┤
-│ memoizerific  │ 7,804,227  │ ± 1.81%                  │ 84          │
-├───────────────┼────────────┼──────────────────────────┼─────────────┤
-│ addy-osmani   │ 4,190,503  │ ± 2.03%                  │ 84          │
-├───────────────┼────────────┼──────────────────────────┼─────────────┤
-│ fast-memoize  │ 1,101,952  │ ± 2.87%                  │ 81          │
-└───────────────┴────────────┴──────────────────────────┴─────────────┘
+
+|  Name          |  Ops / sec  |  Relative margin of error |  Sample size | 
+| ------- |------- |------------- |------- |
+|  nano-memoize  |  57,333,928 |  ± 1.83%                  |  85          |
+|  micro-memoize |  51,539,993 |  ± 2.07%                  |  83          |
+|  moize         |  49,918,411 |  ± 3.30%                  |  81          |
+|  lru-memoize   |  29,594,676 |  ± 2.83%                  |  79          |
+|  memoizee      |  17,895,742 |  ± 2.08%                  |  87          |
+|  iMemoized     |  12,263,731 |  ± 1.99%                  |  85          |
+|  memoizerific  |  7,804,227  |  ± 1.81%                  |  84          |
+|  addy-osmani   |  4,190,503  |  ± 2.03%                  |  84          |
+|  fast-memoize  |  1,101,952  |  ± 2.87%                  |  81          |
 
 
 Starting cycles for functions with multiple parameters that contain objects...
-┌───────────────┬────────────┬──────────────────────────┬─────────────┐
-│ Name          │ Ops / sec  │ Relative margin of error │ Sample size │
-├───────────────┼────────────┼──────────────────────────┼─────────────┤
-│ micro-memoize │ 51,551,926 │ ± 2.10%                  │ 82          │
-├───────────────┼────────────┼──────────────────────────┼─────────────┤
-│ nano-memoize  │ 40,243,156 │ ± 3.75%                  │ 82          │
-├───────────────┼────────────┼──────────────────────────┼─────────────┤
-│ moize         │ 37,285,146 │ ± 16.13%                 │ 65          │
-├───────────────┼────────────┼──────────────────────────┼─────────────┤
-│ lru-memoize   │ 27,946,905 │ ± 3.41%                  │ 79          │
-├───────────────┼────────────┼──────────────────────────┼─────────────┤
-│ memoizee      │ 17,209,457 │ ± 1.96%                  │ 84          │
-├───────────────┼────────────┼──────────────────────────┼─────────────┤
-│ memoizerific  │ 7,609,760  │ ± 4.26%                  │ 76          │
-├───────────────┼────────────┼──────────────────────────┼─────────────┤
-│ addy-osmani   │ 1,212,045  │ ± 1.85%                  │ 86          │
-├───────────────┼────────────┼──────────────────────────┼─────────────┤
-│ fast-memoize  │ 563,610    │ ± 26.34%                 │ 69          │
-└───────────────┴────────────┴──────────────────────────┴─────────────┘
+
+|  Name          |  Ops / sec  |  Relative margin of error |  Sample size |
+| ------- |------- |------------- |------- |
+|  micro-memoize |  51,551,926 |  ± 2.10%                  |  82          |
+|  nano-memoize  |  40,243,156 |  ± 3.75%                  |  82          |
+|  moize         |  37,285,146 |  ± 16.13%                 |  65          |
+|  lru-memoize   |  27,946,905 |  ± 3.41%                  |  79          |
+|  memoizee      |  17,209,457 |  ± 1.96%                  |  84          |
+|  memoizerific  |  7,609,760  |  ± 4.26%                  |  76          |
+|  addy-osmani   |  1,212,045  |  ± 1.85%                  |  86          |
+|  fast-memoize  |  563,610    |  ± 26.34%                 |  69          | 
+
 
 Starting cycles for alternative cache types...
-┌─────────────────────────────────────────────┬─────────────┬──────────────────────────┬─────────────┐
-│ Name                                        │ Ops / sec   │ Relative margin of error │ Sample size │
-├─────────────────────────────────────────────┼─────────────┼──────────────────────────┼─────────────┤
-│ nanomemoize deep equals (hash-it isEqual)   │ 107,990,728 │ ± 2.59%                  │ 83          │
-├─────────────────────────────────────────────┼─────────────┼──────────────────────────┼─────────────┤
-│ nanomemoize deep equals (lodash isEqual)    │ 96,543,576  │ ± 2.20%                  │ 84          │
-├─────────────────────────────────────────────┼─────────────┼──────────────────────────┼─────────────┤
-│ moize deep equals (lodash isEqual)          │ 88,305,997  │ ± 2.55%                  │ 82          │
-├─────────────────────────────────────────────┼─────────────┼──────────────────────────┼─────────────┤
-│ micro-memoize deep equals (fast-equals)     │ 86,511,616  │ ± 1.67%                  │ 85          │
-├─────────────────────────────────────────────┼─────────────┼──────────────────────────┼─────────────┤
-│ moize deep equals (fast-deep-equal)         │ 85,948,355  │ ± 1.55%                  │ 79          │
-├─────────────────────────────────────────────┼─────────────┼──────────────────────────┼─────────────┤
-│ micro-memoize deep equals (lodash isEqual)  │ 85,231,542  │ ± 1.83%                  │ 84          │
-├─────────────────────────────────────────────┼─────────────┼──────────────────────────┼─────────────┤
-│ moize deep equals (fast-equals)             │ 84,844,833  │ ± 1.77%                  │ 85          │
-├─────────────────────────────────────────────┼─────────────┼──────────────────────────┼─────────────┤
-│ moize deep equals (hash-it isEqual)         │ 76,605,158  │ ± 1.82%                  │ 83          │
-├─────────────────────────────────────────────┼─────────────┼──────────────────────────┼─────────────┤
-│ micro-memoize deep equals (hash-it isEqual) │ 73,619,713  │ ± 2.26%                  │ 82          │
-├─────────────────────────────────────────────┼─────────────┼──────────────────────────┼─────────────┤
-│ nanomemoize fast equals (fast-equals deep)  │ 64,710,177  │ ± 1.59%                  │ 79          │
-├─────────────────────────────────────────────┼─────────────┼──────────────────────────┼─────────────┤
-│ micro-memoize deep equals (fast-deep-equal) │ 62,658,012  │ ± 2.95%                  │ 78          │
-├─────────────────────────────────────────────┼─────────────┼──────────────────────────┼─────────────┤
-│ nanomemoize fast equals (fast-deep-equals)  │ 42,443,623  │ ± 1.91%                  │ 82          │
-└─────────────────────────────────────────────┴─────────────┴──────────────────────────┴─────────────┘
+
+|  Name                                        |  Ops / sec   |  Relative margin of error |  Sample size |
+| ------- |------- |------------- |------- |
+|  nanomemoize deep equals (hash-it isEqual)   |  107,990,728 |  ± 2.59%                  |  83          | 
+|  nanomemoize deep equals (lodash isEqual)    |  96,543,576  |  ± 2.20%                  |  84          | 
+|  moize deep equals (lodash isEqual)          |  88,305,997  |  ± 2.55%                  |  82          | 
+|  micro-memoize deep equals (fast-equals)     |  86,511,616  |  ± 1.67%                  |  85          | 
+|  moize deep equals (fast-deep-equal)         |  85,948,355  |  ± 1.55%                  |  79          | 
+|  micro-memoize deep equals (lodash isEqual)  |  85,231,542  |  ± 1.83%                  |  84          | 
+|  moize deep equals (fast-equals)             |  84,844,833  |  ± 1.77%                  |  85          | 
+|  moize deep equals (hash-it isEqual)         |  76,605,158  |  ± 1.82%                  |  83          | 
+|  micro-memoize deep equals (hash-it isEqual) |  73,619,713  |  ± 2.26%                  |  82          | 
+|  nanomemoize fast equals (fast-equals deep)  |  64,710,177  |  ± 1.59%                  |  79          | 
+|  micro-memoize deep equals (fast-deep-equal) |  62,658,012  |  ± 2.95%                  |  78          | 
+|  nanomemoize fast equals (fast-deep-equals)  |  42,443,623  |  ± 1.91%                  |  82          | 
+
 
 Starting real world simulation...
-┌───────────────────────┬───────────┬──────────────────────────┬─────────────┐
-│ Name                  │ Ops / sec │ Relative margin of error │ Sample size │
-├───────────────────────┼───────────┼──────────────────────────┼─────────────┤
-│ nanomemoizedFunction  │ 3,456,663 │ ± 1.10%                  │ 92          │
-├───────────────────────┼───────────┼──────────────────────────┼─────────────┤
-│ fastmoizedFunction    │ 3,453,148 │ ± 1.69%                  │ 92          │
-├───────────────────────┼───────────┼──────────────────────────┼─────────────┤
-│ microMemoizedFunction │ 1,833,970 │ ± 0.80%                  │ 95          │
-├───────────────────────┼───────────┼──────────────────────────┼─────────────┤
-│ moizeMemoizedFunction │ 1,810,871 │ ± 0.49%                  │ 93          │
-└───────────────────────┴───────────┴──────────────────────────┴─────────────┘
+
+|  Name                  |  Ops / sec |  Relative margin of error |  Sample size |
+| ------- |------- |------------- |------- |
+|  nanomemoizedFunction  |  3,456,663 |  ± 1.10%                  |  92          |
+|  fastmoizedFunction    |  3,453,148 |  ± 1.69%                  |  92          |
+|  microMemoizedFunction |  1,833,970 |  ± 0.80%                  |  95          |
+|  moizeMemoizedFunction |  1,810,871 |  ± 0.49%                  |  93          | 
+
 
 If you want similar performance for intersection, union or Cartesian product also see:
 
@@ -227,15 +177,25 @@ The returned function will also have these methods:
 
 # Release History (reverse chronological order)
 
-2022-02-04 v3.0.4 A code walkthrough revealed an opportunity to remove unused code from v2.x.x.
+2023-04-07 v3.0.9 Added real world simulation. Removed .parcel-cache from deployment.
 
-2022-02-02 v3.0.3 Added unit test for `maxAge`. Adjusted varArg unit tests for more accuracy. Slight optimizations to multi argument memoized functions. Slight improvement to cache clearing that may reduce GC. Updated license file for copyright period. Updated docs on `callTimeout` for clarity.
+2023-02-22 v3.0.8 Documentation updates.
 
-2022-02-01 v3.0.2 Fixed https://github.com/anywhichway/nano-memoize/issues/52 with custom equals functions not consistently working. `fast-equals` or `lodash.isEqual` now work. Slight performance degradation, but still generally the fastest.
+2023-02-15 v3.0.7 Documentation updates.
+
+2023-02-15 v3.0.6 Documentation updates.
+
+2023-02-15 v3.0.5 Documentation updates.
+
+2023-02-04 v3.0.4 A code walkthrough revealed an opportunity to remove unused code from v2.x.x.
+
+2023-02-02 v3.0.3 Added unit test for `maxAge`. Adjusted varArg unit tests for more accuracy. Slight optimizations to multi argument memoized functions. Slight improvement to cache clearing that may reduce GC. Updated license file for copyright period. Updated docs on `callTimeout` for clarity.
+
+2023-02-01 v3.0.2 Fixed https://github.com/anywhichway/nano-memoize/issues/52 with custom equals functions not consistently working. `fast-equals` or `lodash.isEqual` now work. Slight performance degradation, but still generally the fastest.
 
 2022-01-29 v3.0.1 Fixed build issue where root index.js was not getting updated.
 
-2022-01-28 v3.0.0 Slight size optimization. 25% speed improvement. Moved to module format. There is a known issue with providing `fast-equals` or `lodash.isEqual` as an optional comparison function. Unit tests pass, but the functions fail under load. The `hash-it` object equivalence function does work. A formerly undocumented method `.keyValues()` has been deprecated since it is no longer relevant with the new optimizations.
+2023-01-28 v3.0.0 Slight size optimization. 25% speed improvement. Moved to module format. There is a known issue with providing `fast-equals` or `lodash.isEqual` as an optional comparison function. Unit tests pass, but the functions fail under load. The `hash-it` object equivalence function does work. A formerly undocumented method `.keyValues()` has been deprecated since it is no longer relevant with the new optimizations.
 
 2022-12-08 v2.0.0 Removed callTimeout from TypeScript typings since it was not implemented and there are no plans to implement. Bumped version to 2.0.0 since this may break some users.
 
