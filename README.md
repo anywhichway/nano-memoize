@@ -19,7 +19,7 @@ The speed tests are below.
 
 * For custom equality functions 'nano-memoize` and `micro-memoize vary in speed depending on the equality function used. `nano-memoize` is always first by at least 15% using `hash-it` and `micro-memoize` is always second using `hash-it` or `lodash`. See the table below.
 
-* For a real world simulation where only 20% of the function calls are memoized and they take mized argument types, `nanomemoize` remains the fastest.
+* For a real world simulation where only 20% of the function calls are memoized and they take mixed argument types, `nanomemoize` remains the fastest. Although, it is within the margin of error for `fastMemoize`
 
 The `planetheidea/moize` library (which claims to be the fastest on average) does not include `nano-memoize` for comparison and the repository is not accepting comments or a pull request for some technical reason. The repository has been forked and its own benchmarking has been updated and run to confirm the results below.
 
