@@ -1,6 +1,6 @@
 {
   "name": "nano-memoize",
-  "version": "v3.0.6",
+  "version": "v3.0.8",
   "description": "Faster than fast, smaller than micro ... a nano speed and nano size memoizer.",
   "type:": "module",
   "source": "src/index.js",
@@ -44,6 +44,7 @@
     "fast-equals": "^1.6.3",
     "fast-memoize": "^2.5.1",
     "growl": "^1.10.5",
+    "hash-it": "^4.0.4",
     "iMemoized": "^1.1.8",
     "istanbul": "^0.4.2",
     "lodash": "^4.17.11",

@@ -3,7 +3,7 @@
 
 # Introduction
 
-Version 3.x.x of nano-memoize was modified to use newer versions of JavaScript built-in classes and take advantage of current v8 optimizations. The classes existed all the way back to IE11; however, they were not optimized and conventional object map outperformed Map. Loop optimizations also seem to have shifted and one loop was reversed. As a result, the minified/brotli size of 3.0.4 at 487 bytes is 30% smaller and is slightly faster that v2.x.x and v1.x.x. 
+Version 3.x.x of nano-memoize was modified to use newer versions of JavaScript built-in classes and take advantage of current v8 loop optimizations. As a result, the minified/brotli size of 3.0.4 at 487 bytes is 30% smaller and is slightly faster that v2.x.x and v1.x.x. 
 
 Tests show 'nano-memoize' is overall the smallest and fastest openly available JavaScript memoizer for single and multiple argument functions accepting primitives and objects. However, I have found that benchmarks can vary dramatically from O/S to O/S or Node version to Node version, so I could be wrong. These tests were run on a Windows 10 Pro 64bit 2.8ghz i7 machine with 16GB RAM and Node v18.13.0. Garbage collection was forced between each sample run to minimize its impact on results.
 
@@ -165,6 +165,15 @@ Starting real world simulation...
 │ moizeMemoizedFunction │ 1,810,871 │ ± 0.49%                  │ 93          │
 └───────────────────────┴───────────┴──────────────────────────┴─────────────┘
 
+If you want similar performance for intersection, union or Cartesian product also see:
+
+- https://github.com/anywhichway/intersector
+- https://github.com/anywhichway/unionizor
+- https://github.com/anywhichway/cxproduct
+
+ For a complete high performance solution to Cartesian product and set operations for Arrays and Sets with a standardized API, plus the addition of the standard map/reduce/find operations to Set see:
+
+- https://github.com/anywhichway/array-set-ops
 
 # Usage
 
@@ -218,19 +227,15 @@ The returned function will also have these methods:
 
 # Release History (reverse chronological order)
 
-2023-04-07 v3.0.6 Added real world simulation test. Removed .parcel-cache from build.
+2022-02-04 v3.0.4 A code walkthrough revealed an opportunity to remove unused code from v2.x.x.
 
-2023-02-05 v3.0.5 Adjusted benchmarks to add moize to alternate deep comparison types. Added/modified performance tests to distinguish between multiple mixed args and multiple args that are all objects. The `hash-it` package has been dropped for alternate deep comparison because the function `isEqual` is no longer documented.
+2022-02-02 v3.0.3 Added unit test for `maxAge`. Adjusted varArg unit tests for more accuracy. Slight optimizations to multi argument memoized functions. Slight improvement to cache clearing that may reduce GC. Updated license file for copyright period. Updated docs on `callTimeout` for clarity.
 
-2023-02-04 v3.0.4 A code walkthrough revealed an opportunity to remove unused code from v2.x.x.
+2022-02-01 v3.0.2 Fixed https://github.com/anywhichway/nano-memoize/issues/52 with custom equals functions not consistently working. `fast-equals` or `lodash.isEqual` now work. Slight performance degradation, but still generally the fastest.
 
-2023-02-02 v3.0.3 Added unit test for `maxAge`. Adjusted varArg unit tests for more accuracy. Slight optimizations to multi argument memoized functions. Slight improvement to cache clearing that may reduce GC. Updated license file for copyright period. Updated docs on `callTimeout` for clarity.
+2022-01-29 v3.0.1 Fixed build issue where root index.js was not getting updated.
 
-2023-02-01 v3.0.2 Fixed https://github.com/anywhichway/nano-memoize/issues/52 with custom equals functions not consistently working. `fast-equals` or `lodash.isEqual` now work. Slight performance degradation, but still generally the fastest.
-
-2023-01-29 v3.0.1 Fixed build issue where root index.js was not getting updated.
-
-2023-01-28 v3.0.0 Slight size optimization. 25% speed improvement. Moved to module format. There is a known issue with providing `fast-equals` or `lodash.isEqual` as an optional comparison function. Unit tests pass, but the functions fail under load. The `hash-it` object equivalence function does work. A formerly undocumented method `.keyValues()` has been deprecated since it is no longer relevant with the new optimizations.
+2022-01-28 v3.0.0 Slight size optimization. 25% speed improvement. Moved to module format. There is a known issue with providing `fast-equals` or `lodash.isEqual` as an optional comparison function. Unit tests pass, but the functions fail under load. The `hash-it` object equivalence function does work. A formerly undocumented method `.keyValues()` has been deprecated since it is no longer relevant with the new optimizations.
 
 2022-12-08 v2.0.0 Removed callTimeout from TypeScript typings since it was not implemented and there are no plans to implement. Bumped version to 2.0.0 since this may break some users.
 
