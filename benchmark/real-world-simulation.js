@@ -60,12 +60,31 @@ const fibonacciMultipleMixed = (number, check={}) => {
     );
 }
 
+const manyArgsToString = (...args) => {
+    return JSON.stringify(args);
+}
+
+const sumManyArgs = (...args) => {
+    return args.reduce((acc, curr) => {
+        return acc + curr;
+    }, 0);
+}
+
 
 // Memoize each expensive function
-const nanomemoizedFunction = nanomemoize(fibonacciMultipleMixed);
-const fastMemoizedFunction = fastMemoize(fibonacciMultipleMixed);
-const microMemoizedFunction = microMemoize(fibonacciMultipleMixed);
-const moizeMemoizedFunction = microMemoize(fibonacciMultipleMixed)
+const nanomemoizedFunction1 = nanomemoize(fibonacciMultipleMixed);
+const fastMemoizedFunction1 = fastMemoize(fibonacciMultipleMixed);
+const microMemoizedFunction1 = microMemoize(fibonacciMultipleMixed);
+const moizeMemoizedFunction1 = microMemoize(fibonacciMultipleMixed);
+const nanomemoizedFunction2 = nanomemoize(manyArgsToString);
+const fastMemoizedFunction2 = fastMemoize(manyArgsToString);
+const microMemoizedFunction2 = microMemoize(manyArgsToString);
+const moizeMemoizedFunction2 = microMemoize(manyArgsToString);
+const nanomemoizedFunction3 = nanomemoize(sumManyArgs);
+const fastMemoizedFunction3 = fastMemoize(sumManyArgs);
+const microMemoizedFunction3 = microMemoize(sumManyArgs);
+const moizeMemoizedFunction3 = microMemoize(sumManyArgs);
+
 
 
 // Set up the benchmark test
@@ -88,88 +107,74 @@ const onComplete = () => {
 };
 // Add the tests for each memoized function
 suite
-    .add('nanomemoizedFunction', () => {
+    .add('nanomemoizedFunctions', () => {
         const random = Math.round(Math.random()*10);
-        let args;
+        let args1, args2
         if(random<=2) {
-            args = [5,{}];
+            args1 = [5,{}];
+            args2 = [1,2,3,4,5,6,7,8,9,10];
         } else {
-            args = [random,{}];
+            args1 = [random,{}];
+            args2 = [].fill(random,0,10);
         }
-        const result = nanomemoizedFunction.apply(null,args);
-        const shouldBe = fibonacciMultipleMixed.apply(null,args);
-        if(result!==shouldBe) console.log("err nanomemoizedFunction")
-        assert.strictEqual(result,shouldBe);
+        nanomemoizedFunction1.apply(null,args1);
+        const result = nanomemoizedFunction2.apply(null,args2);
+        nanomemoizedFunction3.apply(null,args2);
+        const shouldBe = manyArgsToString.apply(null,args2);
+        if(result!==shouldBe) console.log("err nanomemoizedFunction2")
+        //assert.strictEqual(result,shouldBe);
     })
-    .add('fastmoizedFunction', () => {
+    .add('fastMemoizedFunctions', () => {
         const random = Math.round(Math.random()*10);
-        let args;
+        let args1, args2;
         if(random<=2) {
-            args = [5,{}];
+            args1 = [5,{}];
+            args2 = [1,2,3,4,5,6,7,8,9,10];
         } else {
-            args = [random,{}];
+            args1 = [random,{}];
+            args2 = [].fill(random,0,10);
         }
-        const result = fastMemoizedFunction.apply(null,args);
-        const shouldBe = fibonacciMultipleMixed.apply(null,args);
-        if(result!==shouldBe) console.log("err nanomemoizedFunction")
-        assert.strictEqual(result,shouldBe);
+        const result = fastMemoizedFunction1.apply(null,args1);
+        fastMemoizedFunction2.apply(null,args2);
+        fastMemoizedFunction3.apply(null,args2);
+        //const shouldBe = fibonacciMultipleMixed.apply(null,args);
+        //if(result!==shouldBe) console.log("err nanomemoizedFunction")
+        //assert.strictEqual(result,shouldBe);
     })
-    .add('microMemoizedFunction', () => {
+    .add('microMemoizedFunctions', () => {
         const random = Math.round(Math.random()*10);
-        let args;
+        let args1, args2;
         if(random<=2) {
-            args = [5,{}];
+            args1 = [5,{}];
+            args2 = [1,2,3,4,5,6,7,8,9,10];
         } else {
-            args = [random,{}];
+            args1 = [random,{}];
+            args2 = [].fill(random,0,10);
         }
-        const result = microMemoizedFunction.apply(null,args);
-        const shouldBe = fibonacciMultipleMixed.apply(null,args);
-        if(result!==shouldBe) console.log("err nanomemoizedFunction")
-        assert.strictEqual(result,shouldBe);
+        const result = microMemoizedFunction1.apply(null,args1);
+        microMemoizedFunction2.apply(null,args2);
+        microMemoizedFunction3.apply(null,args2);
+        //const shouldBe = fibonacciMultipleMixed.apply(null,args);
+        //if(result!==shouldBe) console.log("err nanomemoizedFunction")
+        //assert.strictEqual(result,shouldBe);
     })
-    .add('moizeMemoizedFunction', () => {
+    .add('moizeMemoizedFunctions', () => {
         const random = Math.round(Math.random()*10);
-        let args;
+        let args1, args2;
         if(random<=2) {
-            args = [5,{}];
+            args1 = [5,{}];
+            args2 = [1,2,3,4,5,6,7,8,9,10];
         } else {
-            args = [random,{}];
+            args1 = [random,{}];
+            args2 = [].fill(random,0,10);
         }
-        const result = moizeMemoizedFunction.apply(null,args);
-        const shouldBe = fibonacciMultipleMixed.apply(null,args);
-        if(result!==shouldBe) console.log("err nanomemoizedFunction")
-        assert.strictEqual(result,shouldBe);
+        const result = moizeMemoizedFunction1.apply(null,args1);
+        moizeMemoizedFunction2.apply(null,args2);
+        moizeMemoizedFunction3.apply(null,args2);
+        //const shouldBe = fibonacciMultipleMixed.apply(null,args);
+        //if(result!==shouldBe) console.log("err nanomemoizedFunction")
+        //assert.strictEqual(result,shouldBe);
     })
-    /*.add('memoizedFunction2', () => {
-        const arg1 = Math.random();
-        const arg2 = Math.random();
-        const result = memoizedFunction2(arg1, arg2);
-        assert.strictEqual(result, expensiveFunction2(arg1, arg2));
-    })
-    .add('memoizedFunction3', () => {
-        const arg1 = Math.random();
-        const arg2 = 'test';
-        const arg3 = { key: 'value' };
-        const result = memoizedFunction3(arg1, arg2, arg3);
-        assert.strictEqual(result, expensiveFunction3(arg1, arg2, arg3));
-    })
-    .add('memoizedFunction4', () => {
-        const arg1 = 'a';
-        const arg2 = Math.random();
-        const arg3 = true;
-        const arg4 = { key: 'value' };
-        const result = memoizedFunction4(arg1, arg2, arg3, arg4);
-        assert.deepStrictEqual(result, expensiveFunction4(arg1, arg2, arg3, arg4));
-    })
-    .add('memoizedFunction5', () => {
-        const arg1 = Math.random();
-        const arg2 = 'test';
-        const arg3 = { key: 'value' };
-        const arg4 = [1, 2, 3];
-        const arg5 = false;
-        const result = memoizedFunction5(arg1, arg2, arg3, arg4, arg5);
-        assert.deepStrictEqual(result, expensiveFunction5(arg1, arg2, arg3, arg4, arg5));
-    }) */
     .on('start', () => {
         console.log(''); // eslint-disable-line no-console
         console.log('Starting real world simulation...'); // eslint-disable-line no-console

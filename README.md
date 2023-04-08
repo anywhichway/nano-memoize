@@ -17,12 +17,11 @@ The speed tests are below.
 
 * For multiple object argument functions `micro-memoize` is always at least 5% faster than its closest competitors `moize` and `nano-memoize` which alternate in second place typically within each other's margin of error.
 
-* For custom equality functions 'nano-memoize` and `micro-memoize vary in speed depending on the equality function used. `nano-memoize` is always first by at least 15% using `hash-it` and `micro-memoize` is always second using `hash-it` or `lodash`. See the table below.
+* For custom equality functions 'nano-memoize` and `micro-memoize vary in speed depending on the equality function used. `nano-memoize` is always first by at least 15% using `hash-it` and `micro-memoize` is always second using `hash-it` or `lodash`.
 
-* For a real world simulation where only 20% of the function calls are memoized and they take mixed argument types, `nanomemoize` remains the fastest. Although, it is within the margin of error for `fastMemoize`
+* For a real world simulation where only 20% of the function calls are memoized and they take and return mixed argument types, `nanomemoize` is by far fastest. It appears this is because `nanomemoize` handles the passing of mutiple values returned as a string better than others.
 
 The `planetheidea/moize` library (which claims to be the fastest on average) does not include `nano-memoize` for comparison and the repository is not accepting comments or a pull request for some technical reason. The repository has been forked and its own benchmarking has been updated and run to confirm the results below.
-
 
 Starting cycles for functions with a single primitive parameter...
 
@@ -104,16 +103,14 @@ Starting cycles for alternative cache types...
 |  micro-memoize deep equals (fast-deep-equal) |  62,658,012  |  ± 2.95%                  |  78          | 
 |  nanomemoize fast equals (fast-deep-equals)  |  42,443,623  |  ± 1.91%                  |  82          | 
 
-
 Starting real world simulation...
 
-|  Name                  |  Ops / sec |  Relative margin of error |  Sample size |
+| Name                   | Ops / sec | Relative margin of error | Sample size |
 | ------- |------- |------------- |------- |
-|  nanomemoizedFunction  |  3,456,663 |  ± 1.10%                  |  92          |
-|  fastmoizedFunction    |  3,453,148 |  ± 1.69%                  |  92          |
-|  microMemoizedFunction |  1,833,970 |  ± 0.80%                  |  95          |
-|  moizeMemoizedFunction |  1,810,871 |  ± 0.49%                  |  93          | 
-
+| nanomemoizedFunctions  | 3,409,618 | ± 0.99%                  | 94          |
+| microMemoizedFunctions | 1,845,306 | ± 0.76%                  | 92          |
+| moizeMemoizedFunctions | 1,842,258 | ± 0.82%                  | 90          |
+| fastMemoizedFunctions  | 638,857   | ± 1.30%                  | 94          |
 
 If you want similar performance for intersection, union or Cartesian product also see:
 
@@ -128,9 +125,6 @@ If you want similar performance for intersection, union or Cartesian product als
 # Usage
 
 `npm install nano-memoize`
-
-The code is hand-crafted to run across all browsers all the way back to IE 11. No transpiling is necessary.
-
 
 # API
 
@@ -174,8 +168,9 @@ The returned function will also have these methods:
 
 `.values()` returns an array of arrays with each array being the results of a function call with the same index position as the keys.
 
-
 # Release History (reverse chronological order)
+
+2023-04-08 v3.0.10 Enhanced real world simulation.
 
 2023-04-07 v3.0.9 Added real world simulation. Removed .parcel-cache from deployment.
 
