@@ -6,7 +6,6 @@
   "source": "src/index.js",
   "main": "dist/nano-memoize.js",
   "module": "./index.js",
-  "engines": {},
   "sideEffects": false,
   "license": "MIT",
   "scripts": {
