@@ -170,6 +170,8 @@ The returned function will also have these methods:
 
 # Release History (reverse chronological order)
 
+2023-04-19 v3.0.11 Bumping version for dependabot and other third party pull requests impacting package.json.
+
 2023-04-08 v3.0.10 Enhanced real world simulation.
 
 2023-04-07 v3.0.9 Added real world simulation. Removed .parcel-cache from deployment.
