@@ -1,4 +1,4 @@
-
+"use strict"
 const vm = require("node:vm");
 const v8 = require("v8");
 
@@ -7,7 +7,7 @@ const gc = vm.runInNewContext('gc');
 
 const Benchmark = require('benchmark');
 const assert = require('assert');
-const Table = require('cli-table2');
+const Table = require('cli-table');
 const ora = require('ora');
 
 const showResults = (benchmarkResults) => {
@@ -41,6 +41,7 @@ const nanomemoize = require('../dist/nano-memoize.js').default;
 const fastMemoize = require('fast-memoize');
 const microMemoize = require('micro-memoize');
 const moize = require('moize');
+const memize = require('memize');
 
 const fibonacciMultipleMixed = (number, check={}) => {
     if (check.isComplete) {
@@ -76,14 +77,17 @@ const nanomemoizedFunction1 = nanomemoize(fibonacciMultipleMixed);
 const fastMemoizedFunction1 = fastMemoize(fibonacciMultipleMixed);
 const microMemoizedFunction1 = microMemoize(fibonacciMultipleMixed);
 const moizeMemoizedFunction1 = microMemoize(fibonacciMultipleMixed);
+const memizeMemoizedFunction1 = memize(fibonacciMultipleMixed);
 const nanomemoizedFunction2 = nanomemoize(manyArgsToString);
 const fastMemoizedFunction2 = fastMemoize(manyArgsToString);
 const microMemoizedFunction2 = microMemoize(manyArgsToString);
 const moizeMemoizedFunction2 = microMemoize(manyArgsToString);
+const memizeMemoizedFunction2 = memize(manyArgsToString);
 const nanomemoizedFunction3 = nanomemoize(sumManyArgs);
 const fastMemoizedFunction3 = fastMemoize(sumManyArgs);
 const microMemoizedFunction3 = microMemoize(sumManyArgs);
 const moizeMemoizedFunction3 = microMemoize(sumManyArgs);
+const memizeMemoizedFunction3 = memize(sumManyArgs);
 
 
 
@@ -171,6 +175,23 @@ suite
         const result = moizeMemoizedFunction1.apply(null,args1);
         moizeMemoizedFunction2.apply(null,args2);
         moizeMemoizedFunction3.apply(null,args2);
+        //const shouldBe = fibonacciMultipleMixed.apply(null,args);
+        //if(result!==shouldBe) console.log("err nanomemoizedFunction")
+        //assert.strictEqual(result,shouldBe);
+    })
+    .add('memizeMemoizedFunctions', () => {
+        const random = Math.round(Math.random()*10);
+        let args1, args2;
+        if(random<=2) {
+            args1 = [5,{}];
+            args2 = [1,2,3,4,5,6,7,8,9,10];
+        } else {
+            args1 = [random,{}];
+            args2 = [].fill(random,0,10);
+        }
+        const result = memizeMemoizedFunction1.apply(null,args1);
+        memizeMemoizedFunction2.apply(null,args2);
+        memizeMemoizedFunction3.apply(null,args2);
         //const shouldBe = fibonacciMultipleMixed.apply(null,args);
         //if(result!==shouldBe) console.log("err nanomemoizedFunction")
         //assert.strictEqual(result,shouldBe);

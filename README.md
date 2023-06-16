@@ -7,84 +7,108 @@ Version 3.x.x of nano-memoize was modified to use newer versions of JavaScript b
 
 Tests show 'nano-memoize' is overall the smallest and fastest openly available JavaScript memoizer for single and multiple argument functions accepting primitives and objects. However, I have found that benchmarks can vary dramatically from O/S to O/S or Node version to Node version, so I could be wrong. These tests were run on a Windows 10 Pro 64bit 2.8ghz i7 machine with 16GB RAM and Node v18.13.0. Garbage collection was forced between each sample run to minimize its impact on results.
 
+Although `fast-memoize` used to be a contender, its performance has dropped substantially.
+
 The speed tests are below.
+
+* Most libraries test repeated calls using the same arguments that guarantee memoized cache hits. In the real world this is unlikely. For a real world simulation where only 20% of the function calls are memoized and they take and return mixed argument types, `nanomemoize` is by far fastest. It appears this is because `nanomemoize` handles the passing of multiple values returned as a string better than others. 
  
-* For single primitive argument functions `nano-memoize` is typically 2% faster than `fast-memoize` and `micro-emoize`. However, all three are almost always within the margins of error of the other.
+* For single primitive argument functions `fast-memoize`and `micro-emoize` are consistently 10% faster than `nano-memoize` and `memize`. The pairs are always within each other's margin of error.
  
-* For single object argument functions `nano-memoize` is consistently at least 15% faster than its closest competitor `fast-memoize`.
+* For single object argument functions `nano-memoize` and `memize` alternate the lead, typically within each other's margin of error. They are at least 15% faster their its closest competitors `moize` and `micro-memoize`.
 
-* For multiple primitive argument functions `nano-memoize` is typically 2% faster than `fast-memoize` and `micro-emoize`. However, all three are frequently within the margin of error of the other.
+* For multiple primitive argument functions the results are similar to single object argument functions.
 
-* For multiple object argument functions `micro-memoize` is always at least 5% faster than its closest competitors `moize` and `nano-memoize` which alternate in second place typically within each other's margin of error.
+* For multiple object argument functions `memize` is always at least 15% faster than its closest competitors `nano-memoize`  and `micro-memoize` which are within each other's margin of error.
 
-* For custom equality functions 'nano-memoize` and `micro-memoize vary in speed depending on the equality function used. `nano-memoize` is always first by at least 15% using `hash-it` and `micro-memoize` is always second using `hash-it` or `lodash`.
+* For multiple mixed parameters the results are similar to those for multiple object arguments.
 
-* For a real world simulation where only 20% of the function calls are memoized and they take and return mixed argument types, `nanomemoize` is by far fastest. It appears this is because `nanomemoize` handles the passing of mutiple values returned as a string better than others.
+* For custom equality functions, the supporting libraries `nano-memoize`, `moize` and `micro-memoize` vary in speed depending on the equality function used. The best equality function to use appears to be `lodash.isEqual`.
 
 The `planetheidea/moize` library (which claims to be the fastest on average) does not include `nano-memoize` for comparison and the repository is not accepting comments or a pull request for some technical reason. The repository has been forked and its own benchmarking has been updated and run to confirm the results below.
 
+The `memize` library (which claims to be the fastest) does not include `nano-memoize` for comparison.
+
+`lodash` is excluded from multiple argument tests because it only memoizes the first argument.
+
+Starting real world simulation...
+
+| Name                   | Ops / sec | Relative margin of error | Sample size |
+| ------- |------- |------------- |------- |
+|  nanomemoizedFunctions    |  2,172,477  |  ± 2.63%                   |  81           | 
+|  moizeMemoizedFunctions   |  1,279,591  |  ± 2.30%                   |  83           | 
+|  microMemoizedFunctions   |  1,206,613  |  ± 2.62%                   |  81           | 
+|  fastMemoizedFunctions    |  441,783    |  ± 2.94%                   |  79           | 
+|  memizeMemoizedFunctions  |  3,727      |  ± 34.45%                  |  9            | 
+
+
 Starting cycles for functions with a single primitive parameter...
 
-|  Name          |  Ops / sec   |  Relative margin of error |  Sample size |
-| ------- |------- |------------- |------- |
-|  nano-memoize  |  150,014,960 |  ± 1.26%                  |  88          |
-|  fast-memoize  |  148,920,057 |  ± 1.37%                  |  88          |
-|  micro-memoize |  148,405,982 |  ± 1.46%                  |  90          |
-|  iMemoized     |  117,844,380 |  ± 1.65%                  |  88          |
-|  moize         |  96,796,008  |  ± 1.80%                  |  85          |
-|  underscore    |  54,815,804  |  ± 1.28%                  |  87          |
-|  lodash        |  54,617,110  |  ± 1.30%                  |  87          |
-|  lru-memoize   |  41,426,130  |  ± 1.16%                  |  87          |
-|  memoizee      |  31,747,590  |  ± 1.52%                  |  85          |
-|  addy-osmani   |  14,848,551  |  ± 1.76%                  |  82          |
-|  memoizerific  |  12,835,863  |  ± 1.84%                  |  85          | 
+| Name          |  Ops / sec   |  Relative margin of error | Sample size |
+|---------------|------- |------------- |-------------|
+| nano-memoize  |  150,014,960 |  ± 1.26%               | 88          |
+| fast-memoize  |  148,920,057 |  ± 1.37%               | 88          |
+| micro-memoize |  148,405,982 |  ± 1.46%               | 90          |
+| memize        |  135,435,506 |  ± 2.60%               | 82          | 
+| iMemoized     |  117,844,380 |  ± 1.65%               | 88          |
+| moize         |  96,796,008  |  ± 1.80%               | 85          |
+| underscore    |  54,815,804  |  ± 1.28%               | 87          |
+| lodash        |  54,617,110  |  ± 1.30%               | 87          |
+| lru-memoize   |  41,426,130  |  ± 1.16%               | 87          |
+| memoizee      |  31,747,590  |  ± 1.52%               | 85          |
+| addy-osmani   |  14,848,551  |  ± 1.76%               | 82          |
+| memoizerific  |  12,835,863  |  ± 1.84%               | 85          | 
 
 
 Starting cycles for functions with a single object parameter...
 
 |  Name          |  Ops / sec   |  Relative margin of error |  Sample size | 
 | ------- |------- |------------- |------- |
-|  nano-memoize  |  149,402,848 |  ± 1.20%                  |  90          |
-|  fast-memoize  |  121,117,510 |  ± 2.41%                  |  86          |
-|  iMemoized     |  98,480,257  |  ± 3.36%                  |  85          |
-|  micro-memoize |  97,781,728  |  ± 1.36%                  |  87          |
-|  moize         |  94,370,945  |  ± 4.58%                  |  84          |
-|  lodash        |  41,298,824  |  ± 2.60%                  |  84          |
-|  lru-memoize   |  39,315,541  |  ± 1.55%                  |  86          |
-|  underscore    |  33,803,044  |  ± 1.66%                  |  87          |
-|  memoizee      |  27,298,946  |  ± 2.40%                  |  86          |
-|  addy-osmani   |  16,003,489  |  ± 1.72%                  |  87          |
-|  memoizerific  |  12,502,443  |  ± 1.33%                  |  86          | 
+ |  nano-memoize   |  105,666,095  |  ± 1.84%                   |  84           | 
+ |  memize         |  100,137,512  |  ± 3.52%                   |  78           | 
+ |  micro-memoize  |  81,031,228   |  ± 1.85%                   |  82           | 
+ |  moize          |  80,331,910   |  ± 1.88%                   |  84           | 
+ |  lodash         |  57,681,325   |  ± 3.58%                   |  77           | 
+ |  iMemoized      |  31,021,746   |  ± 2.16%                   |  82           | 
+ |  lru-memoize    |  27,346,729   |  ± 3.08%                   |  73           | 
+ |  memoizee       |  26,171,811   |  ± 2.85%                   |  79           | 
+ |  memoizerific   |  12,116,210   |  ± 2.31%                   |  82           | 
+ |  underscore     |  11,796,099   |  ± 2.54%                   |  81           | 
+ |  addy-osmani    |  1,333,797    |  ± 1.93%                   |  82           | 
+ |  fast-memoize   |  1,046,331    |  ± 2.41%                   |  81           | 
 
 
 Starting cycles for functions with multiple parameters that contain only primitives...
 
 |  Name          |  Ops / sec  |  Relative margin of error |  Sample size | 
 | ------- |------- |------------- |------- |
-|  nano-memoize  |  57,333,928 |  ± 1.83%                  |  85          |
-|  micro-memoize |  51,539,993 |  ± 2.07%                  |  83          |
-|  moize         |  49,918,411 |  ± 3.30%                  |  81          |
-|  lru-memoize   |  29,594,676 |  ± 2.83%                  |  79          |
-|  memoizee      |  17,895,742 |  ± 2.08%                  |  87          |
-|  iMemoized     |  12,263,731 |  ± 1.99%                  |  85          |
-|  memoizerific  |  7,804,227  |  ± 1.81%                  |  84          |
-|  addy-osmani   |  4,190,503  |  ± 2.03%                  |  84          |
-|  fast-memoize  |  1,101,952  |  ± 2.87%                  |  81          |
+ |  nano-memoize   |  73,088,113  |  ± 2.58%                   |  81           | 
+ |  memize         |  69,656,505  |  ± 3.34%                   |  77           |
+ |  micro-memoize  |  55,731,664  |  ± 2.37%                   |  81           |
+ |  moize          |  52,330,890  |  ± 3.84%                   |  77           |
+ |  lru-memoize    |  31,263,360  |  ± 2.08%                   |  84           |
+ |  memoizee       |  17,110,335  |  ± 3.01%                   |  76           |
+ |  iMemoized      |  10,532,281  |  ± 2.83%                   |  79           |
+ |  memoizerific   |  8,042,920   |  ± 3.18%                   |  77           |
+ |  addy-osmani    |  3,942,524   |  ± 3.38%                   |  79           |
+ |  fast-memoize   |  1,076,636   |  ± 3.09%                   |  80           | 
 
 
 Starting cycles for functions with multiple parameters that contain objects...
 
 |  Name          |  Ops / sec  |  Relative margin of error |  Sample size |
 | ------- |------- |------------- |------- |
-|  micro-memoize |  51,551,926 |  ± 2.10%                  |  82          |
-|  nano-memoize  |  40,243,156 |  ± 3.75%                  |  82          |
-|  moize         |  37,285,146 |  ± 16.13%                 |  65          |
-|  lru-memoize   |  27,946,905 |  ± 3.41%                  |  79          |
-|  memoizee      |  17,209,457 |  ± 1.96%                  |  84          |
-|  memoizerific  |  7,609,760  |  ± 4.26%                  |  76          |
-|  addy-osmani   |  1,212,045  |  ± 1.85%                  |  86          |
-|  fast-memoize  |  563,610    |  ± 26.34%                 |  69          | 
-
+ |  memize         |  67,190,875  |  ± 3.73%                   |  70           |
+ |  nano-memoize   |  49,960,425  |  ± 2.25%                   |  81           | 
+ |  micro-memoize  |  47,635,797  |  ± 3.70%                   |  73           | 
+ |  moize          |  44,910,757  |  ± 4.52%                   |  68           | 
+ |  lru-memoize    |  27,472,119  |  ± 2.76%                   |  77           | 
+ |  memoizee       |  17,352,541  |  ± 2.79%                   |  75           | 
+ |  underscore     |  10,748,866  |  ± 3.62%                   |  74           | 
+ |  iMemoized      |  10,544,215  |  ± 2.77%                   |  77           | 
+ |  memoizerific   |  8,346,696   |  ± 3.66%                   |  74           | 
+ |  addy-osmani    |  954,701     |  ± 2.18%                   |  82           | 
+ |  fast-memoize   |  652,447     |  ± 3.60%                   |  74           | 
 
 Starting cycles for alternative cache types...
 
@@ -103,14 +127,6 @@ Starting cycles for alternative cache types...
 |  micro-memoize deep equals (fast-deep-equal) |  62,658,012  |  ± 2.95%                  |  78          | 
 |  nanomemoize fast equals (fast-deep-equals)  |  42,443,623  |  ± 1.91%                  |  82          | 
 
-Starting real world simulation...
-
-| Name                   | Ops / sec | Relative margin of error | Sample size |
-| ------- |------- |------------- |------- |
-| nanomemoizedFunctions  | 3,409,618 | ± 0.99%                  | 94          |
-| microMemoizedFunctions | 1,845,306 | ± 0.76%                  | 92          |
-| moizeMemoizedFunctions | 1,842,258 | ± 0.82%                  | 90          |
-| fastMemoizedFunctions  | 638,857   | ± 1.30%                  | 94          |
 
 If you want similar performance for intersection, union or Cartesian product also see:
 
@@ -169,6 +185,8 @@ The returned function will also have these methods:
 `.values()` returns an array of arrays with each array being the results of a function call with the same index position as the keys.
 
 # Release History (reverse chronological order)
+
+2023-06-16 v4.0.0 Bumping version for updates of dependencies. Updated all memoization libraries to latest versions. Also added `memize` to tests and updated to latest LTS version of Node.js. The Node update had a material impact on performance of several memoziation libraries.
 
 2023-04-19 v3.0.11 Bumping version for dependabot and other third party pull requests impacting package.json.
 

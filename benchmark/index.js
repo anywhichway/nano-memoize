@@ -31,7 +31,7 @@ v8.setFlagsFromString('--expose_gc');
 const gc = vm.runInNewContext('gc');
 
 const Benchmark = require('benchmark');
-const Table = require('cli-table2');
+const Table = require('cli-table');
 const ora = require('ora');
 
 const underscore = require('underscore').memoize;
@@ -46,6 +46,7 @@ const microMemoize = require('micro-memoize');
 const iMemoized = require('iMemoized');
 const nanomemoize = require('../dist/nano-memoize.js').default;
 const moize = require('moize');
+const memize = require('memize');
 
 
 const deepEquals = require('lodash').isEqual;
@@ -191,6 +192,7 @@ const runSingleParameterSuite = () => {
   const mMicroMemoize = microMemoize(fibonacci);
   const mIMemoized = iMemoized.memoize(fibonacci);
   const mNano = nanomemoize(fibonacci);
+  const mMemize = memize(fibonacci);
 
 
   return new Promise((resolve) => {
@@ -231,6 +233,9 @@ const runSingleParameterSuite = () => {
       .add('fast-memoize', () => {
         mFastMemoize(fibonacciNumber);
       })
+        .add('memize', () => {
+        mMemize(fibonacciNumber);
+        })
       .on('start', () => {
         console.log(''); // eslint-disable-line no-console
         console.log('Starting cycles for functions with a single primitive parameter...'); // eslint-disable-line no-console
@@ -266,6 +271,7 @@ const runSingleParameterObjectSuite = () => {
   const mMicroMemoize = microMemoize(fibonacciSingleObject);
   const mIMemoized = iMemoized.memoize(fibonacciSingleObject);
   const mNano = nanomemoize(fibonacciSingleObject);
+  const mMemize = memize(fibonacciSingleObject);
 
 
   return new Promise((resolve) => {
@@ -306,6 +312,9 @@ const runSingleParameterObjectSuite = () => {
       .add('fast-memoize', () => {
         mFastMemoize(fibonacciNumber);
       })
+      .add('memize', () => {
+        mMemize(fibonacciNumber);
+      })
       .on('start', () => {
         console.log(''); // eslint-disable-line no-console
         console.log('Starting cycles for functions with a single object parameter...'); // eslint-disable-line no-console
@@ -339,6 +348,7 @@ const runMultiplePrimitiveSuite = () => {
   const mMicroMemoize = microMemoize(fibonacciMultiplePrimitive);
   const mIMemoized = iMemoized.memoize(fibonacciMultiplePrimitive);
   const mNano = nanomemoize(fibonacciMultiplePrimitive);
+  const mMemize = memize(fibonacciMultiplePrimitive);
 
   return new Promise((resolve) => {
     fibonacciSuite
@@ -369,6 +379,9 @@ const runMultiplePrimitiveSuite = () => {
       .add('moize', () => {
         mMoize(fibonacciNumber, isComplete);
       })
+        .add('memize', () => {
+          mMemize(fibonacciNumber, isComplete);
+        })
       .on('start', () => {
         console.log(''); // eslint-disable-line no-console
         console.log('Starting cycles for functions with multiple parameters that contain only primitives...'); // eslint-disable-line no-console
@@ -394,7 +407,6 @@ const runMultipleObjectSuite = () => {
   const check = {};
 
   const mUnderscore = underscore(fibonacciMultipleObject);
-  const mLodash = lodash(fibonacciMultipleObject);
   // const mRamda = ramda(fibonacciMultipleObject);
   const mMemoizee = memoizee(fibonacciMultipleObject);
   const mFastMemoize = fastMemoize(fibonacciMultipleObject);
@@ -405,6 +417,7 @@ const runMultipleObjectSuite = () => {
   const mMicroMemoize = microMemoize(fibonacciMultipleObject);
   const mIMemoized = iMemoized.memoize(fibonacciMultipleObject);
   const mNano = nanomemoize(fibonacciMultipleObject);
+  const mMemize = memize(fibonacciMultipleObject);
 
 
   return new Promise((resolve) => {
@@ -414,9 +427,6 @@ const runMultipleObjectSuite = () => {
         })
         .add('addy-osmani', () => {
           mAddyOsmani(fibonacciNumber,check);
-        })
-        .add('lodash', () => {
-          mLodash(fibonacciNumber,check);
         })
         .add('lru-memoize', () => {
           mLruMemoize(fibonacciNumber,check);
@@ -444,6 +454,9 @@ const runMultipleObjectSuite = () => {
         })
         .add('fast-memoize', () => {
           mFastMemoize(fibonacciNumber,check);
+        })
+        .add('memize', () => {
+          mMemize(fibonacciNumber, check);
         })
         .on('start', () => {
           console.log(''); // eslint-disable-line no-console
@@ -479,6 +492,7 @@ const runMultipleMixedSuite = () => {
   const mMoize = moize(fibonacciMultipleMixed);
   const mMicroMemoize = microMemoize(fibonacciMultipleMixed);
   const mNano = nanomemoize(fibonacciMultipleMixed);
+  const mMemize = memize(fibonacciMultipleMixed);
   
   return new Promise((resolve) => {
     fibonacciSuite
@@ -506,6 +520,9 @@ const runMultipleMixedSuite = () => {
       .add('moize', () => {
         mMoize(fibonacciNumber, isComplete);
       })
+        .add('memize', () => {
+          mMemize(fibonacciNumber, isComplete);
+        })
       .on('start', () => {
         console.log(''); // eslint-disable-line no-console
         console.log('Starting cycles for functions with multiple mixed parameters ...'); // eslint-disable-line no-console

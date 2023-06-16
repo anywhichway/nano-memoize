@@ -54,19 +54,19 @@ function $cf838c15c8b009ba$export$22f15dd4e5be7e52(fn, o) {
         u = 1;
     } else // for multiple arg functions, loop through a cache of all the args
     // looking at each arg separately so a test can abort as soon as possible
-    f = function() {
-        var l = maxargs || arguments.length, kl = k.length, i = -1;
+    f = function(...argv) {
+        var l = maxargs || argv.length, kl = k.length, i = -1;
         while(++i < kl){
             var args = k[i];
-            if (maxargs != null || args.length === l) {
+            if (args.length === l) {
                 var j = -1;
-                while(++j < l && (eq ? eq(arguments[j], args[j]) : arguments[j] === args[j])); // compare each arg
+                while(++j < l && (eq ? eq(argv[j], args[j]) : argv[j] === args[j])); // compare each arg
                 if (j === l) return v[i] //the args matched;
                 ;
             }
         }
         // set change timeout only when new value computed, hits will not push out the tte, but it is arguable they should not
-        return !c || c(i), v[i] = fn.apply(this, k[i] = arguments);
+        return !c || c(i), v[i] = fn.apply(this, k[i] = argv);
     };
     // reset all the caches
     f.clear = function() {
