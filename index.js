@@ -33,7 +33,7 @@ function $cf838c15c8b009ba$export$22f15dd4e5be7e52(fn, o) {
 		vargs = vrgs(fn) // set to true if function may have variable or beyond-signature arguments, default is best attempt at infering
 	  } = {}
 	*/ o || (o = {});
-    var vargs = o.vargs || $cf838c15c8b009ba$var$vrgs(fn), k = [], v = [], cache = new Map(), u, d = function(key) {
+    var vargs = o.vargs || $cf838c15c8b009ba$var$vrgs(fn), k = [], cache = new Map(), u, d = function(key) {
         return setTimeout(function() {
             if (u) {
                 cache.delete(key);
@@ -41,7 +41,7 @@ function $cf838c15c8b009ba$export$22f15dd4e5be7e52(fn, o) {
             }
             // dealing with multi-arg function, c and k are Arrays
             k.splice(key, 1);
-            v.splice(key, 1);
+        //v.splice(key,1);
         }, o.maxAge);
     }, c = o.maxAge > 0 && o.maxAge < Infinity ? d : 0, eq = o.equals ? o.equals : 0, maxargs = o.maxArgs, srlz = o.serializer, f; // memoized function to return
     if (fn.length === 1 && !o.equals && !vargs) {
@@ -52,27 +52,36 @@ function $cf838c15c8b009ba$export$22f15dd4e5be7e52(fn, o) {
             return cache.get(a) || (!c || c(a), cache.set(a, r = fn.call(this, a)), r);
         };
         u = 1;
-    } else // for multiple arg functions, loop through a cache of all the args
+    } else if (eq) // for multiple arg functions, loop through a cache of all the args
     // looking at each arg separately so a test can abort as soon as possible
-    f = function(...argv) {
-        var l = maxargs || argv.length, kl = k.length, i = -1;
-        while(++i < kl){
-            var args = k[i];
-            if (args.length === l) {
-                var j = -1;
-                while(++j < l && (eq ? eq(argv[j], args[j]) : argv[j] === args[j])); // compare each arg
-                if (j === l) return v[i] //the args matched;
-                ;
-            }
+    f = function() {
+        var l = maxargs || arguments.length, kl = k.length, i = -1;
+        while(++i < kl)if (k[i].length === l) {
+            var j = -1;
+            while(++j < l && eq(arguments[j], k[i][j])); // compare each arg
+            if (j === l) return k[i].val //the args matched;
+            ;
         }
         // set change timeout only when new value computed, hits will not push out the tte, but it is arguable they should not
-        return !c || c(i), v[i] = fn.apply(this, k[i] = argv);
+        k[i] = arguments;
+        return !c || c(i), arguments.val = fn.apply(this, k[i]);
+    };
+    else f = function() {
+        var l = maxargs || arguments.length, kl = k.length, i = -1;
+        while(++i < kl)if (k[i].length === l) {
+            var j = -1;
+            while(++j < l && arguments[j] === k[i][j]); // compare each arg
+            if (j === l) return k[i].val //the args matched;
+            ;
+        }
+        // set change timeout only when new value computed, hits will not push out the tte, but it is arguable they should not
+        k[i] = arguments;
+        return !c || c(i), arguments.val = fn.apply(this, k[i]);
     };
     // reset all the caches
     f.clear = function() {
         cache.clear();
         k = [];
-        v = [];
     };
     f.keys = function() {
         return u ? [
@@ -82,7 +91,7 @@ function $cf838c15c8b009ba$export$22f15dd4e5be7e52(fn, o) {
     f.values = function() {
         return u ? [
             ...cache.values()
-        ] : v.slice();
+        ] : k.map((args)=>args.val);
     };
     return f;
 }
