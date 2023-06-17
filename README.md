@@ -1,4 +1,4 @@
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/30ce201484754fa5b0a6c6046abb842d)](https://www.codacy.com/app/syblackwell/nano-memoize?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=anywhichway/nano-memoize&amp;utm_campaign=Badge_Grade)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/30ce201484754fa5b0a6c6046abb842d)](https://www.codacy.com/app/syblackwell/nano-memoize?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=anywhichway/nano-memoize&amp;utm_campaign=Badge_Grade) [![](https://img.shields.io/npm/v/nano-memoize.svg?style=flat)](https://www.npmjs.org/package/nano-memoize) [![](https://img.shields.io/npm/dm/nano-memoize.svg)](https://www.npmjs.org/package/nano-memoize) [![](https://img.shields.io/bundlephobia/minzip/nano-memoize.svg)](https://bundlephobia.com/package/nano-memoize) [![](https://packagephobia.com/badge?p=nano-memoize)](https://packagephobia.com/result?p=nano-memoize)
 # Faster than fast, smaller than micro ... nano-memoizer.
 
 # Introduction
