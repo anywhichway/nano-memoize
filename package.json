@@ -5,6 +5,7 @@
   "type:": "module",
   "source": "src/index.js",
   "main": "dist/nano-memoize.js",
+  "typings": "./index.d.ts",
   "module": "./index.js",
   "sideEffects": false,
   "license": "MIT",
