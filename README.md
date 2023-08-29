@@ -179,6 +179,8 @@ If you want similar performance for intersection, union or Cartesian product als
 
 # Release History (reverse chronological order)
 
+2023-09-29 v3.0.14 Added Typescript typings to `package.json` (thanks @gnarea) and some badges (thanks @silverwind).
+
 2023-06-17 v3.0.13 Corrected version below which was set to v4.0.0. Minor optimizations. Restructured README to put usage above benchmarks.
 
 2023-06-16 v3.0.12 Bumping version for updates of dependencies. Updated all memoization libraries to latest versions. Also added `memize` to tests and updated to latest LTS version of Node.js. The Node update had a material impact on performance of several memoziation libraries.
