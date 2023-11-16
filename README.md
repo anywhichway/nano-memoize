@@ -179,6 +179,8 @@ If you want similar performance for intersection, union or Cartesian product als
 
 # Release History (reverse chronological order)
 
+2023-11-16 v3.0.16 Fixed issue [63](https://github.com/anywhichway/nano-memoize/issues/63). Thanks @darkship.
+
 2023-11-16 v3.0.15 Enhanced TypeScript types. Thanks @darkship.
 
 2023-09-29 v3.0.14 Added Typescript typings to `package.json` (thanks @gnarea) and some badges (thanks @silverwind).

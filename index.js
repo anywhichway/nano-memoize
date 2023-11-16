@@ -33,8 +33,8 @@ function $cf838c15c8b009ba$export$22f15dd4e5be7e52(fn, o) {
 		vargs = vrgs(fn) // set to true if function may have variable or beyond-signature arguments, default is best attempt at infering
 	  } = {}
 	*/ o || (o = {});
-    var vargs = o.vargs || $cf838c15c8b009ba$var$vrgs(fn), k = [], cache = new Map(), u, d = function(key) {
-        return setTimeout(function() {
+    var vargs = o.vargs || $cf838c15c8b009ba$var$vrgs(fn), k = [], cache = new Map(), u, to, d = function(key) {
+        return to = setTimeout(function() {
             if (u) {
                 cache.delete(key);
                 return;
@@ -80,6 +80,7 @@ function $cf838c15c8b009ba$export$22f15dd4e5be7e52(fn, o) {
     };
     // reset all the caches
     f.clear = function() {
+        if (to) clearTimeout(to);
         cache.clear();
         k = [];
     };

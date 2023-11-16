@@ -41,7 +41,8 @@ function nanomemoize(fn,o) {
 		k = [], // multiple arg function arg key cache
 		cache = new Map(), // single arg function key/value cache
 		u, // flag indicating a unary arg function is in use for clear operation
-		d = function(key) { return setTimeout(function() {
+		to, // timeout for clearing cache
+		d = function(key) { return to = setTimeout(function() {
 			if(u) {
 				cache.delete(key);
 				return;
@@ -97,6 +98,7 @@ function nanomemoize(fn,o) {
 	}
 	// reset all the caches
 	f.clear = function() {
+		if(to) clearTimeout(to);
 		cache.clear();
 		k = [];
 	};

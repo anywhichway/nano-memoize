@@ -1,6 +1,6 @@
 {
   "name": "nano-memoize",
-  "version": "3.0.15",
+  "version": "3.0.16",
   "description": "Faster than fast, smaller than micro ... a nano speed and nano size memoizer.",
   "type:": "module",
   "source": "src/index.js",
