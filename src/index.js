@@ -41,8 +41,8 @@ function nanomemoize(fn,o) {
 		k = [], // multiple arg function arg key cache
 		cache = new Map(), // single arg function key/value cache
 		u, // flag indicating a unary arg function is in use for clear operation
-		to, // timeout for clearing cache
-		d = function(key) { return to = setTimeout(function() {
+		tos = new Set(), // timeouts for clearing cache
+		d = function(key) { return tos.add(setTimeout(function() {
 			if(u) {
 				cache.delete(key);
 				return;
@@ -50,7 +50,7 @@ function nanomemoize(fn,o) {
 			// dealing with multi-arg function, c and k are Arrays
 			k.splice (key,1);
 			//v.splice(key,1);
-			},o.maxAge);
+			},o.maxAge));
 		},
 		c = o.maxAge>0 && o.maxAge<Infinity ? d : 0, // cache change timeout,
 		eq = o.equals ? o.equals : 0,
@@ -98,7 +98,10 @@ function nanomemoize(fn,o) {
 	}
 	// reset all the caches
 	f.clear = function() {
-		if(to) clearTimeout(to);
+		tos.forEach(to => {
+			clearTimeout(to)
+			tos.delete(to)
+		})
 		cache.clear();
 		k = [];
 	};
