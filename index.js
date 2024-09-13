@@ -96,7 +96,8 @@ function $cf838c15c8b009ba$export$22f15dd4e5be7e52(fn, o) {
     };
     return f;
 }
+var $cf838c15c8b009ba$export$2e2bcd8739ae039 = $cf838c15c8b009ba$export$22f15dd4e5be7e52;
 
 
-export {$cf838c15c8b009ba$export$22f15dd4e5be7e52 as nanomemoize, $cf838c15c8b009ba$export$22f15dd4e5be7e52 as default};
+export {$cf838c15c8b009ba$export$22f15dd4e5be7e52 as nanomemoize, $cf838c15c8b009ba$export$2e2bcd8739ae039 as default};
 //# sourceMappingURL=index.js.map
