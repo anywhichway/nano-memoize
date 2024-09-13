@@ -11,7 +11,7 @@ declare module "nano-memoize" {
 		keys(): K[]
 	}
 
-	export default function memoized<T extends Func, K = Parameters<T>>(
+	export function nanomemoize<T extends Func, K = Parameters<T>>(
 		fn: T,
 		options?: {
 			/**
@@ -37,4 +37,6 @@ declare module "nano-memoize" {
 			vargs?: boolean;
 		}
 	): T & BasicHelpers<T> & KeysHelpers<K>;
+
+	export default nanomemoize;
 }

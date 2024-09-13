@@ -106,5 +106,6 @@ function nanomemoize(fn,o) {
 	f.values = function() { return u ? [...cache.values()] : k.map((args) => args.val); };
 	return f;
 }
-export {nanomemoize,nanomemoize as default}
+export {nanomemoize}
 
+export default nanomemoize;

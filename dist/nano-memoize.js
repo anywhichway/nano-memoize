@@ -8,7 +8,7 @@ function $parcel$export(e, n, v, s) {
 $parcel$defineInteropFlag(module.exports);
 
 $parcel$export(module.exports, "nanomemoize", () => $4fa36e821943b400$export$22f15dd4e5be7e52);
-$parcel$export(module.exports, "default", () => $4fa36e821943b400$export$22f15dd4e5be7e52);
+$parcel$export(module.exports, "default", () => $4fa36e821943b400$export$2e2bcd8739ae039);
 /*
 MIT License
 
@@ -107,6 +107,7 @@ function $4fa36e821943b400$export$22f15dd4e5be7e52(fn, o) {
     };
     return f;
 }
+var $4fa36e821943b400$export$2e2bcd8739ae039 = $4fa36e821943b400$export$22f15dd4e5be7e52;
 
 
 //# sourceMappingURL=nano-memoize.js.map
